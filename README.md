@@ -1,3 +1,3 @@
 # robschoen
 
-** this is Rob's blog **
+**this is Rob's blog**
