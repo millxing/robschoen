@@ -7,7 +7,7 @@ title: Rob Schoen
 
 I'm Rob — I write about code, creativity, and curiosity.
 
-![Banner](/assets/img/banner.jpg)
+#![Banner](/assets/img/banner.jpg)
 
 - ✍️ Thoughts on technology
 - 🎨 p5.js sketches and generative art
