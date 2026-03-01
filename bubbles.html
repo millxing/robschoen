@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bubble Canvas</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;700&display=swap"
+    rel="stylesheet"
+  />
+  <style>
+    :root {
+      color-scheme: light;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      background: #000000;
+      font-family: "Quicksand", sans-serif;
+    }
+
+    #canvas {
+      position: relative;
+      width: 100%;
+      height: 100%;
+    }
+
+    .bubble {
+      position: absolute;
+      width: 500px;
+      height: 180px;
+      border-radius: 999px;
+      border: 2px solid #d783a9;
+      background: #efacc8;
+      color: #6f425b;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 0 16px;
+      font-size: 2.6rem;
+      font-weight: 600;
+      line-height: 1.2;
+      backdrop-filter: blur(2px);
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .bubble:hover,
+    .bubble:focus-visible {
+      background: #f4b7d0;
+      outline: none;
+    }
+  </style>
+</head>
+<body>
+  <main id="canvas" aria-label="Animated bubble links"></main>
+
+  <script>
+    const BUBBLES = [
+      {
+        text: "Brookline Town Meeting Votes",
+        url: "https://millxing.github.io/TM/TMMvotes.html",
+      },
+      {
+        text: "ExtraPass: Advanced NBA Analytics",
+        url: "https://extrapass.onrender.com/",
+      },
+      {
+        text: "Washington Street Journal",
+        url: "https://millxing.github.io/BF/",
+      },
+    ];
+    const BUBBLE_WIDTH = 500;
+    const BUBBLE_HEIGHT = 180;
+    const MIN_SPEED = 24; // px per second
+    const MAX_SPEED = 44; // px per second
+
+    const canvas = document.getElementById("canvas");
+    const bubbles = [];
+    let lastTime = 0;
+
+    function randomInRange(min, max) {
+      return Math.random() * (max - min) + min;
+    }
+
+    function clamp(value, min, max) {
+      return Math.min(Math.max(value, min), max);
+    }
+
+    function overlapsAtPosition(x, y, other) {
+      return (
+        x < other.x + BUBBLE_WIDTH &&
+        x + BUBBLE_WIDTH > other.x &&
+        y < other.y + BUBBLE_HEIGHT &&
+        y + BUBBLE_HEIGHT > other.y
+      );
+    }
+
+    function createBubble(bubbleData) {
+      const link = document.createElement("a");
+      link.className = "bubble";
+      link.href = bubbleData.url;
+      link.target = "_blank";
+      link.rel = "noopener noreferrer";
+      link.textContent = bubbleData.text;
+      link.setAttribute("aria-label", bubbleData.text);
+
+      link.addEventListener("click", (event) => {
+        event.preventDefault();
+        window.open(bubbleData.url, "_blank", "noopener,noreferrer");
+      });
+
+      canvas.appendChild(link);
+
+      const maxX = Math.max(0, window.innerWidth - BUBBLE_WIDTH);
+      const maxY = Math.max(0, window.innerHeight - BUBBLE_HEIGHT);
+      const angle = randomInRange(0, Math.PI * 2);
+      const speed = randomInRange(MIN_SPEED, MAX_SPEED);
+      let x = 0;
+      let y = 0;
+      let placed = false;
+
+      for (let attempts = 0; attempts < 150; attempts += 1) {
+        const candidateX = randomInRange(0, maxX);
+        const candidateY = randomInRange(0, maxY);
+        const collision = bubbles.some((bubble) =>
+          overlapsAtPosition(candidateX, candidateY, bubble)
+        );
+        if (!collision) {
+          x = candidateX;
+          y = candidateY;
+          placed = true;
+          break;
+        }
+      }
+
+      if (!placed) {
+        x = randomInRange(0, maxX);
+        y = randomInRange(0, maxY);
+      }
+
+      bubbles.push({
+        el: link,
+        x,
+        y,
+        vx: Math.cos(angle) * speed,
+        vy: Math.sin(angle) * speed,
+      });
+    }
+
+    function resolveBubbleCollisions() {
+      const maxX = Math.max(0, window.innerWidth - BUBBLE_WIDTH);
+      const maxY = Math.max(0, window.innerHeight - BUBBLE_HEIGHT);
+      const epsilon = 0.1;
+
+      for (let i = 0; i < bubbles.length; i += 1) {
+        for (let j = i + 1; j < bubbles.length; j += 1) {
+          const a = bubbles[i];
+          const b = bubbles[j];
+
+          const centerDx = (a.x + BUBBLE_WIDTH / 2) - (b.x + BUBBLE_WIDTH / 2);
+          const centerDy = (a.y + BUBBLE_HEIGHT / 2) - (b.y + BUBBLE_HEIGHT / 2);
+          const overlapX = BUBBLE_WIDTH - Math.abs(centerDx);
+          const overlapY = BUBBLE_HEIGHT - Math.abs(centerDy);
+
+          if (overlapX <= 0 || overlapY <= 0) {
+            continue;
+          }
+
+          if (overlapX < overlapY) {
+            const direction = centerDx === 0 ? (Math.random() < 0.5 ? -1 : 1) : Math.sign(centerDx);
+            const shift = overlapX / 2 + epsilon;
+            a.x += shift * direction;
+            b.x -= shift * direction;
+            const swap = a.vx;
+            a.vx = b.vx;
+            b.vx = swap;
+          } else {
+            const direction = centerDy === 0 ? (Math.random() < 0.5 ? -1 : 1) : Math.sign(centerDy);
+            const shift = overlapY / 2 + epsilon;
+            a.y += shift * direction;
+            b.y -= shift * direction;
+            const swap = a.vy;
+            a.vy = b.vy;
+            b.vy = swap;
+          }
+
+          a.x = clamp(a.x, 0, maxX);
+          a.y = clamp(a.y, 0, maxY);
+          b.x = clamp(b.x, 0, maxX);
+          b.y = clamp(b.y, 0, maxY);
+        }
+      }
+    }
+
+    function updateBubbles(timestamp) {
+      if (!lastTime) {
+        lastTime = timestamp;
+      }
+      const dt = (timestamp - lastTime) / 1000;
+      lastTime = timestamp;
+
+      const maxX = Math.max(0, window.innerWidth - BUBBLE_WIDTH);
+      const maxY = Math.max(0, window.innerHeight - BUBBLE_HEIGHT);
+
+      for (const bubble of bubbles) {
+        bubble.x += bubble.vx * dt;
+        bubble.y += bubble.vy * dt;
+
+        if (bubble.x <= 0) {
+          bubble.x = 0;
+          bubble.vx = Math.abs(bubble.vx);
+        } else if (bubble.x >= maxX) {
+          bubble.x = maxX;
+          bubble.vx = -Math.abs(bubble.vx);
+        }
+
+        if (bubble.y <= 0) {
+          bubble.y = 0;
+          bubble.vy = Math.abs(bubble.vy);
+        } else if (bubble.y >= maxY) {
+          bubble.y = maxY;
+          bubble.vy = -Math.abs(bubble.vy);
+        }
+      }
+
+      // Multiple passes reduce lingering overlap on multi-bubble contacts.
+      for (let pass = 0; pass < 3; pass += 1) {
+        resolveBubbleCollisions();
+      }
+
+      for (const bubble of bubbles) {
+        bubble.el.style.transform = `translate(${bubble.x}px, ${bubble.y}px)`;
+      }
+
+      requestAnimationFrame(updateBubbles);
+    }
+
+    function handleResize() {
+      const maxX = Math.max(0, window.innerWidth - BUBBLE_WIDTH);
+      const maxY = Math.max(0, window.innerHeight - BUBBLE_HEIGHT);
+      for (const bubble of bubbles) {
+        bubble.x = clamp(bubble.x, 0, maxX);
+        bubble.y = clamp(bubble.y, 0, maxY);
+      }
+    }
+
+    for (const bubbleData of BUBBLES) {
+      createBubble(bubbleData);
+    }
+
+    window.addEventListener("resize", handleResize);
+    requestAnimationFrame(updateBubbles);
+  </script>
+</body>
+</html>
