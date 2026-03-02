@@ -41,8 +41,23 @@ body.writing-page h2 {
   font-size: 2.46rem;
 }
 
+#work > .panel-header > h2,
+#writing > .panel-header > h2 {
+  font-size: 1.9rem;
+}
+
 body.writing-page h3 {
   font-size: 2.06rem;
+}
+
+body.writing-page #writing .item h3 {
+  font-size: 1.25rem;
+}
+
+body.writing-page #writing .warren-subtitle {
+  max-width: 64ch;
+  margin: 7px auto 0;
+  padding: 0 16px;
 }
 
 strong {
@@ -140,6 +155,13 @@ strong {
   transition: color 0.2s ease;
 }
 
+.site-nav .nav-disabled {
+  color: var(--muted);
+  font-size: 1.08rem;
+  opacity: 0.55;
+  cursor: default;
+}
+
 .site-nav a:hover {
   color: var(--accent);
 }
@@ -173,6 +195,12 @@ body.home .page > .hero {
 
 .top-hero.candy-red .site-nav a {
   color: #ffe3e3;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.22);
+}
+
+.top-hero.candy-red .site-nav .nav-disabled {
+  color: #ffe3e3;
+  opacity: 0.65;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.22);
 }
 
@@ -357,6 +385,11 @@ h2 {
   border-top: 1px solid var(--line);
 }
 
+#work .item,
+#writing .item {
+  padding: 20px 0;
+}
+
 .item-title-row {
   display: flex;
   justify-content: center;
@@ -403,7 +436,12 @@ h3 {
 
 #work .item p,
 #writing .item p {
-  margin-left: 0;
+  margin-top: 12px;
+  width: fit-content;
+  max-width: 64ch;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: left;
 }
 
 #work .item .subtitle-list,
