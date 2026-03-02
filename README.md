@@ -1,15 +1,3 @@
-# Personal Website Starter
-
-This is a lightweight starter inspired by the layout style of `steipete.me`.
-
-## Run locally
-
-```bash
-python3 -m http.server 8000
-```
-
-Then open `http://localhost:8000`.
-
 ## Customize quickly
 
 - Update your name and intro text in `index.html`.
@@ -33,6 +21,7 @@ Current Projects order/index:
 Current Writing order/index:
 - AI-generated Bermanisms: `60`
 - Sol LeWitt: `50`
+- Foreword: To a Conservative Warren Court: `25`
 
 ## File map
 

@@ -41,3 +41,4 @@
 ### Current Writing Index
 - AI-generated Bermanisms: `60`
 - Sol LeWitt: `50`
+- Foreword: To a Conservative Warren Court: `25`
