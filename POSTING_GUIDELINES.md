@@ -35,10 +35,9 @@
 ### Current Project Index
 - ExtraPass: `100`
 - Brookline Town Meeting Votes: `90`
-- Washington Street Journal: `50`
 - iSocrateez: `10`
 
 ### Current Writing Index
 - AI-generated Bermanisms: `60`
 - Sol LeWitt: `50`
-- Foreword: To a Conservative Warren Court: `25`
+- Legal Realignment at the Supreme Court: `25`

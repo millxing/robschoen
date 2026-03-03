@@ -15,13 +15,12 @@ Apply this consistently on Home and archive pages.
 Current Projects order/index:
 - ExtraPass: `100`
 - Brookline Town Meeting Votes: `90`
-- Washington Street Journal: `50`
 - iSocrateez: `10`
 
 Current Writing order/index:
 - AI-generated Bermanisms: `60`
 - Sol LeWitt: `50`
-- Foreword: To a Conservative Warren Court: `25`
+- Legal Realignment at the Supreme Court: `25`
 
 ## File map
 
