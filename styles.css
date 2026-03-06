@@ -177,6 +177,37 @@ body.home .page > .hero {
   grid-column: 1 / -1;
 }
 
+body.home #work .panel-header,
+body.home #writing .panel-header {
+  align-items: flex-start;
+  text-align: left;
+}
+
+body.home #work .item-title-row,
+body.home #writing .item-title-row {
+  justify-content: flex-start;
+  text-align: left;
+}
+
+body.home #work h3,
+body.home #writing h3 {
+  text-align: left;
+}
+
+body.home #work .item p,
+body.home #writing .item p {
+  width: auto;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+body.home #work .subtitle-list,
+body.home #writing .subtitle-list,
+body.home #work .subtitle-list li,
+body.home #writing .subtitle-list li {
+  text-align: left;
+}
+
 .top-hero {
   position: sticky;
   top: 12px;

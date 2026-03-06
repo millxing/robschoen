@@ -16,6 +16,8 @@ Current Projects order/index:
 - ExtraPass: `100`
 - Brookline Town Meeting Votes: `90`
 - iSocrateez: `10`
+- Longwood Mall: `5`
+- Washington Street Journal: `1`
 
 Current Writing order/index:
 - AI-generated Bermanisms: `60`

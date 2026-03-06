@@ -36,6 +36,7 @@
 - ExtraPass: `100`
 - Brookline Town Meeting Votes: `90`
 - iSocrateez: `10`
+- Washington Street Journal: `1`
 
 ### Current Writing Index
 - AI-generated Bermanisms: `60`
