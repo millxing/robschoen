@@ -7,6 +7,41 @@
   `density`, `shape`, `size`, and `speed`.
 - Add your projects/posts by duplicating an `.item` block.
 
+## Site Editor
+
+Projects and writing now use one simple local editor.
+
+1. Run `node tools/post_studio_server.mjs`
+2. Open `http://127.0.0.1:4173/post-studio.html`
+3. Choose `Projects` or `Writing`
+4. Edit plain text and click `Save + Rebuild`
+
+Formatting in text fields:
+
+- `[b]bold[/b]`
+- `[i]italic[/i]`
+- `[code]code[/code]`
+- `[link https://example.com]link text[/link]`
+- `[table] ... [/table]` for tables using `left | right` rows
+- blank line = new paragraph
+- `- item` = bullet point
+
+The detail page editor is now one linear `Body document` field per item, so you can mix normal
+text and tables in order without separate block editors.
+
+Source of truth:
+
+- `content/site-content.mjs`
+- `tools/post_generator.mjs`
+- `post-studio.html`
+
+Generated from that source:
+
+- `index.html`
+- `projects.html`
+- `writing.html`
+- detail pages such as `tm.html`, `sol_lewitt.html`, and `warren.html`
+
 ## Importance index
 
 Use an importance index from `1-100` to sort entries in descending order (higher = closer to top).

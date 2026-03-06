@@ -9,6 +9,28 @@
 - Do not silently fix wording.
 
 ## Writing Posts
+- Preferred workflow: use Site Editor instead of editing generated pages by hand.
+- Start the editor with `node tools/post_studio_server.mjs`, then open
+  `http://127.0.0.1:4173/post-studio.html`.
+- The source of truth is `content/site-content.mjs`.
+- Use plain text in the editor and square-bracket formatting:
+  - `[b]bold[/b]`
+  - `[i]italic[/i]`
+  - `[code]code[/code]`
+  - `[link https://example.com]link text[/link]`
+  - `[table] ... [/table]` with rows like `left | right`
+  - blank line for a new paragraph
+  - `- item` for bullet points
+- The detail page editor uses one linear body field, so text and tables should be written in the
+  order they appear on the page.
+- Saving in Site Editor automatically regenerates:
+  - project detail pages
+  - writing detail pages
+  - `projects.html`
+  - `writing.html`
+  - the project and writing sections on `index.html`
+
+## Manual Fallback
 - Put writing posts inside a section with `id="writing"`.
 - Use the standard post structure:
 

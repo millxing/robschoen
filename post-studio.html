@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Site Editor</title>
+    <meta
+      name="description"
+      content="Simple editor for projects and writing on Entangled Particles."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./post-studio.css" />
+  </head>
+  <body>
+    <div class="studio-shell">
+      <aside class="sidebar">
+        <p class="eyebrow">Entangled Particles</p>
+        <h1>Site Editor</h1>
+        <p class="sidebar-copy">
+          Edit projects and writing in plain text. Use square brackets for formatting instead of
+          HTML or Markdown.
+        </p>
+
+        <div class="tab-row" role="tablist" aria-label="Content type">
+          <button type="button" id="tab-projects" class="tab active">Projects</button>
+          <button type="button" id="tab-writing" class="tab">Writing</button>
+        </div>
+
+        <div class="sidebar-actions">
+          <button type="button" id="new-item-button">New Item</button>
+          <button type="button" id="reload-button" class="ghost">Reload</button>
+        </div>
+
+        <div class="list-heading">
+          <h2 id="list-title">Projects</h2>
+          <span id="list-count"></span>
+        </div>
+        <div id="item-list" class="item-list"></div>
+      </aside>
+
+      <main class="main">
+        <header class="topbar">
+          <div>
+            <p class="eyebrow">Simple text workflow</p>
+            <h2 id="editor-heading">Loading...</h2>
+          </div>
+          <div class="topbar-actions">
+            <button type="button" id="save-button">Save + Rebuild</button>
+            <button type="button" id="rebuild-button" class="ghost">Rebuild Only</button>
+          </div>
+        </header>
+
+        <section class="panel help-panel">
+          <h3>Formatting Help</h3>
+          <p>Write plain text. Use these only when you want formatting:</p>
+          <ul class="help-list">
+            <li><code>[b]bold[/b]</code></li>
+            <li><code>[i]italic[/i]</code></li>
+            <li><code>[code]code[/code]</code></li>
+            <li><code>[link https://example.com]link text[/link]</code></li>
+            <li><code>[br]</code> for a forced line break</li>
+            <li>Leave a blank line for a new paragraph</li>
+            <li>Start a line with <code>- </code> for bullet points</li>
+            <li><code>[table]</code> ... <code>[/table]</code> for tables</li>
+          </ul>
+          <p>
+            Table example:
+            <code>[table][br]Name | League[br]Jeff "Brown Paper" Bagwell | MLB[br][/table]</code>
+          </p>
+          <p>
+            Optional advanced tags: <code>[text]</code>, <code>[image]</code>,
+            <code>[embed]</code>, <code>[pdf]</code>, <code>[links]</code>.
+          </p>
+        </section>
+
+        <div class="status-row">
+          <span id="status-pill" class="status-pill neutral">Loading</span>
+          <p id="status-text" class="status-text">Fetching current site content...</p>
+        </div>
+
+        <section id="editor-panel" class="panel editor-panel" hidden>
+          <div class="field-grid two-up">
+            <label class="field">
+              <span>Title</span>
+              <input id="field-title" type="text" />
+            </label>
+            <label class="field">
+              <span>Filename slug</span>
+              <input id="field-slug" type="text" />
+            </label>
+          </div>
+
+          <div class="field-grid two-up">
+            <label class="field">
+              <span>Importance</span>
+              <input id="field-importance" type="number" min="1" max="100" />
+            </label>
+            <label class="field">
+              <span>Meta description</span>
+              <input id="field-meta" type="text" />
+            </label>
+          </div>
+
+          <div id="project-only-fields" class="field-grid two-up">
+            <label class="field">
+              <span>Home page link</span>
+              <input id="field-home-href" type="text" />
+            </label>
+            <label class="field">
+              <span>Projects page link</span>
+              <input id="field-archive-href" type="text" />
+            </label>
+          </div>
+
+          <label id="detail-toggle-field" class="checkbox-field">
+            <input id="field-detail-enabled" type="checkbox" />
+            <span>Generate an internal detail page too</span>
+          </label>
+
+          <label class="field">
+            <span>Home page card text</span>
+            <textarea id="field-home-card" rows="4"></textarea>
+          </label>
+
+          <label class="field">
+            <span id="archive-card-label">Archive page card text</span>
+            <textarea id="field-archive-card" rows="6"></textarea>
+          </label>
+
+          <label id="archive-card-class-field" class="field">
+            <span>Writing page subtitle class</span>
+            <input id="field-archive-card-class" type="text" />
+          </label>
+
+          <label class="field">
+            <span>Detail page intro text</span>
+            <textarea id="field-page-intro" rows="6"></textarea>
+          </label>
+        </section>
+
+        <section id="body-panel" class="panel" hidden>
+          <h3>Page Body</h3>
+          <p class="sidebar-copy">
+            Write the page in order. Use normal paragraphs, bullets, and optional directives like
+            <code>[table]</code>.
+          </p>
+          <label class="field">
+            <span>Body document</span>
+            <textarea id="field-body" rows="24"></textarea>
+          </label>
+        </section>
+      </main>
+    </div>
+
+    <script type="module" src="./post-studio.js"></script>
+  </body>
+</html>
