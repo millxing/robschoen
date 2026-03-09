@@ -293,6 +293,44 @@ const siteContent = {
   "projects": [
     {
       "kind": "projects",
+      "title": "Star Citadel",
+      "slug": "new_project",
+      "importance": 3,
+      "metaDescription": "",
+      "homeCardText": "Emulation of my favorite childhood arcade game.",
+      "archiveCardText": "Star Citadel",
+      "archiveCardClass": "",
+      "pageIntroText": "",
+      "detailPageEnabled": true,
+      "homeHref": "https://millxing.github.io/starcitadel/",
+      "archiveHref": "https://millxing.github.io/starcitadel/",
+      "blocks": [
+        {
+          "type": "text",
+          "delay": "",
+          "heading": "",
+          "text": "",
+          "caption": "",
+          "imageSrc": "",
+          "imageAlt": "",
+          "imageStyle": "full",
+          "imageLink": "",
+          "extraClasses": [],
+          "headerLinkLabel": "",
+          "headerLinkHref": "",
+          "embedSrc": "",
+          "embedTitle": "",
+          "embedHeight": "",
+          "pdfSrc": "",
+          "pdfTitle": "",
+          "tableHeaders": [],
+          "tableRows": [],
+          "linkItems": []
+        }
+      ]
+    },
+    {
+      "kind": "projects",
       "title": "ExtraPass: Advanced NBA Analytics",
       "slug": "extrapass",
       "importance": 100,
@@ -373,7 +411,7 @@ const siteContent = {
       "slug": "isocrateez",
       "importance": 10,
       "metaDescription": "Give iSocrateez a moral or ethical dilemma and a Consequentialism-Deontological Index score and it will give you customized advice.",
-      "homeCardText": "Give iSocrateez a moral or ethical dilemma and a Consequentialism-Deontological Index score (i.e. are you more about the \"ends justify the means\" or more about \"the principle is what matters\"?) and iSocrateez will give you customized advice.",
+      "homeCardText": "Are you more about the \"ends justifying the means\" or more about \"the principle is what matters\"? iSocrateez will give you customized advice. What could go wrong?",
       "archiveCardText": "Give iSocrateez a moral or ethical dilemma and a Consequentialism-Deontological Index score (i.e. are you more the \"ends justify the means\" or \"the principle is what matters\") and it will give you customized advice.",
       "archiveCardClass": "",
       "pageIntroText": "Give iSocrateez a moral or ethical dilemma and a Consequentialism-Deontological Index score (i.e. are you more the \"ends justify the means\" or \"the principle is what matters\") and it will give you customized advice.",
