@@ -407,6 +407,15 @@ ${items}
       </section>`;
 }
 
+function isSpotifyEmbed(src) {
+  return /^https:\/\/open\.spotify\.com\/embed\//i.test(String(src || ""));
+}
+
+function normalizePixelValue(value, fallback) {
+  const match = String(value || fallback).trim().match(/^(\d+)(?:px)?$/i);
+  return match ? match[1] : String(fallback);
+}
+
 function renderEmbedBlock(block) {
   const classes = ["panel", "reveal"];
   if (block.delay) {
@@ -416,15 +425,23 @@ function renderEmbedBlock(block) {
 
   const header = renderPanelHeader(block.heading, block.headerLinkLabel, block.headerLinkHref);
   const caption = renderMarkup(block.text);
-  const height = block.embedHeight || "72vh";
+  const spotifyEmbed = isSpotifyEmbed(block.embedSrc);
+  const height = block.embedHeight || (spotifyEmbed ? "352px" : "72vh");
+  const spotifyHeight = normalizePixelValue(height, "352");
+  const extraAttributes = spotifyEmbed
+    ? `          width="100%"\n          height="${spotifyHeight}"\n          frameborder="0"\n          allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"\n`
+    : "";
+  const style = spotifyEmbed
+    ? "width: 100%; border: 0; border-radius: 12px; background: #ffffff"
+    : `width: 100%; min-height: ${escapeHtml(height)}; border: 0; border-radius: 12px; background: #ffffff`;
 
   return `      <section class="${classes.join(" ")}">
 ${header}${caption ? `${caption}\n` : ""}        <iframe
           src="${escapeHtml(block.embedSrc)}"
           title="${escapeHtml(block.embedTitle)}"
           loading="lazy"
-          allowfullscreen
-          style="width: 100%; min-height: ${escapeHtml(height)}; border: 0; border-radius: 12px; background: #ffffff"
+${extraAttributes}          allowfullscreen
+          style="${style}"
         ></iframe>
       </section>`;
 }
