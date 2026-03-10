@@ -70,6 +70,14 @@ function buildDirectiveTag(name, attributes = {}) {
   return attributeText ? `[${name} ${attributeText}]` : `[${name}]`;
 }
 
+function normalizeImportance(value) {
+  const parsed = Number.parseInt(String(value ?? ""), 10);
+  if (!Number.isFinite(parsed)) {
+    return 1;
+  }
+  return Math.min(100, Math.max(1, parsed));
+}
+
 function blockMetaAttributes(block) {
   return {
     delay: block.delay,
@@ -345,6 +353,7 @@ function bodyToBlocks(bodyText) {
 function attachEditorIds(items) {
   return items.map((item) => ({
     ...item,
+    importance: normalizeImportance(item.importance),
     editorId: `item-${nextEditorId++}`,
     bodyText: blocksToBody(item.blocks || []),
   }));
@@ -353,6 +362,7 @@ function attachEditorIds(items) {
 function stripEditorIds(items) {
   return items.map(({ editorId, kind, bodyText, ...item }) => ({
     ...item,
+    importance: normalizeImportance(item.importance),
     blocks: bodyToBlocks(bodyText),
   }));
 }
@@ -415,7 +425,7 @@ function updateSelectedField(field, value) {
   if (!item) {
     return;
   }
-  replaceSelectedItem({ ...item, [field]: value });
+  replaceSelectedItem({ ...item, [field]: field === "importance" ? normalizeImportance(value) : value });
   markDirty();
 }
 
@@ -594,7 +604,9 @@ elements.fieldSlug.addEventListener("input", (event) => {
   renderItemList();
 });
 elements.fieldImportance.addEventListener("input", (event) => {
-  updateSelectedField("importance", Number.parseInt(event.target.value || "0", 10));
+  const importance = normalizeImportance(event.target.value);
+  event.target.value = String(importance);
+  updateSelectedField("importance", importance);
   renderItemList();
 });
 elements.fieldMeta.addEventListener("input", (event) => updateSelectedField("metaDescription", event.target.value));

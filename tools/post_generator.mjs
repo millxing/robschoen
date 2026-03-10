@@ -113,6 +113,14 @@ function sortByImportance(items) {
   });
 }
 
+function normalizeImportance(value) {
+  const parsed = Number.parseInt(String(value ?? ""), 10);
+  if (!Number.isFinite(parsed)) {
+    return 1;
+  }
+  return Math.min(100, Math.max(1, parsed));
+}
+
 function normalizeBlocks(blocks) {
   return Array.isArray(blocks)
     ? blocks.map((block) => ({
@@ -146,13 +154,13 @@ function normalizeItems(items, kind) {
         kind,
         title: String(item.title || "").trim(),
         slug: String(item.slug || "").trim(),
-        importance: Number(item.importance || 0),
+        importance: normalizeImportance(item.importance),
         metaDescription: String(item.metaDescription || "").trim(),
         homeCardText: String(item.homeCardText || ""),
         archiveCardText: String(item.archiveCardText || ""),
         archiveCardClass: String(item.archiveCardClass || "").trim(),
         pageIntroText: String(item.pageIntroText || ""),
-        detailPageEnabled: kind === "writing" ? true : Boolean(item.detailPageEnabled),
+        detailPageEnabled: kind === "writing" ? item.detailPageEnabled !== false : Boolean(item.detailPageEnabled),
         homeHref: String(item.homeHref || (kind === "writing" ? `./${item.slug}.html` : "")),
         archiveHref: String(item.archiveHref || (kind === "writing" ? `./${item.slug}.html` : "")),
         blocks: normalizeBlocks(item.blocks),
@@ -191,6 +199,9 @@ export function validateSiteContent(content) {
       }
       if (seen.has(item.slug)) {
         throw new Error(`Duplicate ${kind} slug "${item.slug}".`);
+      }
+      if (!Number.isInteger(item.importance) || item.importance < 1 || item.importance > 100) {
+        throw new Error(`"${item.title}" must have an importance between 1 and 100.`);
       }
       seen.add(item.slug);
     });
@@ -492,12 +503,12 @@ ${item.pageIntroText ? `${renderMarkup(item.pageIntroText)}\n` : ""}      </sect
 }
 
 function renderWritingCard(item, variant) {
-  const href = `./${item.slug}.html`;
+  const href = variant === "home" ? item.homeHref : item.archiveHref;
   const subtitle = variant === "home" ? item.homeCardText : item.archiveCardText;
   const classAttribute = variant === "archive" && item.archiveCardClass ? ` class="${escapeHtml(item.archiveCardClass)}"` : "";
   return `        <article class="item">
           <div class="item-title-row">
-            <h3><a href="${href}">${escapeHtml(item.title)}</a></h3>
+            <h3><a ${renderLinkAttributes(href)}>${escapeHtml(item.title)}</a></h3>
           </div>
           <p${classAttribute}>${applyInlineMarkup(subtitle)}</p>
         </article>`;
@@ -671,9 +682,11 @@ export async function generateSite(contentInput) {
   await fs.writeFile(path.join(rootDir, "writing.html"), renderWritingIndex(content), "utf8");
 
   await Promise.all(
-    content.writing.map((item) =>
+    content.writing
+      .filter((item) => item.detailPageEnabled)
+      .map((item) =>
       fs.writeFile(path.join(rootDir, `${item.slug}.html`), renderDetailPage(item), "utf8"),
-    ),
+      ),
   );
 
   await Promise.all(
