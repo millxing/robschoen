@@ -179,7 +179,10 @@ body.home .page > .hero {
 
 body.home #work .panel-header,
 body.home #writing .panel-header {
-  align-items: flex-start;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: center;
   text-align: left;
 }
 
@@ -206,6 +209,12 @@ body.home #writing .subtitle-list,
 body.home #work .subtitle-list li,
 body.home #writing .subtitle-list li {
   text-align: left;
+}
+
+body.home .top-hero {
+  position: sticky;
+  top: 12px;
+  z-index: 30;
 }
 
 .top-hero {
@@ -552,9 +561,68 @@ h3 {
 }
 
 @media (min-width: 820px) {
+  body.home {
+    height: 100dvh;
+    overflow: hidden;
+  }
+
   body.home .page {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    align-items: start;
+    grid-template-rows: auto minmax(0, 1fr);
+    align-items: stretch;
+    height: calc(100dvh - 32px);
+    max-height: calc(100dvh - 32px);
+    min-height: calc(100dvh - 32px);
+    margin: 12px auto 20px;
+    overflow: hidden;
+  }
+
+  body.home .page > .hero {
+    position: sticky;
+    top: 12px;
+  }
+
+  body.home #work,
+  body.home #writing {
+    height: 100%;
+    max-height: 100%;
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-gutter: stable;
+  }
+
+  body.home #work .panel-header,
+  body.home #writing .panel-header {
+    position: sticky;
+    top: -24px;
+    z-index: 5;
+    margin: -24px -24px 8px;
+    padding: 24px 24px 12px;
+    background: linear-gradient(
+      to bottom,
+      rgba(255, 255, 255, 0.97) 0%,
+      rgba(255, 255, 255, 0.94) 80%,
+      rgba(255, 255, 255, 0) 100%
+    );
+    backdrop-filter: blur(6px);
+  }
+
+  body.home #work::-webkit-scrollbar,
+  body.home #writing::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  body.home #work::-webkit-scrollbar-thumb,
+  body.home #writing::-webkit-scrollbar-thumb {
+    background: rgba(208, 39, 82, 0.35);
+    border-radius: 999px;
+  }
+
+  body.home #work::-webkit-scrollbar-track,
+  body.home #writing::-webkit-scrollbar-track {
+    background: rgba(17, 31, 53, 0.06);
+    border-radius: 999px;
   }
 
   body.home #work {
@@ -567,6 +635,10 @@ h3 {
 }
 
 @media (max-width: 700px) {
+  body.home {
+    overflow: visible;
+  }
+
   .top-hero {
     top: 8px;
     padding: 14px 14px;
