@@ -33,7 +33,6 @@ const elements = {
   listTitle: document.querySelector("#list-title"),
   newItemButton: document.querySelector("#new-item-button"),
   projectOnlyFields: document.querySelector("#project-only-fields"),
-  rebuildButton: document.querySelector("#rebuild-button"),
   reloadButton: document.querySelector("#reload-button"),
   saveButton: document.querySelector("#save-button"),
   statusPill: document.querySelector("#status-pill"),
@@ -96,7 +95,51 @@ function isSimpleTextBlock(block) {
     !block.headerLinkHref &&
     !block.imageSrc &&
     !block.imageAlt &&
+    (!block.imagePosition || block.imagePosition === "before") &&
     (!block.extraClasses || block.extraClasses.length === 0)
+  );
+}
+
+function isCenteredTextBlock(block) {
+  const classes = Array.isArray(block.extraClasses) ? block.extraClasses : [];
+  return (
+    block.type === "text" &&
+    !block.delay &&
+    !block.heading &&
+    !block.headerLinkLabel &&
+    !block.headerLinkHref &&
+    !block.imageSrc &&
+    !block.imageAlt &&
+    classes.length === 1 &&
+    classes[0] === "text-center"
+  );
+}
+
+function parseSingleLinkText(text) {
+  const match = String(text || "").trim().match(/^\[link ([^\]]+)\]([\s\S]*?)\[\/link\]$/i);
+  if (!match) {
+    return null;
+  }
+
+  return {
+    href: String(match[1] || "").trim(),
+    label: String(match[2] || "").trim(),
+  };
+}
+
+function isCtaImageBlock(block) {
+  const classes = Array.isArray(block.extraClasses) ? block.extraClasses : [];
+  return (
+    block.type === "text" &&
+    !block.delay &&
+    !block.heading &&
+    !block.headerLinkLabel &&
+    !block.headerLinkHref &&
+    Boolean(block.imageSrc) &&
+    Boolean(block.imageAlt) &&
+    classes.length === 1 &&
+    classes[0] === "text-center" &&
+    Boolean(parseSingleLinkText(block.text))
   );
 }
 
@@ -122,6 +165,24 @@ function blockToBodySegment(block) {
     return String(block.text || "").trim();
   }
 
+  if (isCtaImageBlock(block)) {
+    const link = parseSingleLinkText(block.text);
+    return `${buildDirectiveTag("cta_image", {
+      href: link.href,
+      src: block.imageSrc,
+      alt: block.imageAlt,
+      style: block.imageStyle,
+    })}
+${link.label}
+[/cta_image]`;
+  }
+
+  if (isCenteredTextBlock(block)) {
+    return `[center]
+${String(block.text || "").trim()}
+[/center]`;
+  }
+
   if (block.type === "text") {
     return `${buildDirectiveTag("text", {
       ...blockMetaAttributes(block),
@@ -129,6 +190,8 @@ function blockToBodySegment(block) {
       image_alt: block.imageAlt,
       image_style: block.imageStyle,
       image_link: block.imageLink,
+      image_position: block.imagePosition,
+      align: (block.extraClasses || []).includes("text-center") ? "center" : "",
     })}
 ${String(block.text || "").trim()}
 [/text]`;
@@ -232,6 +295,7 @@ function makeTextBlock(text, attrs = {}) {
     imageAlt: attrs.image_alt || "",
     imageStyle: attrs.image_style || "full",
     imageLink: attrs.image_link || "",
+    imagePosition: attrs.image_position === "after" ? "after" : "before",
     extraClasses: [],
     headerLinkLabel: attrs.link_label || "",
     headerLinkHref: attrs.link_href || "",
@@ -247,8 +311,33 @@ function makeTextBlock(text, attrs = {}) {
 }
 
 function directiveToBlock(name, attrs, content) {
+  if (name === "cta_image") {
+    return {
+      ...makeTextBlock(`[link ${attrs.href || attrs.link || ""}]${String(content || "").trim()}[/link]`, {
+        image_src: attrs.src || "",
+        image_alt: attrs.alt || "",
+        image_style: attrs.style || "full",
+        image_link: attrs.image_link || attrs.href || attrs.link || "",
+        image_position: "after",
+      }),
+      extraClasses: ["text-center"],
+      imagePosition: "after",
+    };
+  }
+
   if (name === "text") {
-    return makeTextBlock(content, attrs);
+    const block = makeTextBlock(content, attrs);
+    if ((attrs.align || "").toLowerCase() === "center") {
+      block.extraClasses = ["text-center"];
+    }
+    return block;
+  }
+
+  if (name === "center") {
+    return {
+      ...makeTextBlock(content, attrs),
+      extraClasses: ["text-center"],
+    };
   }
 
   if (name === "table") {
@@ -275,6 +364,7 @@ function directiveToBlock(name, attrs, content) {
       imageAlt: attrs.alt || "",
       imageStyle: attrs.style || "full",
       imageLink: attrs.link || "",
+      imagePosition: "before",
     };
   }
 
@@ -287,6 +377,7 @@ function directiveToBlock(name, attrs, content) {
       imageAlt: "",
       imageStyle: "full",
       imageLink: "",
+      imagePosition: "before",
     };
   }
 
@@ -302,6 +393,7 @@ function directiveToBlock(name, attrs, content) {
       imageAlt: "",
       imageStyle: "full",
       imageLink: "",
+      imagePosition: "before",
     };
   }
 
@@ -316,6 +408,7 @@ function directiveToBlock(name, attrs, content) {
       imageAlt: "",
       imageStyle: "full",
       imageLink: "",
+      imagePosition: "before",
     };
   }
 
@@ -324,7 +417,7 @@ function directiveToBlock(name, attrs, content) {
 
 function bodyToBlocks(bodyText) {
   const source = String(bodyText || "").replace(/\r\n/g, "\n");
-  const pattern = /\[(text|table|image|links|embed|pdf)([^\]]*)\]([\s\S]*?)\[\/\1\]/gi;
+  const pattern = /\[(text|center|cta_image|table|image|links|embed|pdf)([^\]]*)\]([\s\S]*?)\[\/\1\]/gi;
   const blocks = [];
   let lastIndex = 0;
   let match = pattern.exec(source);
@@ -504,7 +597,6 @@ function renderAll() {
   renderItemList();
   renderGeneralFields();
   elements.saveButton.disabled = state.loading || state.saving;
-  elements.rebuildButton.disabled = state.loading || state.saving;
 }
 
 function safeRender() {
@@ -566,21 +658,6 @@ async function saveContent() {
   }
 }
 
-async function rebuildOnly() {
-  setStatus("neutral", "Rebuilding the site from saved content...");
-
-  try {
-    const response = await fetch("./api/rebuild", { method: "POST" });
-    const data = await response.json();
-    if (!response.ok) {
-      throw new Error(data.error || "Rebuild failed.");
-    }
-    setStatus("success", "Rebuilt the site from disk.");
-  } catch (error) {
-    setStatus("error", error.message || "Rebuild failed.");
-  }
-}
-
 function switchKind(kind) {
   state.activeKind = kind;
   state.selectedId = getActiveItems()[0]?.editorId || "";
@@ -592,7 +669,6 @@ elements.tabWriting.addEventListener("click", () => switchKind("writing"));
 elements.newItemButton.addEventListener("click", createItem);
 elements.reloadButton.addEventListener("click", loadContent);
 elements.saveButton.addEventListener("click", saveContent);
-elements.rebuildButton.addEventListener("click", rebuildOnly);
 
 elements.fieldTitle.addEventListener("input", (event) => {
   updateSelectedField("title", event.target.value);

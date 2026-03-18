@@ -11,10 +11,12 @@
 
 Projects and writing now use one simple local editor.
 
-1. Run `node tools/post_studio_server.mjs`
+1. Run `./run-editor.sh`
 2. Open `http://127.0.0.1:4173/post-studio.html`
 3. Choose `Projects` or `Writing`
 4. Edit plain text and click `Save + Rebuild`
+
+If you prefer, the direct command still works: `node tools/post_studio_server.mjs`
 
 Formatting in text fields:
 
@@ -22,6 +24,9 @@ Formatting in text fields:
 - `[i]italic[/i]`
 - `[code]code[/code]`
 - `[link https://example.com]link text[/link]`
+- `[center]centered text[/center]`
+- `[cta_image src="./assets/example.png" alt="Description" href="https://example.com"]PLAY THE GAME[/cta_image]`
+- `[image src="./assets/example.png" alt="Description"]Caption[/image]`
 - `[table] ... [/table]` for tables using `left | right` rows
 - blank line = new paragraph
 - `- item` = bullet point

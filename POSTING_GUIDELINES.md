@@ -18,6 +18,9 @@
   - `[i]italic[/i]`
   - `[code]code[/code]`
   - `[link https://example.com]link text[/link]`
+  - `[center]centered text[/center]`
+  - `[cta_image src="./assets/example.png" alt="Description" href="https://example.com"]PLAY THE GAME[/cta_image]`
+  - `[image src="./assets/example.png" alt="Description"]Caption[/image]`
   - `[table] ... [/table]` with rows like `left | right`
   - blank line for a new paragraph
   - `- item` for bullet points

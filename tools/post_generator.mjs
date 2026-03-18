@@ -63,6 +63,29 @@ function applyInlineMarkup(input) {
   return output.replace(/\[br\]/gi, "<br />");
 }
 
+function parseSingleLinkText(text) {
+  const match = String(text || "").trim().match(/^\[link ([^\]]+)\]([\s\S]*?)\[\/link\]$/i);
+  if (!match) {
+    return null;
+  }
+
+  return {
+    href: String(match[1] || "").trim(),
+    label: String(match[2] || "").trim(),
+  };
+}
+
+function isCtaImageTextBlock(block) {
+  const classes = Array.isArray(block.extraClasses) ? block.extraClasses : [];
+  return (
+    String(block.type || "") === "text" &&
+    Boolean(block.imageSrc) &&
+    Boolean(block.imageAlt) &&
+    classes.includes("text-center") &&
+    Boolean(parseSingleLinkText(block.text))
+  );
+}
+
 function renderCaption(text) {
   const lines = String(text || "")
     .trim()
@@ -133,6 +156,7 @@ function normalizeBlocks(blocks) {
         imageAlt: String(block.imageAlt || ""),
         imageStyle: String(block.imageStyle || "full"),
         imageLink: String(block.imageLink || ""),
+        imagePosition: String(block.imagePosition || "before"),
         extraClasses: Array.isArray(block.extraClasses) ? block.extraClasses : [],
         headerLinkLabel: String(block.headerLinkLabel || ""),
         headerLinkHref: String(block.headerLinkHref || ""),
@@ -288,23 +312,58 @@ function renderPanelHeader(heading, linkLabel, linkHref) {
 }
 
 function renderTextBlock(block) {
+  if (isCtaImageTextBlock(block)) {
+    const classes = ["panel", "reveal", ...block.extraClasses];
+    if (block.delay) {
+      classes.push(block.delay);
+    }
+
+    const header = renderPanelHeader(block.heading, block.headerLinkLabel, block.headerLinkHref);
+    const link = parseSingleLinkText(block.text);
+    const imageHref = String(block.imageLink || link?.href || "").trim();
+    const imageMarkupBase = `        <img
+          src="${escapeHtml(block.imageSrc)}"
+          alt="${escapeHtml(block.imageAlt)}"
+          style="${escapeHtml(resolveImageStyle(block.imageStyle))}"
+        />\n`;
+    const imageMarkup = imageHref
+      ? `        <a ${renderLinkAttributes(imageHref)}>\n${imageMarkupBase}        </a>\n`
+      : imageMarkupBase;
+
+    return `      <section class="${classes.join(" ")}">
+${header}${renderMarkup(block.text)}
+${imageMarkup}      </section>`;
+  }
+
   const classes = ["panel", "reveal"];
   if (block.delay) {
     classes.push(block.delay);
   }
   block.extraClasses.forEach((value) => classes.push(value));
+  const isAfter =
+    String(block.imagePosition || "").trim().toLowerCase() === "after" || isCtaImageTextBlock(block);
+
+  if (isAfter) {
+    classes.push("image-after");
+  }
 
   const header = renderPanelHeader(block.heading, block.headerLinkLabel, block.headerLinkHref);
-  const imageMarkup = block.imageSrc
+  const imageMarkupBase = block.imageSrc
     ? `        <img
           src="${escapeHtml(block.imageSrc)}"
           alt="${escapeHtml(block.imageAlt)}"
           style="${escapeHtml(resolveImageStyle(block.imageStyle))}"
         />\n`
     : "";
+  const imageHref = String(block.imageLink || "").trim();
+  const imageMarkup = imageHref && imageMarkupBase
+    ? `        <a ${renderLinkAttributes(imageHref)}>\n${imageMarkupBase}        </a>\n`
+    : imageMarkupBase;
+  const bodyMarkup = renderMarkup(block.text);
+  const contentMarkup = isAfter ? `${bodyMarkup}${imageMarkup}` : `${imageMarkup}${bodyMarkup}`;
 
   return `      <section class="${classes.join(" ")}">
-${header}${imageMarkup}${renderMarkup(block.text)}
+${header}${contentMarkup}
       </section>`;
 }
 
