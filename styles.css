@@ -538,7 +538,18 @@ h3 {
   width: min(940px, 92vw);
   margin: 0 auto 26px;
   color: var(--muted);
-  font-size: 0.88rem;
+  font-size: 0.72rem;
+  line-height: 1.45;
+  text-align: center;
+  opacity: 0.88;
+}
+
+.site-footer p {
+  margin: 0;
+}
+
+.site-footer a {
+  color: inherit;
 }
 
 .reveal {
@@ -588,19 +599,27 @@ h3 {
 
 @media (min-width: 820px) {
   body.home {
-    height: 100dvh;
-    overflow: hidden;
+    min-height: 100dvh;
+    display: grid;
+    grid-template-rows: minmax(0, 1fr) auto;
+    overflow-x: hidden;
+    overflow-y: auto;
   }
 
   body.home .page {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     grid-template-rows: auto minmax(0, 1fr);
     align-items: stretch;
-    height: calc(100dvh - 32px);
-    max-height: calc(100dvh - 32px);
-    min-height: calc(100dvh - 32px);
-    margin: 12px auto 20px;
+    width: min(940px, 92vw);
+    height: auto;
+    max-height: none;
+    min-height: 0;
+    margin: 12px auto 12px;
     overflow: hidden;
+  }
+
+  body.home .site-footer {
+    margin: 0 auto 12px;
   }
 
   body.home .page > .hero {

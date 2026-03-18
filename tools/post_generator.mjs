@@ -300,6 +300,26 @@ function renderHero() {
       </section>`;
 }
 
+function renderFooter() {
+  return `    <footer class="site-footer">
+      <p>
+        Content on this site is licensed under
+        <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noreferrer">CC BY 4.0</a>
+        unless otherwise stated.
+      </p>
+      <p>
+        <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noreferrer">
+          Creative Commons Attribution 4.0 International License
+        </a>
+      </p>
+      <p>
+        <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noreferrer">
+          https://creativecommons.org/licenses/by/4.0/
+        </a>
+      </p>
+    </footer>`;
+}
+
 function renderPanelHeader(heading, linkLabel, linkHref) {
   if (!heading && !linkLabel) {
     return "";
@@ -619,6 +639,8 @@ ${writing}
       </section>
     </main>
 
+${renderFooter()}
+
     <script>
       window.floatingBackgroundConfig = {
         density: 50,
@@ -652,6 +674,8 @@ ${renderHero()}
 ${projects}
       </section>
     </main>
+
+${renderFooter()}
 
     <script>
       window.floatingBackgroundConfig = {
@@ -687,6 +711,8 @@ ${writing}
       </section>
     </main>
 
+${renderFooter()}
+
     <script>
       window.floatingBackgroundConfig = {
         density: 40,
@@ -719,6 +745,8 @@ ${renderHero()}
 ${renderPageIntro(item)}
 ${blocks ? `\n\n${blocks}` : ""}
     </main>
+
+${renderFooter()}
 
     <script>
       window.floatingBackgroundConfig = {
