@@ -578,14 +578,14 @@ const writingPosts = [
     title: "Sol LeWitt",
     slug: "sol_lewitt",
     importance: 50,
-    metaDescription: `I'm really into the conceptual artist, Sol LeWitt.`,
-    homeSubtitleHtml: `I'm really into the conceptual artist, Sol Lewitt.`,
-    archiveSubtitleHtml: `I'm really into the conceptual artist, Sol Lewitt.`,
+    metaDescription: `I'm really into the conceptual artist Sol LeWitt.`,
+    homeSubtitleHtml: `I'm really into the conceptual artist Sol Lewitt.`,
+    archiveSubtitleHtml: `I'm really into the conceptual artist Sol Lewitt.`,
     sections: [
       {
         delay: "delay-1",
         headerTitle: "Sol LeWitt",
-        html: `<p>I'm really into the conceptual artist, Sol LeWitt.</p>`,
+        html: `<p>I'm really into the conceptual artist Sol LeWitt.</p>`,
       },
       {
         delay: "delay-2",

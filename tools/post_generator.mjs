@@ -179,6 +179,7 @@ function normalizeItems(items, kind) {
         title: String(item.title || "").trim(),
         slug: String(item.slug || "").trim(),
         importance: normalizeImportance(item.importance),
+        hiddenFromListings: Boolean(item.hiddenFromListings),
         metaDescription: String(item.metaDescription || "").trim(),
         homeCardText: String(item.homeCardText || ""),
         archiveCardText: String(item.archiveCardText || ""),
@@ -610,8 +611,8 @@ ${renderProjectCardBody(variant === "home" ? item.homeCardText : item.archiveCar
 }
 
 function renderHomePage(content) {
-  const projects = sortByImportance(content.projects).map((item) => renderProjectCard(item, "home")).join("\n");
-  const writing = sortByImportance(content.writing).map((item) => renderWritingCard(item, "home")).join("\n");
+  const projects = sortByImportance(content.projects.filter((item) => !item.hiddenFromListings)).map((item) => renderProjectCard(item, "home")).join("\n");
+  const writing = sortByImportance(content.writing.filter((item) => !item.hiddenFromListings)).map((item) => renderWritingCard(item, "home")).join("\n");
 
   return `<!DOCTYPE html>
 <html lang="en">
@@ -656,7 +657,7 @@ ${renderFooter()}
 }
 
 function renderProjectsPage(content) {
-  const projects = sortByImportance(content.projects).map((item) => renderProjectCard(item, "archive")).join("\n");
+  const projects = sortByImportance(content.projects.filter((item) => !item.hiddenFromListings)).map((item) => renderProjectCard(item, "archive")).join("\n");
 
   return `<!DOCTYPE html>
 <html lang="en">
@@ -692,7 +693,7 @@ ${renderFooter()}
 }
 
 function renderWritingIndex(content) {
-  const writing = sortByImportance(content.writing).map((item) => renderWritingCard(item, "archive")).join("\n");
+  const writing = sortByImportance(content.writing.filter((item) => !item.hiddenFromListings)).map((item) => renderWritingCard(item, "archive")).join("\n");
 
   return `<!DOCTYPE html>
 <html lang="en">
