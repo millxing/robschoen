@@ -401,6 +401,75 @@ const siteContent = {
           "linkItems": []
         }
       ]
+    },
+    {
+      "kind": "writing",
+      "title": "Pakistani Carrom",
+      "slug": "pakistani_carrom",
+      "importance": 55,
+      "metaDescription": "There’s something very satisfying about the way the striker and pieces move across the marble.",
+      "homeCardText": "There’s something very satisfying about the way the striker and pieces move across the marble.",
+      "archiveCardText": "There’s something very satisfying about the way the striker and pieces move across the marble.",
+      "archiveCardClass": "",
+      "pageIntroText": "",
+      "detailPageEnabled": true,
+      "homeHref": "./pakistani_carrom.html",
+      "archiveHref": "./pakistani_carrom.html",
+      "blocks": [
+        {
+          "type": "text",
+          "text": "I recently became interested in a game called [link https://en.wikipedia.org/wiki/Carrom][b]carrom[/b][/link]. I'd never heard of it until YouTube recommended a video of a carrom match to me, and I was instantly hooked. As I later discovered, the game I was watching was an unusual variant of carrom played primarily in Pakistan.",
+          "imageSrc": "./assets/carrom/traditional-carrom.png",
+          "imageAlt": "Players gathered around a traditional wooden carrom board.",
+          "imagePosition": "after",
+          "textAfterImage": "Carrom originated in India and is traditionally played on a square wooden board measuring about 74 × 74 cm. It’s a “strike and pocket” game, somewhat like billiards, where players take turns trying to sink pieces of their color into the table's pockets. Instead of using a cue, players flick a larger disc called a striker to propel the pieces across the board. Boric acid powder is typically sprinkled on the playing surface to reduce friction and help the pieces slide."
+        },
+        {
+          "type": "text",
+          "text": "The Pakistani version I was watching is quite different. The board is enormous by comparison, probably around 1.6 × 1.6 meters, and has a highly polished marble playing surface. The pieces are shaped so that very little of their surface touches the board, and the striker is a large, hollow plastic disc. Boric acid powder is used here too, but the combination of the polished marble and the design of the pieces seems to produce remarkably little friction.",
+          "imageSrc": "./assets/carrom/pakistani-carrom.png",
+          "imageAlt": "A Pakistani carrom match played on a large polished marble board.",
+          "imagePosition": "after",
+          "textAfterImage": "I think that’s what captivated me about this version. There’s something very satisfying about the way the striker and pieces move across the marble. They glide effortlessly, like air hockey pucks floating on a cushion of air. There’s a kind of fluidity to the movement that makes the pieces seem almost weightless. Watching a well-aimed shot unfold, with the pieces gliding, colliding, and changing direction so smoothly, is pretty mesmerizing to me."
+        },
+        {
+          "type": "image-grid",
+          "linkItems": [
+            {
+              "href": "./assets/carrom/loop00000009.gif",
+              "label": "Pakistani carrom shot 1: the striker and pieces glide across the marble board."
+            },
+            {
+              "href": "./assets/carrom/loop00000014.gif",
+              "label": "Pakistani carrom shot 2: the striker and pieces glide across the marble board."
+            },
+            {
+              "href": "./assets/carrom/loop00000010.gif",
+              "label": "Pakistani carrom shot 3: the striker and pieces glide across the marble board."
+            },
+            {
+              "href": "./assets/carrom/loop00000011.gif",
+              "label": "Pakistani carrom shot 4: the striker and pieces glide across the marble board."
+            },
+            {
+              "href": "./assets/carrom/loop00000013.gif",
+              "label": "Pakistani carrom shot 5: the striker and pieces glide across the marble board."
+            },
+            {
+              "href": "./assets/carrom/loop00000016.gif",
+              "label": "Pakistani carrom shot 6: the striker and pieces glide across the marble board."
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": "The player featured in these gifs is [link https://www.youtube.com/shorts/Hi5DV0kTpqk]Ahsan Shah[/link], the best carrom player that I've seen in these videos."
+        },
+        {
+          "type": "text",
+          "text": "There is very little information on the internet about this game. There are lots of videos of individual matches, but no explanations of the rules, no details about the equipment, no explanations of how the tournaments work, and very little mention of individual players.\n\nTwo youtube channels for Pakistani Carrom:\n[link https://www.youtube.com/@GOODLUCKCARROMCLUB601]Master carrom club66[/link]\n[link https://www.youtube.com/@muhammadwaqas-tt4vp]Abbas carrom club333[/link]"
+        }
+      ]
     }
   ],
   "projects": [

@@ -93,6 +93,7 @@ function isSimpleTextBlock(block) {
     !block.heading &&
     !block.headerLinkLabel &&
     !block.headerLinkHref &&
+    !block.textAfterImage &&
     !block.imageSrc &&
     !block.imageAlt &&
     (!block.imagePosition || block.imagePosition === "before") &&
@@ -108,6 +109,7 @@ function isCenteredTextBlock(block) {
     !block.heading &&
     !block.headerLinkLabel &&
     !block.headerLinkHref &&
+    !block.textAfterImage &&
     !block.imageSrc &&
     !block.imageAlt &&
     classes.length === 1 &&
@@ -193,7 +195,7 @@ ${String(block.text || "").trim()}
       image_position: block.imagePosition,
       align: (block.extraClasses || []).includes("text-center") ? "center" : "",
     })}
-${String(block.text || "").trim()}
+${String(block.text || "").trim()}${block.textAfterImage ? `\n\n[after_image]\n\n${block.textAfterImage}` : ""}
 [/text]`;
   }
 
@@ -213,6 +215,12 @@ ${serializeTableLines(block)}
     })}
 ${String(block.caption || "").trim()}
 [/image]`;
+  }
+
+  if (block.type === "image-grid") {
+    return `${buildDirectiveTag("image_grid", blockMetaAttributes(block))}
+${serializeLinksLines(block)}
+[/image_grid]`;
   }
 
   if (block.type === "links") {
@@ -285,11 +293,13 @@ function parseLinksContent(content) {
 }
 
 function makeTextBlock(text, attrs = {}) {
+  const [beforeImage, ...afterImage] = String(text || "").split("[after_image]");
   return {
     type: "text",
     delay: attrs.delay || "",
     heading: attrs.heading || "",
-    text: String(text || "").trim(),
+    text: beforeImage.trim(),
+    textAfterImage: afterImage.join("[after_image]").trim(),
     caption: "",
     imageSrc: attrs.image_src || "",
     imageAlt: attrs.image_alt || "",
@@ -368,6 +378,14 @@ function directiveToBlock(name, attrs, content) {
     };
   }
 
+  if (name === "image_grid") {
+    return {
+      ...makeTextBlock("", attrs),
+      type: "image-grid",
+      linkItems: parseLinksContent(content),
+    };
+  }
+
   if (name === "links") {
     return {
       ...makeTextBlock("", attrs),
@@ -417,7 +435,7 @@ function directiveToBlock(name, attrs, content) {
 
 function bodyToBlocks(bodyText) {
   const source = String(bodyText || "").replace(/\r\n/g, "\n");
-  const pattern = /\[(text|center|cta_image|table|image|links|embed|pdf)([^\]]*)\]([\s\S]*?)\[\/\1\]/gi;
+  const pattern = /\[(text|center|cta_image|image_grid|table|image|links|embed|pdf)([^\]]*)\]([\s\S]*?)\[\/\1\]/gi;
   const blocks = [];
   let lastIndex = 0;
   let match = pattern.exec(source);

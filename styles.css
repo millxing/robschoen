@@ -760,3 +760,74 @@ h3 {
     gap: 16px;
   }
 }
+
+.image-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  margin: 16px 0 10px;
+}
+
+.image-grid img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+}
+
+@media (max-width: 600px) {
+  .image-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.panel.image-after > .text-after-image {
+  order: 3;
+}
+
+.image-grid-trigger {
+  display: block;
+  padding: 0;
+  border: 0;
+  border-radius: 12px;
+  background: transparent;
+  cursor: zoom-in;
+}
+
+.image-lightbox {
+  width: fit-content;
+  max-width: 94vw;
+  max-height: 94vh;
+  padding: 44px 12px 12px;
+  border: 0;
+  border-radius: 14px;
+  background: #161616;
+  color: white;
+}
+
+.image-lightbox::backdrop {
+  background: rgb(0 0 0 / 80%);
+}
+
+.image-lightbox img {
+  display: block;
+  width: min(1200px, calc(94vw - 24px));
+  max-height: calc(94vh - 68px);
+  object-fit: contain;
+}
+
+.image-lightbox-close {
+  position: absolute;
+  top: 6px;
+  right: 10px;
+  border: 0;
+  padding: 4px 10px;
+  background: transparent;
+  color: white;
+  font: inherit;
+  cursor: pointer;
+}
+
+html:has(.image-lightbox[open]) {
+  overflow: hidden;
+}

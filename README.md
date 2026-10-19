@@ -28,6 +28,8 @@ Formatting in text fields:
 - `[cta_image src="./assets/example.png" alt="Description" href="https://example.com"]PLAY THE GAME[/cta_image]`
 - `[image src="./assets/example.png" alt="Description"]Caption[/image]`
 - `[table] ... [/table]` for tables using `left | right` rows
+- Within a `[text]` block with an image, put `[after_image]` before prose that should follow the image.
+- `[image_grid] ... [/image_grid]` for responsive image grids using `description | ./assets/image.gif` rows
 - blank line = new paragraph
 - `- item` = bullet point
 

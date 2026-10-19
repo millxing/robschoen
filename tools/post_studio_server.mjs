@@ -12,6 +12,7 @@ const host = "127.0.0.1";
 const port = Number.parseInt(process.env.PORT || "4173", 10);
 
 const contentTypes = new Map([
+  [".gif", "image/gif"],
   [".css", "text/css; charset=utf-8"],
   [".html", "text/html; charset=utf-8"],
   [".jpg", "image/jpeg"],

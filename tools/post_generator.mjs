@@ -151,6 +151,7 @@ function normalizeBlocks(blocks) {
         delay: String(block.delay || ""),
         heading: String(block.heading || ""),
         text: String(block.text || ""),
+        textAfterImage: String(block.textAfterImage || ""),
         caption: String(block.caption || ""),
         imageSrc: String(block.imageSrc || ""),
         imageAlt: String(block.imageAlt || ""),
@@ -381,7 +382,14 @@ ${imageMarkup}      </section>`;
     ? `        <a ${renderLinkAttributes(imageHref)}>\n${imageMarkupBase}        </a>\n`
     : imageMarkupBase;
   const bodyMarkup = renderMarkup(block.text);
-  const contentMarkup = isAfter ? `${bodyMarkup}${imageMarkup}` : `${imageMarkup}${bodyMarkup}`;
+  const trailingMarkup = block.textAfterImage
+    ? `
+        <div class="text-after-image">
+${renderMarkup(block.textAfterImage)}
+        </div>`
+    : "";
+  const contentMarkup = (isAfter ? `${bodyMarkup}
+${imageMarkup}` : `${imageMarkup}${bodyMarkup}`) + trailingMarkup;
 
   return `      <section class="${classes.join(" ")}">
 ${header}${contentMarkup}
@@ -559,6 +567,14 @@ ${header}        <iframe
 
 function renderBlock(block) {
   switch (block.type) {
+    case "image-grid":
+      return `      <section class="panel reveal">
+${renderPanelHeader(block.heading, block.headerLinkLabel, block.headerLinkHref)}        <div class="image-grid">
+${block.linkItems.map((item) => `          <button type="button" class="image-grid-trigger" aria-label="Enlarge: ${escapeHtml(item.label)}" aria-haspopup="dialog">
+            <img src="${escapeHtml(item.href)}" alt="${escapeHtml(item.label)}" width="640" height="360" loading="lazy" />
+          </button>`).join("\n")}
+        </div>
+      </section>`;
     case "image":
       return renderImageBlock(block);
     case "table":
@@ -757,7 +773,7 @@ ${renderFooter()}
         speed: { min: 30, max: 70 },
       };
     </script>
-    <script src="./background.js"></script>
+    <script src="./background.js"></script>${item.blocks.some((block) => block.type === "image-grid") ? '\n    <script src="./image-lightbox.js" defer></script>' : ""}
   </body>
 </html>
 `;
