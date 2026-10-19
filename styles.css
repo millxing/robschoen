@@ -831,3 +831,19 @@ h3 {
 html:has(.image-lightbox[open]) {
   overflow: hidden;
 }
+
+#writing .item p,
+body.home #writing .item p {
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+body.home #writing .item-title-row {
+  justify-content: center;
+  text-align: center;
+}
+
+body.home #writing h3 {
+  text-align: center;
+}
