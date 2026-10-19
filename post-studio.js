@@ -219,7 +219,7 @@ ${String(block.caption || "").trim()}
 
   if (block.type === "image-grid") {
     return `${buildDirectiveTag("image_grid", blockMetaAttributes(block))}
-${serializeLinksLines(block)}
+${serializeLinksLines(block)}${block.textAfterImage ? `\n\n[after_image]\n\n${block.textAfterImage}` : ""}
 [/image_grid]`;
   }
 
@@ -379,10 +379,12 @@ function directiveToBlock(name, attrs, content) {
   }
 
   if (name === "image_grid") {
+    const block = makeTextBlock(content, attrs);
     return {
-      ...makeTextBlock("", attrs),
+      ...block,
       type: "image-grid",
-      linkItems: parseLinksContent(content),
+      text: "",
+      linkItems: parseLinksContent(block.text),
     };
   }
 

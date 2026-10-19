@@ -574,6 +574,7 @@ ${block.linkItems.map((item) => `          <button type="button" class="image-gr
             <img src="${escapeHtml(item.href)}" alt="${escapeHtml(item.label)}" width="640" height="360" loading="lazy" />
           </button>`).join("\n")}
         </div>
+${renderMarkup(block.textAfterImage)}
       </section>`;
     case "image":
       return renderImageBlock(block);

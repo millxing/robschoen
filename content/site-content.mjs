@@ -459,11 +459,8 @@ const siteContent = {
               "href": "./assets/carrom/loop00000016.gif",
               "label": "Pakistani carrom shot 6: the striker and pieces glide across the marble board."
             }
-          ]
-        },
-        {
-          "type": "text",
-          "text": "The player featured in these gifs is [link https://www.youtube.com/shorts/Hi5DV0kTpqk]Ahsan Shah[/link], the best carrom player that I've seen in these videos."
+          ],
+          "textAfterImage": "The player featured in these gifs is [link https://www.youtube.com/shorts/Hi5DV0kTpqk]Ahsan Shah[/link], the best carrom player that I've seen in these videos."
         },
         {
           "type": "text",
