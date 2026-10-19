@@ -188,32 +188,32 @@ body.home #writing .panel-header {
 
 body.home #work .item-title-row,
 body.home #writing .item-title-row {
-  justify-content: flex-start;
-  text-align: left;
+  justify-content: center;
+  text-align: center;
 }
 
 body.home #work h3,
 body.home #writing h3 {
-  text-align: left;
+  text-align: center;
 }
 
 body.home #work .item p,
 body.home #writing .item p {
   width: auto;
-  margin-left: 0.9rem;
-  margin-right: 0;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 body.home #work .subtitle-list,
 body.home #writing .subtitle-list,
 body.home #work .subtitle-list li,
 body.home #writing .subtitle-list li {
-  text-align: left;
+  text-align: center;
 }
 
 body.home #work .subtitle-list,
 body.home #writing .subtitle-list {
-  padding-left: 0.9rem;
+  padding-left: 0;
 }
 
 body.home .top-hero {
@@ -507,7 +507,7 @@ h3 {
   max-width: 64ch;
   margin-left: auto;
   margin-right: auto;
-  text-align: left;
+  text-align: center;
 }
 
 #work .item .subtitle-list,
@@ -830,20 +830,4 @@ h3 {
 
 html:has(.image-lightbox[open]) {
   overflow: hidden;
-}
-
-#writing .item p,
-body.home #writing .item p {
-  text-align: center;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-body.home #writing .item-title-row {
-  justify-content: center;
-  text-align: center;
-}
-
-body.home #writing h3 {
-  text-align: center;
 }
