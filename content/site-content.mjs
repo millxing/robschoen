@@ -732,7 +732,7 @@ const siteContent = {
     },
     {
       "kind": "projects",
-      "title": "Pakistani Carrom Video Game, Carrom Adda",
+      "title": "Pakistani Carrom Video Game: Carrom Adda",
       "slug": "carrom_adda",
       "importance": 85,
       "metaDescription": "My free video game simulating Pakistani carrom on a large marble table.",
