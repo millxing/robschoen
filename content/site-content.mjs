@@ -465,6 +465,17 @@ const siteContent = {
         {
           "type": "text",
           "text": "There is very little information on the internet about this game. There are lots of videos of individual matches, but no explanations of the rules, no details about the equipment, no explanations of how the tournaments work, and very little mention of individual players.\n\nTwo youtube channels for Pakistani Carrom:\n[link https://www.youtube.com/@GOODLUCKCARROMCLUB601]Master carrom club66[/link]\n[link https://www.youtube.com/@muhammadwaqas-tt4vp]Abbas carrom club333[/link]"
+        },
+        {
+          "type": "text",
+          "text": "[link ./carrom_adda.html]Pakistani Carrom Video Game: Carrom Adda[/link]",
+          "imageSrc": "./assets/carrom-adda/interests-gameplay.png",
+          "imageAlt": "Carrom Adda gameplay on a marble board with the hollow striker and replay controls.",
+          "imageLink": "./carrom_adda.html",
+          "imagePosition": "after",
+          "extraClasses": [
+            "text-center"
+          ]
         }
       ]
     }
