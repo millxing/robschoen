@@ -69,6 +69,8 @@ Current Writing order/index:
 
 ## File map
 
-- `index.html`: structure and content
+- `index.html`: combined Projects and Interests homepage, generated from site content
+- `homepage.css`: unified homepage layout and styling
+- `index_old.html`: archived homepage layout (not regenerated)
 - `styles.css`: design system and layout styles
 - `background.js`: param-driven floating background engine

@@ -644,43 +644,39 @@ ${renderProjectCardBody(variant === "home" ? item.homeCardText : item.archiveCar
 }
 
 function renderHomePage(content) {
-  const projects = sortByImportance(content.projects.filter((item) => !item.hiddenFromListings)).map((item) => renderProjectCard(item, "home")).join("\n");
-  const writing = sortByImportance(content.writing.filter((item) => !item.hiddenFromListings)).map((item) => renderWritingCard(item, "home")).join("\n");
+  const entries = sortByImportance([...content.projects, ...content.writing]
+    .filter((item) => !item.hiddenFromListings));
+  const cards = entries.map((item) => {
+    const category = item.kind === "writing" ? "Interest" : "Project";
+    return `        <article class="preview-post">
+          <span class="post-tag ${category.toLowerCase()}">${category}</span>
+          <h2><a ${renderLinkAttributes(item.homeHref)}>${escapeHtml(item.title)}</a></h2>
+${renderMarkup(item.homeCardText)}
+        </article>`;
+  }).join("\n");
+  const banner = renderHero()
+    .replace('./assets/entangledParticlesLogo.jpg', './assets/entangledParticlesLogo_02.png')
+    .replace('class="hero top-hero reveal candy-red"', 'class="hero top-hero candy-red"')
+    .replace(/          <nav class="site-nav"[\s\S]*?<\/nav>\n/, "");
 
   return `<!DOCTYPE html>
 <html lang="en">
-${renderHead("Entangled Particles | Rob Schoen", "Entangled Particles: projects and writing by Rob Schoen.")}
-  <body class="home">
+${renderHead("Entangled Particles | Rob Schoen", "Projects and interests by Rob Schoen.").replace('  </head>', '    <link rel="stylesheet" href="./homepage.css" />\n  </head>')}
+  <body class="home-unified">
     <div class="floating-squares" aria-hidden="true"></div>
-
-    <main class="page">
-${renderHero()}
-
-      <section class="panel reveal delay-1" id="work">
-        <div class="panel-header">
-          <h2>Projects</h2>
-          <a href="./projects.html">See all</a>
-        </div>
-${projects}
-      </section>
-
-      <section class="panel reveal delay-2" id="writing">
-        <div class="panel-header">
-          <h2>Interests</h2>
-          <a href="./writing.html">See all</a>
-        </div>
-${writing}
-      </section>
-    </main>
-
-${renderFooter()}
-
+    <a class="preview-skip" href="#posts">Skip to posts</a>
+    <div class="preview-shell">
+${banner}
+      <main id="posts" class="preview-feed" tabindex="0" aria-label="All posts">
+${cards}
+      </main>
+      <footer class="preview-license">
+        Content licensed under <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noreferrer">CC BY 4.0</a>, unless otherwise stated.
+      </footer>
+    </div>
     <script>
       window.floatingBackgroundConfig = {
-        density: 50,
-        shape: "square",
-        size: { min: 100, max: 300 },
-        speed: { min: 35, max: 75 },
+        density: 22, shape: "square", size: { min: 100, max: 260 }, speed: { min: 35, max: 75 },
       };
     </script>
     <script src="./background.js"></script>

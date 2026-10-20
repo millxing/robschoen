@@ -6,7 +6,7 @@
     <title>Entangled Particles | Rob Schoen</title>
     <meta
       name="description"
-      content="Entangled Particles: projects and writing by Rob Schoen."
+      content="Projects and interests by Rob Schoen."
     />
     <link rel="icon" type="image/png" href="./nano.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -16,15 +16,16 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="./styles.css" />
+    <link rel="stylesheet" href="./homepage.css" />
   </head>
-  <body class="home">
+  <body class="home-unified">
     <div class="floating-squares" aria-hidden="true"></div>
-
-    <main class="page">
-      <section class="hero top-hero reveal candy-red">
+    <a class="preview-skip" href="#posts">Skip to posts</a>
+    <div class="preview-shell">
+      <section class="hero top-hero candy-red">
         <div class="top-hero-row">
           <a href="./index.html" class="site-title">
-            <img src="./assets/entangledParticlesLogo.jpg" class="site-title-logo" alt="" />
+            <img src="./assets/entangledParticlesLogo_02.png" class="site-title-logo" alt="" />
             <span class="visually-hidden">Entangled Particles</span>
           </a>
           <div class="social-row header-social">
@@ -50,114 +51,67 @@
               </svg>
             </a>
           </div>
-          <nav class="site-nav" aria-label="Primary">
-            <a href="./index.html">Home</a>
-            <span class="nav-disabled" aria-disabled="true">About</span>
-            <a href="./projects.html">Projects</a>
-            <a href="./writing.html">Interests</a>
-          </nav>
         </div>
       </section>
-
-      <section class="panel reveal delay-1" id="work">
-        <div class="panel-header">
-          <h2>Projects</h2>
-          <a href="./projects.html">See all</a>
-        </div>
-        <article class="item">
-          <div class="item-title-row">
-            <h3><a href="https://extrapass.onrender.com/" target="_blank" rel="noreferrer">Extra Pass Anaytics</a></h3>
-          </div>
-          <p>Advanced basketball statistics analysis for NBA games and teams.</p>
+      <main id="posts" class="preview-feed" tabindex="0" aria-label="All posts">
+        <article class="preview-post">
+          <span class="post-tag project">Project</span>
+          <h2><a href="https://extrapass.onrender.com/" target="_blank" rel="noreferrer">Extra Pass Anaytics</a></h2>
+        <p>Advanced basketball statistics analysis for NBA games and teams.</p>
         </article>
-        <article class="item">
-          <div class="item-title-row">
-            <h3><a href="https://millxing.github.io/TM/TMMvotes.html" target="_blank" rel="noreferrer">Brookline Town Meeting Votes</a></h3>
-          </div>
-          <p>App for viewing Town Meeting votes and how Town Meeting Members voted</p>
+        <article class="preview-post">
+          <span class="post-tag interest">Interest</span>
+          <h2><a href="./pakistani_carrom.html">Pakistani Carrom</a></h2>
+        <p>I recently became interested in a game called carrom</p>
         </article>
-        <article class="item">
-          <div class="item-title-row">
-            <h3><a href="./carrom_adda.html">Carrom Adda: Video Game of Pakistani Carrom</a></h3>
-          </div>
-          <p>My free video game simulating Pakistani carrom on a large marble table.</p>
+        <article class="preview-post">
+          <span class="post-tag interest">Interest</span>
+          <h2><a href="https://nbaextrapass.xyz/blog" target="_blank" rel="noreferrer">NBA analytics blog at Extra Pass Analytics</a></h2>
+        <p>Posting about the NBA using advanced analytics.</p>
         </article>
-        <article class="item">
-          <div class="item-title-row">
-            <h3><a href="https://chatgpt.com/g/g-684ac617a220819198baae3dd95e0cb4-isocrateez" target="_blank" rel="noreferrer">iSocrateez</a></h3>
-          </div>
-          <p>iSocrateez will give you customized advice on ethical dilemmas. What could go wrong? [Updated October 2026].</p>
+        <article class="preview-post">
+          <span class="post-tag project">Project</span>
+          <h2><a href="https://millxing.github.io/TM/TMMvotes.html" target="_blank" rel="noreferrer">Brookline Town Meeting Votes</a></h2>
+        <p>App for viewing Town Meeting votes and how Town Meeting Members voted</p>
         </article>
-        <article class="item">
-          <div class="item-title-row">
-            <h3><a href="https://longwoodmall.org/" target="_blank" rel="noreferrer">Longwood Mall</a></h3>
-          </div>
-          <p>Website for Longwood Mall, the oldest grove of European Beech Trees in North America.</p>
+        <article class="preview-post">
+          <span class="post-tag project">Project</span>
+          <h2><a href="./carrom_adda.html">Carrom Adda: Video Game of Pakistani Carrom</a></h2>
+        <p>My free video game simulating Pakistani carrom on a large marble table.</p>
         </article>
-        <article class="item">
-          <div class="item-title-row">
-            <h3><a href="./star_citadel.html">Star Citadel</a></h3>
-          </div>
-          <p>I made an emulation of my favorite childhood arcade game, Star Castle.</p>
+        <article class="preview-post">
+          <span class="post-tag project">Project</span>
+          <h2><a href="https://chatgpt.com/g/g-684ac617a220819198baae3dd95e0cb4-isocrateez" target="_blank" rel="noreferrer">iSocrateez</a></h2>
+        <p>iSocrateez will give you customized advice on ethical dilemmas. What could go wrong? [Updated October 2026].</p>
         </article>
-      </section>
-
-      <section class="panel reveal delay-2" id="writing">
-        <div class="panel-header">
-          <h2>Interests</h2>
-          <a href="./writing.html">See all</a>
-        </div>
-        <article class="item">
-          <div class="item-title-row">
-            <h3><a href="./pakistani_carrom.html">Pakistani Carrom</a></h3>
-          </div>
-          <p>I recently became interested in a game called carrom</p>
+        <article class="preview-post">
+          <span class="post-tag project">Project</span>
+          <h2><a href="https://longwoodmall.org/" target="_blank" rel="noreferrer">Longwood Mall</a></h2>
+        <p>Website for Longwood Mall, the oldest grove of European Beech Trees in North America.</p>
         </article>
-        <article class="item">
-          <div class="item-title-row">
-            <h3><a href="https://nbaextrapass.xyz/blog" target="_blank" rel="noreferrer">NBA analytics blog at Extra Pass Analytics</a></h3>
-          </div>
-          <p>Posting about the NBA using advanced analytics.</p>
+        <article class="preview-post">
+          <span class="post-tag interest">Interest</span>
+          <h2><a href="./ai_generated_bermanisms.html">AI-generated Bermanisms</a></h2>
+        <p>Jared &quot;Take A Load&quot; Goff --or--<br />Jared &quot;Turn Your Head and&quot; Goff?</p>
         </article>
-        <article class="item">
-          <div class="item-title-row">
-            <h3><a href="./ai_generated_bermanisms.html">AI-generated Bermanisms</a></h3>
-          </div>
-          <p>Jared &quot;Take A Load&quot; Goff --or--<br />Jared &quot;Turn Your Head and&quot; Goff?</p>
+        <article class="preview-post">
+          <span class="post-tag interest">Interest</span>
+          <h2><a href="./sol_lewitt.html">Sol LeWitt</a></h2>
+        <p>I&#39;m really into the conceptual artist Sol Lewitt.</p>
         </article>
-        <article class="item">
-          <div class="item-title-row">
-            <h3><a href="./sol_lewitt.html">Sol LeWitt</a></h3>
-          </div>
-          <p>I&#39;m really into the conceptual artist Sol Lewitt.</p>
+        <article class="preview-post">
+          <span class="post-tag project">Project</span>
+          <h2><a href="./star_citadel.html">Star Citadel</a></h2>
+        <p>I made an emulation of my favorite childhood arcade game, Star Castle.</p>
         </article>
-      </section>
-    </main>
-
-    <footer class="site-footer">
-      <p>
-        Content on this site is licensed under
-        <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noreferrer">CC BY 4.0</a>
-        unless otherwise stated.
-      </p>
-      <p>
-        <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noreferrer">
-          Creative Commons Attribution 4.0 International License
-        </a>
-      </p>
-      <p>
-        <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noreferrer">
-          https://creativecommons.org/licenses/by/4.0/
-        </a>
-      </p>
-    </footer>
-
+      </main>
+      <footer class="preview-license">
+        Content licensed under <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noreferrer">CC BY 4.0</a>, unless otherwise stated.
+      </footer>
+    </div>
     <script>
       window.floatingBackgroundConfig = {
-        density: 50,
-        shape: "square",
-        size: { min: 100, max: 300 },
-        speed: { min: 35, max: 75 },
+        density: 22, shape: "square", size: { min: 100, max: 260 }, speed: { min: 35, max: 75 },
       };
     </script>
     <script src="./background.js"></script>

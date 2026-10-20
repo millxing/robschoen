@@ -1,0 +1,247 @@
+/* Unified home page; scoped separately from the post and archive layouts. */
+body.home-unified {
+  height: 100dvh;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.preview-shell {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  gap: 14px;
+  width: min(940px, 94vw);
+  height: 100dvh;
+  margin: 0 auto;
+  padding: 14px 0 10px;
+}
+
+.home-unified .hero.top-hero {
+  position: static;
+  margin: 0;
+  padding: 14px 0;
+  border-radius: 18px;
+}
+
+.home-unified .top-hero-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  grid-template-areas: ". logo social";
+  gap: 0;
+}
+
+.home-unified .top-hero-row .site-title {
+  grid-area: logo;
+  grid-row: 1;
+  justify-self: center;
+  width: auto;
+}
+
+.home-unified .top-hero-row .header-social {
+  grid-area: social;
+  grid-row: 1;
+  justify-self: center;
+}
+
+.home-unified .site-title-logo {
+  height: 88px;
+  width: auto;
+  aspect-ratio: auto;
+  max-width: 100%;
+  border-radius: 9px;
+  box-shadow: 0 6px 16px rgb(80 10 25 / 18%);
+}
+
+.home-unified .header-social {
+  display: grid;
+  grid-template-columns: repeat(4, 30px);
+  gap: 10px;
+  width: auto;
+}
+
+.home-unified .social-icon {
+  width: 30px;
+  height: 30px;
+}
+
+.home-unified .social-icon svg {
+  width: 21px;
+  height: 21px;
+}
+
+.preview-feed {
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
+  scrollbar-width: thin;
+  scrollbar-color: #c57990 transparent;
+  padding: 6px 12px 10px;
+  border: 1px solid rgb(138 36 75 / 12%);
+  border-radius: 20px;
+  background: rgb(253 247 250 / 45%);
+}
+
+.preview-post {
+  padding: 20px 26px 22px;
+  margin: 6px 0 12px;
+  border-radius: 16px;
+  background: rgb(255 255 255 / 91%);
+  box-shadow: 0 3px 12px rgb(108 35 62 / 5%);
+  text-align: center;
+}
+
+.post-tag {
+  display: inline-block;
+  padding: 2px 10px;
+  margin-bottom: 9px;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  background: #f9e5ec;
+  color: #932b4c;
+}
+
+.post-tag.interest {
+  background: #f0ecf4;
+  color: #65536f;
+}
+
+.preview-post h2 {
+  font-size: clamp(1.06rem, 2.2vw, 1.3rem);
+  line-height: 1.35;
+  text-wrap: balance;
+}
+
+.preview-post h2 a {
+  color: var(--text);
+  text-decoration: none;
+  text-underline-offset: 4px;
+  transition: color 160ms ease;
+}
+
+.preview-post h2 a:hover {
+  color: var(--accent);
+  text-decoration: underline;
+}
+
+.preview-post p,
+.preview-post ul {
+  max-width: 64ch;
+  margin: 10px auto 0;
+  color: #7c3852;
+  font-size: 0.94rem;
+  line-height: 1.6;
+  text-wrap: pretty;
+}
+
+.preview-license {
+  padding: 2px 12px;
+  color: #79435a;
+  font-size: 0.74rem;
+  text-align: center;
+}
+
+.preview-license a {
+  color: inherit;
+  text-underline-offset: 3px;
+}
+
+.preview-feed:focus-visible,
+.preview-post a:focus-visible,
+.preview-license a:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+}
+
+.preview-skip {
+  position: fixed;
+  top: 8px;
+  left: 8px;
+  z-index: 3;
+  padding: 8px 12px;
+  background: white;
+  color: var(--text);
+  border-radius: 6px;
+  transform: translateY(-160%);
+}
+
+.preview-skip:focus {
+  transform: translateY(0);
+}
+
+@media (max-width: 600px) {
+  .preview-shell {
+    width: 96vw;
+    gap: 9px;
+    padding-top: max(8px, env(safe-area-inset-top));
+    padding-bottom: max(7px, env(safe-area-inset-bottom));
+  }
+
+  .home-unified .hero.top-hero {
+    padding: 10px 0;
+  }
+
+  .home-unified .top-hero-row {
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    gap: 0;
+  }
+
+  .home-unified .site-title-logo {
+    height: 68px;
+  }
+
+  .home-unified .header-social {
+    grid-template-columns: repeat(4, 26px);
+    gap: 6px;
+  }
+
+  .home-unified .social-icon {
+    width: 26px;
+    height: 26px;
+  }
+
+  .home-unified .social-icon svg {
+    width: 19px;
+    height: 19px;
+  }
+
+  .preview-feed {
+    padding: 3px 7px 6px;
+    border-radius: 16px;
+  }
+
+  .preview-post {
+    padding: 17px 16px 19px;
+    margin-bottom: 9px;
+  }
+
+  .preview-license {
+    font-size: 0.65rem;
+    line-height: 1.4;
+  }
+}
+
+@media (max-width: 420px) {
+  .home-unified .site-title-logo {
+    width: 40vw;
+    height: auto;
+  }
+
+  .home-unified .header-social {
+    grid-template-columns: repeat(4, 22px);
+    gap: 1px;
+  }
+
+  .home-unified .social-icon {
+    width: 22px;
+    height: 30px;
+  }
+
+  .home-unified .social-icon svg {
+    width: 17px;
+    height: 17px;
+  }
+}
