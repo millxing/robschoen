@@ -655,13 +655,13 @@ ${renderMarkup(item.homeCardText)}
         </article>`;
   }).join("\n");
   const banner = renderHero()
-    .replace('./assets/entangledParticlesLogo.jpg', './assets/entangledParticlesLogo_02.png')
+    .replace('./assets/entangledParticlesLogo.jpg', './assets/entangledParticlesLogo_transparent_white.png')
     .replace('class="hero top-hero reveal candy-red"', 'class="hero top-hero candy-red"')
     .replace(/          <nav class="site-nav"[\s\S]*?<\/nav>\n/, "");
 
   return `<!DOCTYPE html>
 <html lang="en">
-${renderHead("Entangled Particles | Rob Schoen", "Projects and interests by Rob Schoen.").replace('  </head>', '    <link rel="stylesheet" href="./homepage.css" />\n  </head>')}
+${renderHead("Entangled Particles | Rob Schoen", "Projects and interests by Rob Schoen.").replace('  </head>', '    <link rel="stylesheet" href="./homepage.css?v=logo2" />\n  </head>')}
   <body class="home-unified">
     <div class="floating-squares" aria-hidden="true"></div>
     <a class="preview-skip" href="#posts">Skip to posts</a>

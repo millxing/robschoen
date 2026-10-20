@@ -45,12 +45,12 @@ body.home-unified {
 }
 
 .home-unified .site-title-logo {
-  height: 88px;
-  width: auto;
+  height: auto;
+  width: 280px;
   aspect-ratio: auto;
   max-width: 100%;
   border-radius: 9px;
-  box-shadow: 0 6px 16px rgb(80 10 25 / 18%);
+  box-shadow: none;
 }
 
 .home-unified .header-social {
@@ -190,7 +190,8 @@ body.home-unified {
   }
 
   .home-unified .site-title-logo {
-    height: 68px;
+    width: 216px;
+    height: auto;
   }
 
   .home-unified .header-social {
@@ -244,4 +245,8 @@ body.home-unified {
     width: 17px;
     height: 17px;
   }
+}
+
+.home-unified .site-title:hover .site-title-logo {
+  box-shadow: none;
 }
