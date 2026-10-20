@@ -629,13 +629,13 @@ const siteContent = {
       "slug": "isocrateez",
       "importance": 70,
       "metaDescription": "Give iSocrateez a moral or ethical dilemma and a Consequentialism-Deontological Index score and it will give you customized advice.",
-      "homeCardText": "iSocrateez will give you customized advice on ethical dilemmas. What could go wrong? [Updated October 2026].",
-      "archiveCardText": "iSocrateez will give you customized advice on ethical dilemmas. What could go wrong? [Updated October 2026].",
+      "homeCardText": "iSocrateez will give you customized advice on ethical dilemmas. What could go wrong? password is stickytoffeepudding",
+      "archiveCardText": "iSocrateez will give you customized advice on ethical dilemmas. What could go wrong? password is stickytoffeepudding",
       "archiveCardClass": "",
       "pageIntroText": "Give iSocrateez a moral or ethical dilemma and a Consequentialism-Deontological Index score (i.e. are you more the \"ends justify the means\" or \"the principle is what matters\") and it will give you customized advice.",
       "detailPageEnabled": true,
-      "homeHref": "https://chatgpt.com/g/g-684ac617a220819198baae3dd95e0cb4-isocrateez",
-      "archiveHref": "https://chatgpt.com/g/g-684ac617a220819198baae3dd95e0cb4-isocrateez",
+      "homeHref": "https://millxing.github.io/iSocrateez/",
+      "archiveHref": "https://millxing.github.io/iSocrateez/",
       "blocks": [
         {
           "type": "text",
