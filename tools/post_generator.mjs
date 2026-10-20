@@ -525,6 +525,16 @@ function renderEmbedBlock(block) {
 
   const header = renderPanelHeader(block.heading, block.headerLinkLabel, block.headerLinkHref);
   const caption = renderMarkup(block.text);
+  if (/\.mp4(?:[?#]|$)/i.test(block.embedSrc)) {
+    return `      <section class="${classes.join(" ")}">
+${header}${caption ? `${caption}\n` : ""}        <video
+          src="${escapeHtml(block.embedSrc)}"
+          aria-label="${escapeHtml(block.embedTitle)}"
+          autoplay loop muted playsinline controls preload="metadata"
+          style="display: block; width: 100%; height: auto; border-radius: 12px"
+        ></video>
+      </section>`;
+  }
   const spotifyEmbed = isSpotifyEmbed(block.embedSrc);
   const height = block.embedHeight || (spotifyEmbed ? "352px" : "72vh");
   const spotifyHeight = normalizePixelValue(height, "352");

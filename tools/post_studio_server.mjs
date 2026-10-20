@@ -13,6 +13,7 @@ const port = Number.parseInt(process.env.PORT || "4173", 10);
 
 const contentTypes = new Map([
   [".gif", "image/gif"],
+  [".mp4", "video/mp4"],
   [".css", "text/css; charset=utf-8"],
   [".html", "text/html; charset=utf-8"],
   [".jpg", "image/jpeg"],

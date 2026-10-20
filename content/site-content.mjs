@@ -729,6 +729,54 @@ const siteContent = {
           "linkItems": []
         }
       ]
+    },
+    {
+      "kind": "projects",
+      "title": "Pakistani Carrom Video Game, Carrom Adda",
+      "slug": "carrom_adda",
+      "importance": 85,
+      "metaDescription": "My free video game simulating Pakistani carrom on a large marble table.",
+      "homeCardText": "My free video game simulating Pakistani carrom on a large marble table.",
+      "archiveCardText": "My free video game simulating Pakistani carrom on a large marble table.",
+      "archiveCardClass": "",
+      "pageIntroText": "",
+      "detailPageEnabled": true,
+      "homeHref": "./carrom_adda.html",
+      "archiveHref": "./carrom_adda.html",
+      "blocks": [
+        {
+          "type": "text",
+          "text": "I made a free video game called [link https://millxing.github.io/carrom-adda/carrom_adda_v08.html]Carrom Adda[/link], a simulation of Pakistani carrom played on a large marble table. If you haven't seen this version of the game, I wrote about what got me interested in it in [link ./pakistani_carrom.html]my Carrom post in the Interests section[/link]."
+        },
+        {
+          "type": "text",
+          "text": "[link https://millxing.github.io/carrom-adda/carrom_adda_v08.html]PLAY CARROM ADDA[/link]",
+          "imageSrc": "./assets/carrom-adda/menu.png",
+          "imageAlt": "Carrom Adda main menu showing four game modes above a marble carrom board.",
+          "imageLink": "https://millxing.github.io/carrom-adda/carrom_adda_v08.html",
+          "extraClasses": [
+            "text-center"
+          ]
+        },
+        {
+          "type": "text",
+          "heading": "Four ways to play",
+          "text": "- Play against the AI, with three difficulty levels.\n- Play against another human over the internet.\n- Watch an AI vs AI game.\n- Watch a replay from a previous game."
+        },
+        {
+          "type": "text",
+          "text": "The game physics is highly customizable, but the default settings are tuned to emulate the marble-table games featured on the YouTube channels I linked in my Carrom post.\n\nI've been really enjoying playing against the AI. The game captures the satisfying glide of the pieces across the marble table. It also captures the “trapping shot,” where the larger striker traps a piece in the corner, forcing it into the pocket, and the cushion shot, where a piece is forced into the cushion and travels along it into the pocket.",
+          "imageSrc": "./assets/carrom-adda/gameplay.png",
+          "imageAlt": "Carrom Adda gameplay with a marble board, hollow striker, score panel, and replay controls.",
+          "imagePosition": "after"
+        },
+        {
+          "type": "embed",
+          "embedSrc": "./assets/carrom-adda/Carrom_Adda.mp4",
+          "embedTitle": "Carrom Adda gameplay demonstration",
+          "heading": "Carrom Adda in action"
+        }
+      ]
     }
   ]
 };
