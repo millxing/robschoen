@@ -762,8 +762,8 @@ const siteContent = {
         {
           "type": "text",
           "text": "[link https://millxing.github.io/carrom-adda/carrom_adda_v08.html]PLAY CARROM ADDA[/link]",
-          "imageSrc": "./assets/carrom-adda/menu.png",
-          "imageAlt": "Carrom Adda main menu showing four game modes above a marble carrom board.",
+          "imageSrc": "./assets/carrom-adda/gameplay-preview.gif",
+          "imageAlt": "Animated preview of Carrom Adda gameplay on the marble board.",
           "imageLink": "https://millxing.github.io/carrom-adda/carrom_adda_v08.html",
           "extraClasses": [
             "text-center"

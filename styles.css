@@ -832,6 +832,6 @@ html:has(.image-lightbox[open]) {
   overflow: hidden;
 }
 
-.panel:has(img[src="./assets/carrom-adda/menu.png"]) > p {
+.panel:has(img[src="./assets/carrom-adda/gameplay-preview.gif"]) > p {
   font-size: 2em;
 }
