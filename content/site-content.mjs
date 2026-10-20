@@ -768,7 +768,7 @@ const siteContent = {
           "extraClasses": [
             "text-center"
           ],
-          "imageStyle": "medium-center"
+          "imageStyle": "large-center"
         },
         {
           "type": "text",
