@@ -468,7 +468,7 @@ const siteContent = {
         },
         {
           "type": "text",
-          "text": "[link ./carrom_adda.html]Pakistani Carrom Video Game: Carrom Adda[/link]",
+          "text": "[link ./carrom_adda.html]Carrom Adda: Video Game of Pakistani Carrom[/link]",
           "imageSrc": "./assets/carrom-adda/interests-gameplay.png",
           "imageAlt": "Carrom Adda gameplay on a marble board with the hollow striker and replay controls.",
           "imageLink": "./carrom_adda.html",
@@ -743,7 +743,7 @@ const siteContent = {
     },
     {
       "kind": "projects",
-      "title": "Pakistani Carrom Video Game: Carrom Adda",
+      "title": "Carrom Adda: Video Game of Pakistani Carrom",
       "slug": "carrom_adda",
       "importance": 85,
       "metaDescription": "My free video game simulating Pakistani carrom on a large marble table.",
@@ -767,16 +767,12 @@ const siteContent = {
           "imageLink": "https://millxing.github.io/carrom-adda/carrom_adda_v08.html",
           "extraClasses": [
             "text-center"
-          ]
+          ],
+          "imageStyle": "medium-center"
         },
         {
           "type": "text",
-          "heading": "Four ways to play",
-          "text": "- Play against the AI, with three difficulty levels.\n- Play against another human over the internet.\n- Watch an AI vs AI game.\n- Watch a replay from a previous game."
-        },
-        {
-          "type": "text",
-          "text": "The game physics is highly customizable, but the default settings are tuned to emulate the marble-table games featured on the YouTube channels I linked in my Carrom post.\n\nI've been really enjoying playing against the AI. The game captures the satisfying glide of the pieces across the marble table. It also captures the “trapping shot,” where the larger striker traps a piece in the corner, forcing it into the pocket, and the cushion shot, where a piece is forced into the cushion and travels along it into the pocket.",
+          "text": "There are four ways to play:\n\n- Play against the AI, with three difficulty levels.\n- Play against another human over the internet.\n- Watch an AI vs AI game.\n- Watch a replay from a previous game.\n\nThe game physics is highly customizable, but the default settings are tuned to emulate the marble-table games featured on the YouTube channels I linked in my Carrom post.\n\nI've been really enjoying playing against the AI. The game captures the satisfying glide of the pieces across the marble table. It also captures the “trapping shot,” where the larger striker traps a piece in the corner, forcing it into the pocket, and the cushion shot, where a piece is forced into the cushion and travels along it into the pocket.\n\nThe game fully supports two players competing live over the internet. Please let me know if you'd like to have a match.",
           "imageSrc": "./assets/carrom-adda/gameplay.png",
           "imageAlt": "Carrom Adda gameplay with a marble board, hollow striker, score panel, and replay controls.",
           "imagePosition": "after"

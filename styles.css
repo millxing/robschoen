@@ -831,3 +831,7 @@ h3 {
 html:has(.image-lightbox[open]) {
   overflow: hidden;
 }
+
+.panel:has(img[src="./assets/carrom-adda/menu.png"]) > p {
+  font-size: 2em;
+}

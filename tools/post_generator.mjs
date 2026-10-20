@@ -397,6 +397,9 @@ ${header}${contentMarkup}
 }
 
 function resolveImageStyle(style) {
+  if (style === "medium-center") {
+    return "width: 70%; height: auto; border-radius: 12px; margin: 0 auto; display: block";
+  }
   if (style === "small-center") {
     return "width: 25%; height: auto; border-radius: 12px; margin: 0 auto 1rem; display: block";
   }
