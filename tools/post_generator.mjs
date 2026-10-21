@@ -242,7 +242,7 @@ export async function saveSiteContent(content) {
   await fs.writeFile(sourcePath, body, "utf8");
 }
 
-function renderHead(pageTitle, metaDescription) {
+function renderHead(pageTitle, metaDescription, shareUrl) {
   return `  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -251,7 +251,23 @@ function renderHead(pageTitle, metaDescription) {
       name="description"
       content="${escapeHtml(metaDescription)}"
     />
-    <link rel="icon" type="image/png" href="./nano.png" />
+${shareUrl ? `    <link rel="canonical" href="${escapeHtml(shareUrl)}" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Entangled Particles" />
+    <meta property="og:title" content="${escapeHtml(pageTitle)}" />
+    <meta property="og:description" content="${escapeHtml(metaDescription)}" />
+    <meta property="og:url" content="${escapeHtml(shareUrl)}" />
+    <meta property="og:image" content="https://entangledparticles.xyz/assets/entangledParticlesLogo.jpg" />
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:image:width" content="1408" />
+    <meta property="og:image:height" content="768" />
+    <meta property="og:image:alt" content="Entangled Particles logo in black lettering on white" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="${escapeHtml(pageTitle)}" />
+    <meta name="twitter:description" content="${escapeHtml(metaDescription)}" />
+    <meta name="twitter:image" content="https://entangledparticles.xyz/assets/entangledParticlesLogo.jpg" />
+    <meta name="twitter:image:alt" content="Entangled Particles logo in black lettering on white" />
+` : ""}    <link rel="icon" type="image/png" href="./nano.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -661,7 +677,7 @@ ${renderMarkup(item.homeCardText)}
 
   return `<!DOCTYPE html>
 <html lang="en">
-${renderHead("Entangled Particles | Rob Schoen", "Projects and interests by Rob Schoen.").replace('  </head>', '    <link rel="stylesheet" href="./homepage.css?v=logo2" />\n  </head>')}
+${renderHead("Entangled Particles | Rob Schoen", "Projects and interests by Rob Schoen.", "https://entangledparticles.xyz/").replace('  </head>', '    <link rel="stylesheet" href="./homepage.css?v=logo2" />\n  </head>')}
   <body class="home-unified">
     <div class="floating-squares" aria-hidden="true"></div>
     <a class="preview-skip" href="#posts">Skip to posts</a>
