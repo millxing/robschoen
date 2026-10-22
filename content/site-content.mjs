@@ -483,6 +483,109 @@ const siteContent = {
   "projects": [
     {
       "kind": "projects",
+      "title": "NFL and NBA Futures Trackers",
+      "slug": "futures_trackers",
+      "importance": 95,
+      "hiddenFromListings": false,
+      "metaDescription": "Tracking how prediction-market prices change expectations for NFL and NBA futures over different time horizons.",
+      "homeCardText": "Tracking how prediction-market prices change expectations for NFL and NBA futures over different time horizons.",
+      "archiveCardText": "Tracking how prediction-market prices change expectations for NFL and NBA futures over different time horizons.",
+      "archiveCardClass": "",
+      "pageIntroText": "",
+      "detailPageEnabled": true,
+      "homeHref": "./futures_trackers.html",
+      "archiveHref": "./futures_trackers.html",
+      "blocks": [
+        {
+          "type": "text",
+          "delay": "",
+          "heading": "",
+          "text": "I built two trackers for NFL and NBA futures markets on Polymarket. The point of these projects is to use changes in prediction market prices to quantify how longer-term futures expectations are changing over different time horizons.\n\nEach tracker lets you choose a starting snapshot and an ending snapshot, then see which teams and players had the biggest changes in market-implied probability. You can compare a short interval or a longer stretch of the season, filter by market, and explore the price history.",
+          "textAfterImage": "",
+          "caption": "",
+          "imageSrc": "",
+          "imageAlt": "",
+          "imageStyle": "full",
+          "imageLink": "",
+          "imagePosition": "before",
+          "extraClasses": [],
+          "headerLinkLabel": "",
+          "headerLinkHref": "",
+          "embedSrc": "",
+          "embedTitle": "",
+          "embedHeight": "",
+          "pdfSrc": "",
+          "pdfTitle": "",
+          "tableHeaders": [],
+          "tableRows": [],
+          "linkItems": []
+        },
+        {
+          "type": "text",
+          "delay": "",
+          "heading": "NFL Futures Tracker",
+          "text": "The NFL tracker compares snapshots taken before and after weeks of games. It covers division winners, playoff qualification, the Super Bowl, and individual awards.\n\n[center][link https://millxing.github.io/nfl-futures-tracker/]Open the NFL Futures Tracker[/link][/center]",
+          "textAfterImage": "",
+          "caption": "",
+          "imageSrc": "./assets/nfl-futures-tracker.png",
+          "imageAlt": "NFL Futures Tracker dashboard",
+          "imageStyle": "full",
+          "imageLink": "https://millxing.github.io/nfl-futures-tracker/",
+          "imagePosition": "after",
+          "extraClasses": [],
+          "headerLinkLabel": "",
+          "headerLinkHref": "",
+          "embedSrc": "",
+          "embedTitle": "",
+          "embedHeight": "",
+          "pdfSrc": "",
+          "pdfTitle": "",
+          "tableHeaders": [],
+          "tableRows": [],
+          "linkItems": []
+        },
+        {
+          "type": "image",
+          "imageSrc": "./assets/nfl-futures-example.png",
+          "imageAlt": "NFL playoff probability changes from Pre Week 5 to Post Week 6.",
+          "imageStyle": "full",
+          "caption": "NFL playoff probability changes from Pre Week 5 to Post Week 6."
+        },
+        {
+          "type": "text",
+          "delay": "",
+          "heading": "NBA Futures Tracker",
+          "text": "The NBA tracker takes daily snapshots at 6 AM Eastern. It follows championship, conference championship, playoff qualification, and Rookie of the Year markets, making it possible to compare daily changes as well as shifts over longer periods.\n\n[center][link https://millxing.github.io/nba-futures-tracker/]Open the NBA Futures Tracker[/link][/center]",
+          "textAfterImage": "",
+          "caption": "",
+          "imageSrc": "./assets/nba-futures-tracker.png",
+          "imageAlt": "NBA Futures Tracker dashboard",
+          "imageStyle": "full",
+          "imageLink": "https://millxing.github.io/nba-futures-tracker/",
+          "imagePosition": "after",
+          "extraClasses": [],
+          "headerLinkLabel": "",
+          "headerLinkHref": "",
+          "embedSrc": "",
+          "embedTitle": "",
+          "embedHeight": "",
+          "pdfSrc": "",
+          "pdfTitle": "",
+          "tableHeaders": [],
+          "tableRows": [],
+          "linkItems": []
+        },
+        {
+          "type": "image",
+          "imageSrc": "./assets/nba-futures-example.png",
+          "imageAlt": "NBA playoff probability changes from September 5 to October 21.",
+          "imageStyle": "full",
+          "caption": "NBA playoff probability changes from September 5 to October 21."
+        }
+      ]
+    },
+    {
+      "kind": "projects",
       "title": "Star Citadel",
       "slug": "star_citadel",
       "importance": 20,
@@ -757,14 +860,14 @@ const siteContent = {
       "blocks": [
         {
           "type": "text",
-          "text": "I made a free video game called [link https://millxing.github.io/carrom-adda/carrom_adda_v08.html]Carrom Adda[/link], a simulation of Pakistani carrom played on a large marble table. If you haven't seen this version of the game, I wrote about what got me interested in it in [link ./pakistani_carrom.html]my Carrom post in the Interests section[/link]."
+          "text": "I made a free video game called [link https://carromadda.org]Carrom Adda[/link], a simulation of Pakistani carrom played on a large marble table. If you haven't seen this version of the game, I wrote about what got me interested in it in [link ./pakistani_carrom.html]my Carrom post in the Interests section[/link]."
         },
         {
           "type": "text",
-          "text": "[link https://millxing.github.io/carrom-adda/carrom_adda_v08.html]PLAY CARROM ADDA[/link]",
+          "text": "[link https://carromadda.org]PLAY CARROM ADDA[/link]",
           "imageSrc": "./assets/carrom-adda/gameplay-preview.gif",
           "imageAlt": "Animated preview of Carrom Adda gameplay on the marble board.",
-          "imageLink": "https://millxing.github.io/carrom-adda/carrom_adda_v08.html",
+          "imageLink": "https://carromadda.org",
           "extraClasses": [
             "text-center"
           ],

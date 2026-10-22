@@ -425,6 +425,7 @@ h2 {
   text-align: center;
 }
 
+.panel p.text-center,
 .panel.text-center p,
 .panel.text-center .subtitle-list,
 .panel.text-center .subtitle-list li {

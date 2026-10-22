@@ -121,6 +121,11 @@ function renderMarkup(text, options = {}) {
         return `        <ul class="${listClass}">\n${items}\n        </ul>`;
       }
 
+      const centered = block.trim().match(/^\[center\]([\s\S]*?)\[\/center\]$/i);
+      if (centered) {
+        return `        <p class="text-center">${applyInlineMarkup(centered[1])}</p>`;
+      }
+
       const paragraph = lines.map((line) => applyInlineMarkup(line.trim())).join("<br />");
       return `        <p>${paragraph}</p>`;
     })
