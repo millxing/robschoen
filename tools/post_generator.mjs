@@ -187,6 +187,7 @@ function normalizeItems(items, kind) {
         importance: normalizeImportance(item.importance),
         hiddenFromListings: Boolean(item.hiddenFromListings),
         metaDescription: String(item.metaDescription || "").trim(),
+        ...(item.shareImage ? { shareImage: item.shareImage } : {}),
         homeCardText: String(item.homeCardText || ""),
         archiveCardText: String(item.archiveCardText || ""),
         archiveCardClass: String(item.archiveCardClass || "").trim(),
@@ -247,7 +248,13 @@ export async function saveSiteContent(content) {
   await fs.writeFile(sourcePath, body, "utf8");
 }
 
-function renderHead(pageTitle, metaDescription, shareUrl) {
+function renderHead(pageTitle, metaDescription, shareUrl, shareImage = {
+  url: "https://entangledparticles.xyz/assets/entangledParticlesLogo.jpg",
+  type: "image/jpeg",
+  width: 1408,
+  height: 768,
+  alt: "Entangled Particles logo in black lettering on white",
+}, shareType = "website") {
   return `  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -257,21 +264,21 @@ function renderHead(pageTitle, metaDescription, shareUrl) {
       content="${escapeHtml(metaDescription)}"
     />
 ${shareUrl ? `    <link rel="canonical" href="${escapeHtml(shareUrl)}" />
-    <meta property="og:type" content="website" />
+    <meta property="og:type" content="${escapeHtml(shareType)}" />
     <meta property="og:site_name" content="Entangled Particles" />
     <meta property="og:title" content="${escapeHtml(pageTitle)}" />
     <meta property="og:description" content="${escapeHtml(metaDescription)}" />
     <meta property="og:url" content="${escapeHtml(shareUrl)}" />
-    <meta property="og:image" content="https://entangledparticles.xyz/assets/entangledParticlesLogo.jpg" />
-    <meta property="og:image:type" content="image/jpeg" />
-    <meta property="og:image:width" content="1408" />
-    <meta property="og:image:height" content="768" />
-    <meta property="og:image:alt" content="Entangled Particles logo in black lettering on white" />
+    <meta property="og:image" content="${escapeHtml(shareImage.url)}" />
+    <meta property="og:image:type" content="${escapeHtml(shareImage.type)}" />
+    <meta property="og:image:width" content="${escapeHtml(shareImage.width)}" />
+    <meta property="og:image:height" content="${escapeHtml(shareImage.height)}" />
+    <meta property="og:image:alt" content="${escapeHtml(shareImage.alt)}" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="${escapeHtml(pageTitle)}" />
     <meta name="twitter:description" content="${escapeHtml(metaDescription)}" />
-    <meta name="twitter:image" content="https://entangledparticles.xyz/assets/entangledParticlesLogo.jpg" />
-    <meta name="twitter:image:alt" content="Entangled Particles logo in black lettering on white" />
+    <meta name="twitter:image" content="${escapeHtml(shareImage.url)}" />
+    <meta name="twitter:image:alt" content="${escapeHtml(shareImage.alt)}" />
 ` : ""}    <link rel="icon" type="image/png" href="./nano.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -777,7 +784,7 @@ function renderDetailPage(item) {
 
   return `<!DOCTYPE html>
 <html lang="en">
-${renderHead(`${item.title} | ${titleSuffix}`, item.metaDescription)}
+${renderHead(`${item.title} | ${titleSuffix}`, item.metaDescription, item.shareImage ? `https://entangledparticles.xyz/${item.slug}.html` : undefined, item.shareImage, "article")}
   <body${bodyClass}>
     <div class="floating-squares" aria-hidden="true"></div>
 

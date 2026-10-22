@@ -477,7 +477,14 @@ const siteContent = {
             "text-center"
           ]
         }
-      ]
+      ],
+      "shareImage": {
+        "url": "https://entangledparticles.xyz/assets/carrom/pakistani-carrom.png",
+        "type": "image/png",
+        "width": 1400,
+        "height": 789,
+        "alt": "A Pakistani carrom match played on a large polished marble board."
+      }
     }
   ],
   "projects": [
