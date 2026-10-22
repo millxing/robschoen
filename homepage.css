@@ -17,59 +17,6 @@ body.home-unified {
   padding: 14px 0 10px;
 }
 
-.home-unified .hero.top-hero {
-  position: static;
-  margin: 0;
-  padding: 14px 0;
-  border-radius: 18px;
-}
-
-.home-unified .top-hero-row {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
-  grid-template-areas: ". logo social";
-  gap: 0;
-}
-
-.home-unified .top-hero-row .site-title {
-  grid-area: logo;
-  grid-row: 1;
-  justify-self: center;
-  width: auto;
-}
-
-.home-unified .top-hero-row .header-social {
-  grid-area: social;
-  grid-row: 1;
-  justify-self: center;
-}
-
-.home-unified .site-title-logo {
-  height: auto;
-  width: 280px;
-  aspect-ratio: auto;
-  max-width: 100%;
-  border-radius: 9px;
-  box-shadow: none;
-}
-
-.home-unified .header-social {
-  display: grid;
-  grid-template-columns: repeat(4, 30px);
-  gap: 10px;
-  width: auto;
-}
-
-.home-unified .social-icon {
-  width: 30px;
-  height: 30px;
-}
-
-.home-unified .social-icon svg {
-  width: 21px;
-  height: 21px;
-}
-
 .preview-feed {
   min-height: 0;
   overflow-y: auto;
@@ -180,35 +127,6 @@ body.home-unified {
     padding-bottom: max(7px, env(safe-area-inset-bottom));
   }
 
-  .home-unified .hero.top-hero {
-    padding: 10px 0;
-  }
-
-  .home-unified .top-hero-row {
-    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
-    gap: 0;
-  }
-
-  .home-unified .site-title-logo {
-    width: 216px;
-    height: auto;
-  }
-
-  .home-unified .header-social {
-    grid-template-columns: repeat(4, 26px);
-    gap: 6px;
-  }
-
-  .home-unified .social-icon {
-    width: 26px;
-    height: 26px;
-  }
-
-  .home-unified .social-icon svg {
-    width: 19px;
-    height: 19px;
-  }
-
   .preview-feed {
     padding: 3px 7px 6px;
     border-radius: 16px;
@@ -223,30 +141,4 @@ body.home-unified {
     font-size: 0.65rem;
     line-height: 1.4;
   }
-}
-
-@media (max-width: 420px) {
-  .home-unified .site-title-logo {
-    width: 40vw;
-    height: auto;
-  }
-
-  .home-unified .header-social {
-    grid-template-columns: repeat(4, 22px);
-    gap: 1px;
-  }
-
-  .home-unified .social-icon {
-    width: 22px;
-    height: 30px;
-  }
-
-  .home-unified .social-icon svg {
-    width: 17px;
-    height: 17px;
-  }
-}
-
-.home-unified .site-title:hover .site-title-logo {
-  box-shadow: none;
 }

@@ -279,10 +279,10 @@ ${shareUrl ? `    <link rel="canonical" href="${escapeHtml(shareUrl)}" />
 }
 
 function renderHero() {
-  return `      <section class="hero top-hero reveal candy-red">
+  return `      <section class="hero top-hero candy-red">
         <div class="top-hero-row">
           <a href="./index.html" class="site-title">
-            <img src="./assets/entangledParticlesLogo.jpg" class="site-title-logo" alt="" />
+            <img src="./assets/entangledParticlesLogo_transparent_white.png" class="site-title-logo" alt="" />
             <span class="visually-hidden">Entangled Particles</span>
           </a>
           <div class="social-row header-social">
@@ -308,12 +308,6 @@ function renderHero() {
               </svg>
             </a>
           </div>
-          <nav class="site-nav" aria-label="Primary">
-            <a href="./index.html">Home</a>
-            <span class="nav-disabled" aria-disabled="true">About</span>
-            <a href="./projects.html">Projects</a>
-            <a href="./writing.html">Interests</a>
-          </nav>
         </div>
       </section>`;
 }
@@ -670,10 +664,7 @@ function renderHomePage(content) {
 ${renderMarkup(item.homeCardText)}
         </article>`;
   }).join("\n");
-  const banner = renderHero()
-    .replace('./assets/entangledParticlesLogo.jpg', './assets/entangledParticlesLogo_transparent_white.png')
-    .replace('class="hero top-hero reveal candy-red"', 'class="hero top-hero candy-red"')
-    .replace(/          <nav class="site-nav"[\s\S]*?<\/nav>\n/, "");
+  const banner = renderHero();
 
   return `<!DOCTYPE html>
 <html lang="en">
