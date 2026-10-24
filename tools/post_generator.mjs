@@ -779,7 +779,7 @@ ${renderFooter()}
 function renderDetailPage(item) {
   const isWriting = item.kind === "writing";
   const titleSuffix = isWriting ? "Entangled Particles" : "Rob Schoen";
-  const bodyClass = isWriting ? ' class="writing-page"' : "";
+  const bodyClass = isWriting ? ' class="writing-page"' : item.slug === "isocrateez" ? ' class="isocrateez-page"' : "";
   const blocks = item.blocks.map((block) => renderBlock(block)).join("\n\n");
 
   return `<!DOCTYPE html>

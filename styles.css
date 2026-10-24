@@ -939,3 +939,9 @@ html:has(.image-lightbox[open]) {
 .top-hero .site-title:hover .site-title-logo {
   box-shadow: none;
 }
+
+/* Keep iSocrateez explanations left-aligned; explicit callouts stay centered. */
+.isocrateez-page .panel p:not(.text-center),
+.isocrateez-page .panel li {
+  text-align: left;
+}

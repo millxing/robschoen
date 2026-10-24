@@ -6,7 +6,7 @@
     <title>iSocrateez | Rob Schoen</title>
     <meta
       name="description"
-      content="Give iSocrateez a moral or ethical dilemma and a Consequentialism-Deontological Index score and it will give you customized advice."
+      content="Personalized AI-generated ethical advice, tailored to your ethical outlook and philosophy background."
     />
     <link rel="icon" type="image/png" href="./nano.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -17,7 +17,7 @@
     />
     <link rel="stylesheet" href="./styles.css" />
   </head>
-  <body>
+  <body class="isocrateez-page">
     <div class="floating-squares" aria-hidden="true"></div>
 
     <main class="page">
@@ -57,20 +57,91 @@
         <div class="panel-header">
           <h2>iSocrateez</h2>
         </div>
-        <p>Give iSocrateez a moral or ethical dilemma and a Consequentialism-Deontological Index score (i.e. are you more the &quot;ends justify the means&quot; or &quot;the principle is what matters&quot;) and it will give you customized advice.</p>
+        <p>iSocrateez provides personalized AI-generated ethical advice. Describe a dilemma, choose the ethical perspective you want to bring to it, and get advice with an explanation of the reasoning behind it.</p>
+        <p class="text-center">Try <a href="https://millxing.github.io/iSocrateez/" target="_blank" rel="noreferrer">iSocrateez</a><br />password: <code>stickytoffeepudding</code></p>
       </section>
 
 
-      <section class="panel reveal delay-2">
+      <section class="panel reveal delay-2 image-after">
         <div class="panel-header">
-          <h2>Overview</h2>
+          <h2>Start with a dilemma</h2>
         </div>
-        <p>iSocrateez is a custom GPT built to respond to moral and ethical dilemmas with advice that matches a user&#39;s Consequentialism-Deontological Index.</p>
+        <p>Enter an ethical dilemma of your own or choose from 10 examples. The examples include a stolen medicine, a cheating friend, a whistleblower, and an AI companion.</p>
+        <img
+          src="./assets/isocrateez/dilemma.png"
+          alt="The dilemma selection screen, showing the AI Companion example."
+          style="width: 100%; height: auto; border-radius: 12px; display: block"
+        />
+
+      </section>
+
+      <section class="panel reveal delay-2 image-after">
+        <div class="panel-header">
+          <h2>Set your ethical profile</h2>
+        </div>
+        <p>There are three ways to customize the perspective behind the advice:</p>
         <ul class="subtitle-list">
-          <li>Moral and ethical dilemma prompts</li>
-          <li>Advice shaped by your stated philosophy</li>
-          <li>Designed as an interactive thought experiment</li>
+          <li>Answer nine questions that map your ethical profile along three axes.</li>
+          <li>Set your coordinates on those axes directly.</li>
+          <li>Choose from 40 philosophers and ethical traditions to find a perspective close to your own.</li>
         </ul>
+        <p>The three axes describe the relative importance you give to <strong>outcomes versus principles</strong>, <strong>the individual versus the collective</strong>, and <strong>reason versus intuition</strong>.</p>
+        <img
+          src="./assets/isocrateez/coordinates.png"
+          alt="Three sliders for outcomes versus principles, individual versus collective, and reason versus intuition."
+          style="width: 100%; height: auto; border-radius: 12px; display: block"
+        />
+
+      </section>
+
+      <section class="panel reveal delay-2 image-after">
+        <div class="panel-header">
+          <h2>Explore a philosophical perspective</h2>
+        </div>
+        <p>You can also approach the dilemma through a particular philosopher or tradition. The choices span ancient Greek and Roman philosophy, Asian and African traditions, religious ethics, and more.</p>
+        <p>The response is an AI interpretation of that perspective, not the philosopher’s own words.</p>
+        <img
+          src="./assets/isocrateez/philosophers.png"
+          alt="The philosopher selection screen with choices including Aristotle, Confucius, and the Ubuntu tradition."
+          style="width: 100%; height: auto; border-radius: 12px; display: block"
+        />
+
+      </section>
+
+      <section class="panel reveal delay-2 image-after">
+        <div class="panel-header">
+          <h2>Choose the level of detail and the AI models</h2>
+        </div>
+        <p>Select the level that fits your philosophy background:</p>
+        <ul class="subtitle-list">
+          <li>No philosophy training</li>
+          <li>Some philosophy training</li>
+          <li>PhD-level training</li>
+        </ul>
+        <p>You can also choose two AI models: a <strong>planner</strong>, which prepares the customized prompt, and an <strong>advisor</strong>, which generates the advice. The defaults are Claude Haiku 5.5 for the planner and Claude Sonnet 5.5 for the advisor. More capable models are available, though they may take longer to respond.</p>
+
+      </section>
+
+      <section class="panel reveal delay-2 image-after">
+        <div class="panel-header">
+          <h2>Read the advice and the reasoning</h2>
+        </div>
+        <p>Generating the advice typically takes about 30 seconds. The result includes the advice itself, an explanation of why it was given, what to watch for, and a suggested next step. You can export the advice as a Markdown file.</p>
+        <img
+          src="./assets/isocrateez/advice.png"
+          alt="An example response interpreted through Baruch Spinoza’s perspective, with tabs for reasoning, cautions, next steps, and export."
+          style="width: 100%; height: auto; border-radius: 12px; display: block"
+        />
+
+      </section>
+
+      <section class="panel reveal delay-2 image-after">
+        <div class="panel-header">
+          <h2>Privacy</h2>
+        </div>
+        <p>iSocrateez does not store your data. To generate a response, your dilemma is sent to the AI model providers you select (Anthropic or OpenAI). Avoid including names or other identifying details in the dilemma itself.</p>
+        <p class="text-center">Try <a href="https://millxing.github.io/iSocrateez/" target="_blank" rel="noreferrer">iSocrateez</a><br />password: <code>stickytoffeepudding</code></p>
+
       </section>
     </main>
 
