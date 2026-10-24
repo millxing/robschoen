@@ -945,3 +945,7 @@ html:has(.image-lightbox[open]) {
 .isocrateez-page .panel li {
   text-align: left;
 }
+
+.isocrateez-page .text-center a[href="https://millxing.github.io/iSocrateez/"] {
+  font-size: 1.5em;
+}
