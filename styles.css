@@ -949,3 +949,9 @@ html:has(.image-lightbox[open]) {
 .isocrateez-page .text-center a[href="https://millxing.github.io/iSocrateez/"] {
   font-size: 1.5em;
 }
+
+.isocrateez-page .panel > .text-center {
+  min-block-size: 7rem;
+  align-content: center;
+  margin-block: 0;
+}
