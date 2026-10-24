@@ -142,3 +142,8 @@ body.home-unified {
     line-height: 1.4;
   }
 }
+
+.preview-post h2 .post-update {
+  margin: 0 0 0 0.35em;
+  vertical-align: middle;
+}

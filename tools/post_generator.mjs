@@ -188,6 +188,7 @@ function normalizeItems(items, kind) {
         hiddenFromListings: Boolean(item.hiddenFromListings),
         metaDescription: String(item.metaDescription || "").trim(),
         ...(item.shareImage ? { shareImage: item.shareImage } : {}),
+        ...(item.homeTag ? { homeTag: String(item.homeTag).trim() } : {}),
         homeCardText: String(item.homeCardText || ""),
         archiveCardText: String(item.archiveCardText || ""),
         archiveCardClass: String(item.archiveCardClass || "").trim(),
@@ -672,7 +673,7 @@ function renderHomePage(content) {
     const category = item.kind === "writing" ? "Interest" : "Project";
     return `        <article class="preview-post">
           <span class="post-tag ${category.toLowerCase()}">${category}</span>
-          <h2><a ${renderLinkAttributes(item.homeHref)}>${escapeHtml(item.title)}</a></h2>
+          <h2><a ${renderLinkAttributes(item.homeHref)}>${escapeHtml(item.title)}</a>${item.homeTag ? ` <span class="post-tag post-update">${escapeHtml(item.homeTag)}</span>` : ""}</h2>
 ${renderMarkup(item.homeCardText)}
         </article>`;
   }).join("\n");
