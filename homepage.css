@@ -144,6 +144,8 @@ body.home-unified {
 }
 
 .preview-post h2 .post-update {
+  background: #d9f1eb;
+  color: #176653;
   margin: 0 0 0 0.35em;
   vertical-align: middle;
 }
