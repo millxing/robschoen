@@ -1,9 +1,10 @@
-const imageTriggers = document.querySelectorAll('.image-grid-trigger');
+(() => {
+  const images = [...document.querySelectorAll('img')];
+  if (!images.length) return;
 
-if (imageTriggers.length) {
   const dialog = document.createElement('dialog');
   dialog.className = 'image-lightbox';
-  dialog.setAttribute('aria-label', 'Enlarged animation');
+  dialog.setAttribute('aria-label', 'Enlarged image');
   const closeButton = document.createElement('button');
   closeButton.type = 'button';
   closeButton.className = 'image-lightbox-close';
@@ -11,23 +12,41 @@ if (imageTriggers.length) {
   const enlargedImage = document.createElement('img');
   dialog.append(closeButton, enlargedImage);
   document.body.append(dialog);
+  let opener;
 
-  for (const trigger of imageTriggers) {
-    trigger.addEventListener('click', () => {
-      const thumbnail = trigger.querySelector('img');
-      enlargedImage.src = thumbnail.currentSrc || thumbnail.src;
-      enlargedImage.alt = thumbnail.alt;
-      dialog.showModal();
+  function openImage(image, trigger) {
+    opener = trigger;
+    enlargedImage.src = image.currentSrc || image.src;
+    enlargedImage.alt = image.alt;
+    dialog.showModal();
+  }
+
+  for (const image of images) {
+    image.classList.add('zoomable-image');
+    const trigger = image.closest('a, button') || image;
+    if (trigger === image) {
+      image.tabIndex = 0;
+      image.setAttribute('role', 'button');
+      image.setAttribute('aria-label', `Enlarge image${image.alt ? `: ${image.alt}` : ''}`);
+      image.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          openImage(image, trigger);
+        }
+      });
+    }
+    trigger.addEventListener('click', (event) => {
+      event.preventDefault();
+      openImage(image, trigger);
     });
   }
 
   closeButton.addEventListener('click', () => dialog.close());
   dialog.addEventListener('click', (event) => {
-    const bounds = dialog.getBoundingClientRect();
-    if (event.clientX < bounds.left || event.clientX > bounds.right ||
-        event.clientY < bounds.top || event.clientY > bounds.bottom) {
-      dialog.close();
-    }
+    if (event.target === dialog) dialog.close();
   });
-  dialog.addEventListener('close', () => enlargedImage.removeAttribute('src'));
-}
+  dialog.addEventListener('close', () => {
+    enlargedImage.removeAttribute('src');
+    opener?.focus();
+  });
+})();

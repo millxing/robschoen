@@ -955,3 +955,12 @@ html:has(.image-lightbox[open]) {
   align-content: center;
   margin-block: 0;
 }
+
+.zoomable-image {
+  cursor: zoom-in;
+}
+
+.zoomable-image:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 4px;
+}

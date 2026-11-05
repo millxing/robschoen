@@ -700,6 +700,7 @@ ${cards}
       };
     </script>
     <script src="./background.js"></script>
+    <script src="./image-lightbox.js" defer></script>
   </body>
 </html>
 `;
@@ -736,6 +737,7 @@ ${renderFooter()}
       };
     </script>
     <script src="./background.js"></script>
+    <script src="./image-lightbox.js" defer></script>
   </body>
 </html>
 `;
@@ -772,6 +774,7 @@ ${renderFooter()}
       };
     </script>
     <script src="./background.js"></script>
+    <script src="./image-lightbox.js" defer></script>
   </body>
 </html>
 `;
@@ -806,7 +809,8 @@ ${renderFooter()}
         speed: { min: 30, max: 70 },
       };
     </script>
-    <script src="./background.js"></script>${item.blocks.some((block) => block.type === "image-grid") ? '\n    <script src="./image-lightbox.js" defer></script>' : ""}
+    <script src="./background.js"></script>
+    <script src="./image-lightbox.js" defer></script>
   </body>
 </html>
 `;
