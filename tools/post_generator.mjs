@@ -1,4 +1,5 @@
 import fs from "node:fs/promises";
+import { existsSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
@@ -28,6 +29,19 @@ function renderLinkAttributes(href) {
   return `href="${escapeHtml(href)}" target="_blank" rel="noreferrer"`;
 }
 
+function pdfNote(href, label) {
+  return /\.pdf(?:[?#]|$)/i.test(String(href)) && !/pdf/i.test(String(label)) ? " (PDF)" : "";
+}
+
+function newTabNote(href) {
+  return isExternalUrl(href) ? '<span class="visually-hidden"> (opens in a new tab)</span>' : "";
+}
+
+// A centered block that starts with a link is a call to action: render that link as a button.
+function promoteLeadingLink(text) {
+  return String(text || "").replace(/^\s*\[link ([^\]]+)\]([\s\S]*?)\[\/link\]/i, "[button $1]$2[/button]");
+}
+
 function applyInlineMarkup(input) {
   let output = escapeHtml(String(input || ""));
 
@@ -45,8 +59,13 @@ function applyInlineMarkup(input) {
       replacement: (_match, inner) => `<code>${inner}</code>`,
     },
     {
+      pattern: /\[button ([^\]]+)\]([\s\S]*?)\[\/button\]/gi,
+      replacement: (_match, href, inner) =>
+        `<a class="button" ${renderLinkAttributes(href)}>${inner}${newTabNote(href)}</a>`,
+    },
+    {
       pattern: /\[link ([^\]]+)\]([\s\S]*?)\[\/link\]/gi,
-      replacement: (_match, href, inner) => `<a ${renderLinkAttributes(href)}>${inner}</a>`,
+      replacement: (_match, href, inner) => `<a ${renderLinkAttributes(href)}>${inner}${pdfNote(href, inner)}${newTabNote(href)}</a>`,
     },
   ];
 
@@ -86,18 +105,14 @@ function isCtaImageTextBlock(block) {
   );
 }
 
-function renderCaption(text) {
-  const lines = String(text || "")
-    .trim()
-    .split(/\r?\n/)
-    .map((line) => line.trim())
-    .filter(Boolean);
-
-  if (lines.length === 0) {
+// Paragraphs that are really lists of short lines (e.g. nickname lists) get a compact list style.
+function lineListClass(block) {
+  const parts = block.trim().split(/\[br\]|\n/i).map((part) => part.trim()).filter(Boolean);
+  if (parts.length < 5) {
     return "";
   }
-
-  return `        <p class="media-caption">${lines.map((line) => applyInlineMarkup(line)).join("<br />")}</p>\n`;
+  const isShort = parts.every((part) => part.replace(/\[[^\]]*\]/g, "").length <= 60);
+  return isShort ? ' class="line-list"' : ' class="line-block"';
 }
 
 function renderMarkup(text, options = {}) {
@@ -123,11 +138,12 @@ function renderMarkup(text, options = {}) {
 
       const centered = block.trim().match(/^\[center\]([\s\S]*?)\[\/center\]$/i);
       if (centered) {
-        return `        <p class="text-center">${applyInlineMarkup(centered[1])}</p>`;
+        const isCta = /^\s*\[link /i.test(centered[1]);
+        return `        <p class="text-center${isCta ? " cta" : ""}">${applyInlineMarkup(promoteLeadingLink(centered[1]))}</p>`;
       }
 
       const paragraph = lines.map((line) => applyInlineMarkup(line.trim())).join("<br />");
-      return `        <p>${paragraph}</p>`;
+      return `        <p${lineListClass(block)}>${paragraph}</p>`;
     })
     .join("\n");
 }
@@ -189,6 +205,7 @@ function normalizeItems(items, kind) {
         metaDescription: String(item.metaDescription || "").trim(),
         ...(item.shareImage ? { shareImage: item.shareImage } : {}),
         ...(item.homeTag ? { homeTag: String(item.homeTag).trim() } : {}),
+        ...(item.cardImage ? { cardImage: String(item.cardImage).trim() } : {}),
         homeCardText: String(item.homeCardText || ""),
         archiveCardText: String(item.archiveCardText || ""),
         archiveCardClass: String(item.archiveCardClass || "").trim(),
@@ -249,13 +266,17 @@ export async function saveSiteContent(content) {
   await fs.writeFile(sourcePath, body, "utf8");
 }
 
-function renderHead(pageTitle, metaDescription, shareUrl, shareImage = {
+const SITE_NAME = "Entangled Particles";
+const ASSET_VERSION = "5";
+const DEFAULT_SHARE_IMAGE = {
   url: "https://entangledparticles.xyz/assets/entangledParticlesLogo.jpg",
   type: "image/jpeg",
   width: 1408,
   height: 768,
   alt: "Entangled Particles logo in black lettering on white",
-}, shareType = "website") {
+};
+
+function renderHead(pageTitle, metaDescription, shareUrl, shareImage = DEFAULT_SHARE_IMAGE, shareType = "website", noindex = false) {
   return `  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -264,9 +285,10 @@ function renderHead(pageTitle, metaDescription, shareUrl, shareImage = {
       name="description"
       content="${escapeHtml(metaDescription)}"
     />
-${shareUrl ? `    <link rel="canonical" href="${escapeHtml(shareUrl)}" />
+    <meta name="theme-color" content="#b30000" />
+${noindex ? '    <meta name="robots" content="noindex" />\n' : ""}${shareUrl ? `    <link rel="canonical" href="${escapeHtml(shareUrl)}" />
     <meta property="og:type" content="${escapeHtml(shareType)}" />
-    <meta property="og:site_name" content="Entangled Particles" />
+    <meta property="og:site_name" content="${SITE_NAME}" />
     <meta property="og:title" content="${escapeHtml(pageTitle)}" />
     <meta property="og:description" content="${escapeHtml(metaDescription)}" />
     <meta property="og:url" content="${escapeHtml(shareUrl)}" />
@@ -284,65 +306,109 @@ ${shareUrl ? `    <link rel="canonical" href="${escapeHtml(shareUrl)}" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,400;0,6..12,600;0,6..12,700;1,6..12,400&family=Quicksand:wght@500;600;700&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="./styles.css" />
+    <link rel="stylesheet" href="./styles.css?v=${ASSET_VERSION}" />
   </head>`;
 }
 
-function renderHero() {
-  return `      <section class="hero top-hero candy-red">
-        <div class="top-hero-row">
-          <a href="./index.html" class="site-title">
-            <img src="./assets/entangledParticlesLogo_transparent_white.png" class="site-title-logo" alt="" />
-            <span class="visually-hidden">Entangled Particles</span>
-          </a>
-          <div class="social-row header-social">
-            <a class="social-icon" href="https://github.com/millxing?tab=repositories" target="_blank" rel="noreferrer" aria-label="GitHub" title="GitHub">
-              <svg viewBox="0 0 16 16" aria-hidden="true">
-                <path d="M8 0C3.58 0 0 3.58 0 8a8 8 0 0 0 5.47 7.59c.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.5-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.5 7.5 0 0 1 4 0c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8"/>
-              </svg>
-            </a>
-            <a class="social-icon" href="https://www.linkedin.com/in/robschoen/" target="_blank" rel="noreferrer" aria-label="LinkedIn" title="LinkedIn">
-              <svg viewBox="0 0 16 16" aria-hidden="true">
-                <path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854V1.146zM4.943 13.5V6.169H2.542V13.5h2.4zM3.743 5.168c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248-.822 0-1.359.54-1.359 1.248 0 .694.521 1.248 1.327 1.248h.016zM13.458 13.5V9.359c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016a5.54 5.54 0 0 1 .016-.025V6.169h-2.4c.03.694 0 7.331 0 7.331h2.4v-4.094c0-.219.016-.438.08-.594.175-.438.574-.891 1.245-.891.878 0 1.23.672 1.23 1.656V13.5h2.4z"/>
-              </svg>
-            </a>
-            <a class="social-icon" href="mailto:robschoen.robschoen@gmail.com" aria-label="Email" title="Email">
-              <svg viewBox="0 0 16 16" aria-hidden="true">
-                <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4zm2-.5a.5.5 0 0 0-.5.5v.217l6.5 3.9 6.5-3.9V4a.5.5 0 0 0-.5-.5H2zm12.5 2.458-4.796 2.878 4.796 3.264V5.958zM14.204 12.5 8.68 8.74 8 9.147l-.681-.408L1.796 12.5h12.408zM1.5 12.1l4.796-3.264L1.5 5.958V12.1z"/>
-              </svg>
-            </a>
-            <a class="social-icon" href="https://www.dropbox.com/scl/fi/demzlgct5g7ve15c9kz8j/resume_Rob-Schoen.docx?rlkey=ylomjukk1df5zfzfx1qbh2jus&dl=0" target="_blank" rel="noreferrer" aria-label="Resume" title="Resume">
-              <svg viewBox="0 0 16 16" aria-hidden="true">
-                <path d="M4 0h5.5L14 4.5V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2zm5 1.5V5h3.5L9 1.5z"/>
-                <path d="M5 7.5h6v1H5v-1zm0 2h6v1H5v-1zm0 2h4v1H5v-1z"/>
-              </svg>
-            </a>
-          </div>
-        </div>
-      </section>`;
+const SOCIAL_LINKS = [
+  {
+    label: "GitHub",
+    href: "https://github.com/millxing?tab=repositories",
+    paths: ['<path d="M8 0C3.58 0 0 3.58 0 8a8 8 0 0 0 5.47 7.59c.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.5-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.5 7.5 0 0 1 4 0c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8"/>'],
+  },
+  {
+    label: "LinkedIn",
+    href: "https://www.linkedin.com/in/robschoen/",
+    paths: ['<path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854V1.146zM4.943 13.5V6.169H2.542V13.5h2.4zM3.743 5.168c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248-.822 0-1.359.54-1.359 1.248 0 .694.521 1.248 1.327 1.248h.016zM13.458 13.5V9.359c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016a5.54 5.54 0 0 1 .016-.025V6.169h-2.4c.03.694 0 7.331 0 7.331h2.4v-4.094c0-.219.016-.438.08-.594.175-.438.574-.891 1.245-.891.878 0 1.23.672 1.23 1.656V13.5h2.4z"/>'],
+  },
+  {
+    label: "Email",
+    href: "mailto:robschoen.robschoen@gmail.com",
+    paths: ['<path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4zm2-.5a.5.5 0 0 0-.5.5v.217l6.5 3.9 6.5-3.9V4a.5.5 0 0 0-.5-.5H2zm12.5 2.458-4.796 2.878 4.796 3.264V5.958zM14.204 12.5 8.68 8.74 8 9.147l-.681-.408L1.796 12.5h12.408zM1.5 12.1l4.796-3.264L1.5 5.958V12.1z"/>'],
+  },
+  {
+    label: "Resume",
+    href: "https://www.dropbox.com/scl/fi/demzlgct5g7ve15c9kz8j/resume_Rob-Schoen.docx?rlkey=ylomjukk1df5zfzfx1qbh2jus&dl=0",
+    paths: [
+      '<path d="M4 0h5.5L14 4.5V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2zm5 1.5V5h3.5L9 1.5z"/>',
+      '<path d="M5 7.5h6v1H5v-1zm0 2h6v1H5v-1zm0 2h4v1H5v-1z"/>',
+    ],
+  },
+];
+
+const SECTION_LINKS = [
+  { key: "projects", label: "Projects", href: "./projects.html", path: '<path d="M1 1h6v6H1V1zm8 0h6v6H9V1zM1 9h6v6H1V9zm8 0h6v6H9V9z"/>' },
+  { key: "interests", label: "Interests", href: "./writing.html", path: '<path d="M8 0a5.5 5.5 0 0 0-3.2 9.97c.43.31.7.8.7 1.33V12h5v-.7c0-.53.27-1.02.7-1.33A5.5 5.5 0 0 0 8 0zM5.5 13h5v1a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-1z"/>' },
+];
+
+function renderHeader(current = "") {
+  const sections = SECTION_LINKS.map(
+    (link) => `          <a class="site-link site-link--section" href="${link.href}"${link.key === current ? ' aria-current="page"' : ""}>
+            <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">${link.path}</svg>
+            <span>${link.label}</span>
+          </a>`,
+  ).join("\n");
+  const links = SOCIAL_LINKS.map(
+    (link) => `          <a class="site-link" ${renderLinkAttributes(link.href)}${isExternalUrl(link.href) ? ` aria-label="${escapeHtml(link.label)} (opens in a new tab)"` : ""}>
+            <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">${link.paths.join("")}</svg>
+            <span>${escapeHtml(link.label)}</span>
+          </a>`,
+  ).join("\n");
+
+  return `    <header class="site-header">
+      <div class="site-header__inner">
+        <a href="./index.html" class="site-title" aria-label="${SITE_NAME}: home">
+          <img src="./assets/entangledParticlesLogo_transparent_white.png" class="site-title-logo" alt="" width="2172" height="724" />
+        </a>
+        <nav class="site-links" aria-label="Site">
+${sections}
+          <span class="site-links__divider" aria-hidden="true"></span>
+${links}
+        </nav>
+      </div>
+    </header>`;
 }
 
-function renderFooter() {
+function renderFooter({ showArchive = true } = {}) {
   return `    <footer class="site-footer">
-      <p>
-        Content on this site is licensed under
-        <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noreferrer">CC BY 4.0</a>
-        unless otherwise stated.
-      </p>
-      <p>
-        <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noreferrer">
-          Creative Commons Attribution 4.0 International License
-        </a>
-      </p>
-      <p>
-        <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noreferrer">
-          https://creativecommons.org/licenses/by/4.0/
-        </a>
-      </p>
+      <p>Contact: <a href="mailto:robschoen.robschoen@gmail.com">robschoen.robschoen@gmail.com</a><br />Content licensed under <a ${renderLinkAttributes("https://creativecommons.org/licenses/by/4.0/")}>CC BY 4.0<span class="visually-hidden"> (opens in a new tab)</span></a> unless otherwise stated.</p>${showArchive ? `
+      <nav class="footer-links" aria-label="Archives">
+        <a href="./index.html">All posts</a>
+        <a href="./projects.html">Project archive</a>
+        <a href="./writing.html">Interest archive</a>
+      </nav>` : ""}
     </footer>`;
+}
+
+function renderBackgroundScripts() {
+  return `    <script>
+      window.floatingBackgroundConfig = {
+        density: 18, shape: "square", size: { min: 100, max: 260 }, speed: { min: 30, max: 65 },
+      };
+    </script>
+    <script src="./background.js?v=${ASSET_VERSION}"></script>
+    <script src="./site.js?v=${ASSET_VERSION}" defer></script>`;
+}
+
+function renderPage({ title, description, shareUrl, shareImage, shareType, bodyClass, main, footer, current = "", noindex = false }) {
+  return `<!DOCTYPE html>
+<html lang="en">
+${renderHead(title, description, shareUrl, shareImage, shareType, noindex)}
+  <body class="${bodyClass}">
+    <a class="skip-link" href="#main">Skip to content</a>
+    <div class="floating-squares" aria-hidden="true"></div>
+    <div class="site-shell">
+${renderHeader(current)}
+${main}
+${footer ?? renderFooter()}
+    </div>
+${renderBackgroundScripts()}
+  </body>
+</html>
+`;
 }
 
 function renderPanelHeader(heading, linkLabel, linkHref) {
@@ -351,186 +417,146 @@ function renderPanelHeader(heading, linkLabel, linkHref) {
   }
 
   const headingMarkup = heading ? `\n          <h2>${escapeHtml(heading)}</h2>` : "";
-  const linkMarkup = linkLabel ? `\n          <a ${renderLinkAttributes(linkHref)}>${escapeHtml(linkLabel)}</a>` : "";
+  const linkMarkup = linkLabel ? `\n          <a ${renderLinkAttributes(linkHref)}>${escapeHtml(linkLabel)}${newTabNote(linkHref)}</a>` : "";
 
   return `        <div class="panel-header">${headingMarkup}${linkMarkup}\n        </div>\n`;
 }
 
-function renderTextBlock(block) {
-  if (isCtaImageTextBlock(block)) {
-    const classes = ["panel", "reveal", ...block.extraClasses];
-    if (block.delay) {
-      classes.push(block.delay);
-    }
+function sectionClasses(block, extra = []) {
+  return ["panel", ...block.extraClasses, ...extra].join(" ");
+}
 
-    const header = renderPanelHeader(block.heading, block.headerLinkLabel, block.headerLinkHref);
+function mediaClass(style) {
+  const known = ["full", "large-center", "medium-center", "small-center", "full-white"];
+  return `media media--${known.includes(style) ? style : "full"}`;
+}
+
+// GIFs that have an MP4 conversion next to them are served as lightweight looping video.
+function videoSourceFor(src) {
+  const value = String(src || "");
+  if (!/\.gif$/i.test(value) || !value.startsWith("./")) {
+    return null;
+  }
+  const mp4 = value.replace(/\.gif$/i, ".mp4");
+  const poster = value.replace(/\.gif$/i, "-poster.jpg");
+  const exists = (relative) => existsSync(path.join(rootDir, relative));
+  return exists(mp4) && exists(poster) ? { mp4, poster } : null;
+}
+
+function renderMediaElement(src, alt, { controls = false, indent = "          " } = {}) {
+  const video = videoSourceFor(src);
+  if (video) {
+    return `${indent}<video class="loop-video" src="${escapeHtml(video.mp4)}" poster="${escapeHtml(video.poster)}" aria-label="${escapeHtml(alt)}" muted loop playsinline preload="metadata" data-autoplay${controls ? " controls" : ""}></video>`;
+  }
+  return `${indent}<img src="${escapeHtml(src)}" alt="${escapeHtml(alt)}" loading="lazy" decoding="async" />`;
+}
+
+function renderFigure({ src, alt, style, href, caption }) {
+  const media = renderMediaElement(src, alt, { indent: href ? "            " : "          " });
+  const external = isExternalUrl(href);
+  const badge = external ? `Visit ${escapeHtml(displayDomain(href))} ↗` : "Open →";
+  const body = href
+    ? `          <a class="media-link" ${renderLinkAttributes(href)}>
+${media}
+            <span class="media-link__badge" aria-hidden="true">${badge}</span>${external ? '\n            <span class="visually-hidden"> (opens in a new tab)</span>' : ""}
+          </a>`
+    : media;
+  const captionMarkup = caption ? `\n          <figcaption>${caption}</figcaption>` : "";
+  return `        <figure class="${mediaClass(style)}">
+${body}${captionMarkup}
+        </figure>`;
+}
+
+function renderTextBlock(block) {
+  const header = renderPanelHeader(block.heading, block.headerLinkLabel, block.headerLinkHref);
+
+  if (isCtaImageTextBlock(block)) {
     const link = parseSingleLinkText(block.text);
     const imageHref = String(block.imageLink || link?.href || "").trim();
-    const imageMarkupBase = `        <img
-          src="${escapeHtml(block.imageSrc)}"
-          alt="${escapeHtml(block.imageAlt)}"
-          style="${escapeHtml(resolveImageStyle(block.imageStyle))}"
-        />\n`;
-    const imageMarkup = imageHref
-      ? `        <a ${renderLinkAttributes(imageHref)}>\n${imageMarkupBase}        </a>\n`
-      : imageMarkupBase;
-
-    return `      <section class="${classes.join(" ")}">
-${header}${renderMarkup(block.text)}
-${imageMarkup}      </section>`;
+    const figure = renderFigure({ src: block.imageSrc, alt: block.imageAlt, style: block.imageStyle, href: imageHref });
+    return `      <section class="${sectionClasses(block, ["panel--cta"])}">
+${header}        <p class="cta"><a class="button" ${renderLinkAttributes(link.href)}>${escapeHtml(link.label)}${newTabNote(link.href)}</a></p>
+${figure}
+      </section>`;
   }
 
-  const classes = ["panel", "reveal"];
-  if (block.delay) {
-    classes.push(block.delay);
-  }
-  block.extraClasses.forEach((value) => classes.push(value));
-  const isAfter =
-    String(block.imagePosition || "").trim().toLowerCase() === "after" || isCtaImageTextBlock(block);
-
-  if (isAfter) {
-    classes.push("image-after");
-  }
-
-  const header = renderPanelHeader(block.heading, block.headerLinkLabel, block.headerLinkHref);
-  const imageMarkupBase = block.imageSrc
-    ? `        <img
-          src="${escapeHtml(block.imageSrc)}"
-          alt="${escapeHtml(block.imageAlt)}"
-          style="${escapeHtml(resolveImageStyle(block.imageStyle))}"
-        />\n`
+  const isAfter = String(block.imagePosition || "").trim().toLowerCase() === "after";
+  const figure = block.imageSrc
+    ? renderFigure({ src: block.imageSrc, alt: block.imageAlt, style: block.imageStyle, href: String(block.imageLink || "").trim() })
     : "";
-  const imageHref = String(block.imageLink || "").trim();
-  const imageMarkup = imageHref && imageMarkupBase
-    ? `        <a ${renderLinkAttributes(imageHref)}>\n${imageMarkupBase}        </a>\n`
-    : imageMarkupBase;
   const bodyMarkup = renderMarkup(block.text);
-  const trailingMarkup = block.textAfterImage
-    ? `
-        <div class="text-after-image">
-${renderMarkup(block.textAfterImage)}
-        </div>`
-    : "";
-  const contentMarkup = (isAfter ? `${bodyMarkup}
-${imageMarkup}` : `${imageMarkup}${bodyMarkup}`) + trailingMarkup;
+  const parts = isAfter ? [bodyMarkup, figure] : [figure, bodyMarkup];
+  if (block.textAfterImage) {
+    parts.push(renderMarkup(block.textAfterImage));
+  }
 
-  return `      <section class="${classes.join(" ")}">
-${header}${contentMarkup}
+  return `      <section class="${sectionClasses(block)}">
+${header}${parts.filter(Boolean).join("\n")}
       </section>`;
 }
 
-function resolveImageStyle(style) {
-  if (style === "large-center") {
-    return "width: 87.5%; height: auto; border-radius: 12px; margin: 0 auto; display: block";
-  }
-  if (style === "medium-center") {
-    return "width: 70%; height: auto; border-radius: 12px; margin: 0 auto; display: block";
-  }
-  if (style === "small-center") {
-    return "width: 25%; height: auto; border-radius: 12px; margin: 0 auto 1rem; display: block";
-  }
-  if (style === "full-white") {
-    return "width: 100%; height: auto; border: 0; border-radius: 12px; background: #ffffff";
-  }
-  return "width: 100%; height: auto; border-radius: 12px; display: block";
-}
-
 function renderImageBlock(block) {
-  const classes = ["panel", "reveal"];
-  if (block.delay) {
-    classes.push(block.delay);
-  }
-  block.extraClasses.forEach((value) => classes.push(value));
-
   const header = renderPanelHeader(block.heading, block.headerLinkLabel, block.headerLinkHref);
-  const caption = renderCaption(block.caption);
-  const image = `        <img
-          src="${escapeHtml(block.imageSrc)}"
-          alt="${escapeHtml(block.imageAlt)}"
-          style="${escapeHtml(resolveImageStyle(block.imageStyle))}"
-        />`;
+  const captionLines = String(block.caption || "")
+    .trim()
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .filter(Boolean)
+    .map((line) => applyInlineMarkup(line));
+  // An image that links to an outside reference stays enlargeable; the link moves into the caption.
+  const linkToCaption = isExternalUrl(block.imageLink);
+  if (linkToCaption) {
+    captionLines.push(`<a ${renderLinkAttributes(block.imageLink)}>View at ${escapeHtml(displayDomain(block.imageLink))}${newTabNote(block.imageLink)}</a>`);
+  }
+  const figure = renderFigure({
+    src: block.imageSrc,
+    alt: block.imageAlt,
+    style: block.imageStyle,
+    href: linkToCaption ? "" : block.imageLink,
+    caption: captionLines.join("<br />"),
+  });
 
-  const wrappedImage = block.imageLink
-    ? `        <a ${renderLinkAttributes(block.imageLink)}>
-${image}
-        </a>`
-    : image;
-
-  return `      <section class="${classes.join(" ")}">
-${header}${caption}${wrappedImage}
+  return `      <section class="${sectionClasses(block, ["panel--media"])}">
+${header}${figure}
       </section>`;
 }
 
 function renderTableBlock(block) {
-  const classes = ["panel", "reveal"];
-  if (block.delay) {
-    classes.push(block.delay);
-  }
-  block.extraClasses.forEach((value) => classes.push(value));
-
   const header = renderPanelHeader(block.heading, block.headerLinkLabel, block.headerLinkHref);
   const intro = renderMarkup(block.text);
-  const hasHeaders = block.tableHeaders.length > 0;
-  const headerMarkup = hasHeaders
+  const headerMarkup = block.tableHeaders.length > 0
     ? `          <thead>
             <tr>
-${block.tableHeaders
-  .map(
-    (headerCell) =>
-      `              <th style="text-align: left; border-bottom: 1px solid #ddd; padding: 2px 4px">${applyInlineMarkup(headerCell)}</th>`,
-  )
-  .join("\n")}
+${block.tableHeaders.map((cell) => `              <th scope="col">${applyInlineMarkup(cell)}</th>`).join("\n")}
             </tr>
           </thead>\n`
     : "";
   const bodyRows = block.tableRows
-    .map((row, rowIndex) => {
-      const cells = row.map((cell) => applyInlineMarkup(cell));
-      return `            <tr>
-${cells
-  .map((cell, cellIndex) => {
-    const isLastRow = rowIndex === block.tableRows.length - 1;
-    const styleParts = ["padding: 2px 4px"];
-    if (!isLastRow) {
-      styleParts.unshift("border-bottom: 1px solid #eee");
-    }
-    if (cells.length === 2) {
-      styleParts.push("width: 50%");
-    }
-    return `              <td style="${styleParts.join("; ")}">${cell}</td>`;
-  })
-  .join("\n")}
-            </tr>`;
-    })
+    .map((row) => `            <tr>
+${row.map((cell) => `              <td>${applyInlineMarkup(cell)}</td>`).join("\n")}
+            </tr>`)
     .join("\n");
+  const twoColumn = block.tableRows.every((row) => row.length === 2);
 
-  return `      <section class="${classes.join(" ")}">
-${header}${intro ? `${intro}\n` : ""}        <table style="width: 100%; border-collapse: collapse">
+  return `      <section class="${sectionClasses(block)}">
+${header}${intro ? `${intro}\n` : ""}        <div class="table-wrap">
+        <table class="data-table${twoColumn ? " data-table--split" : ""}">
 ${headerMarkup}          <tbody>
 ${bodyRows}
           </tbody>
         </table>
+        </div>
       </section>`;
 }
 
 function renderLinksBlock(block) {
-  const classes = ["panel", "reveal"];
-  if (block.delay) {
-    classes.push(block.delay);
-  }
-  block.extraClasses.forEach((value) => classes.push(value));
-
   const header = renderPanelHeader(block.heading, block.headerLinkLabel, block.headerLinkHref);
   const items = block.linkItems
-    .map(
-      (item) => `          <li>
-            <a ${renderLinkAttributes(item.href)}>${escapeHtml(item.label)}</a>
-          </li>`,
-    )
+    .map((item) => `          <li><a ${renderLinkAttributes(item.href)}>${escapeHtml(item.label)}${newTabNote(item.href)}</a></li>`)
     .join("\n");
 
-  return `      <section class="${classes.join(" ")}">
-${header}        <ul class="subtitle-list">
+  return `      <section class="${sectionClasses(block)}">
+${header}        <ul class="link-list">
 ${items}
         </ul>
       </section>`;
@@ -540,81 +566,93 @@ function isSpotifyEmbed(src) {
   return /^https:\/\/open\.spotify\.com\/embed\//i.test(String(src || ""));
 }
 
+function isYouTubeEmbed(src) {
+  return /^https:\/\/www\.youtube(?:-nocookie)?\.com\/embed\//i.test(String(src || ""));
+}
+
 function normalizePixelValue(value, fallback) {
   const match = String(value || fallback).trim().match(/^(\d+)(?:px)?$/i);
   return match ? match[1] : String(fallback);
 }
 
 function renderEmbedBlock(block) {
-  const classes = ["panel", "reveal"];
-  if (block.delay) {
-    classes.push(block.delay);
-  }
-  block.extraClasses.forEach((value) => classes.push(value));
-
   const header = renderPanelHeader(block.heading, block.headerLinkLabel, block.headerLinkHref);
   const caption = renderMarkup(block.text);
+  const intro = caption ? `${caption}\n` : "";
+
   if (/\.mp4(?:[?#]|$)/i.test(block.embedSrc)) {
-    return `      <section class="${classes.join(" ")}">
-${header}${caption ? `${caption}\n` : ""}        <video
-          src="${escapeHtml(block.embedSrc)}"
-          aria-label="${escapeHtml(block.embedTitle)}"
-          autoplay loop muted playsinline controls preload="metadata"
-          style="display: block; width: 100%; height: auto; border-radius: 12px"
-        ></video>
+    return `      <section class="${sectionClasses(block)}">
+${header}${intro}        <video class="embed-video" src="${escapeHtml(block.embedSrc)}" aria-label="${escapeHtml(block.embedTitle)}" muted loop playsinline controls preload="metadata" data-autoplay></video>
       </section>`;
   }
-  const spotifyEmbed = isSpotifyEmbed(block.embedSrc);
-  const height = block.embedHeight || (spotifyEmbed ? "352px" : "72vh");
-  const spotifyHeight = normalizePixelValue(height, "352");
-  const extraAttributes = spotifyEmbed
-    ? `          width="100%"\n          height="${spotifyHeight}"\n          frameborder="0"\n          allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"\n`
-    : "";
-  const style = spotifyEmbed
-    ? "width: 100%; border: 0; border-radius: 12px; background: #ffffff"
-    : `width: 100%; min-height: ${escapeHtml(height)}; border: 0; border-radius: 12px; background: #ffffff`;
 
-  return `      <section class="${classes.join(" ")}">
-${header}${caption ? `${caption}\n` : ""}        <iframe
-          src="${escapeHtml(block.embedSrc)}"
-          title="${escapeHtml(block.embedTitle)}"
-          loading="lazy"
-${extraAttributes}          allowfullscreen
-          style="${style}"
-        ></iframe>
+  const spotify = isSpotifyEmbed(block.embedSrc);
+  const youtube = isYouTubeEmbed(block.embedSrc);
+  const frameClass = spotify ? "embed-frame embed-frame--audio" : youtube ? "embed-frame embed-frame--video" : "embed-frame embed-frame--app";
+  const height = spotify ? `${normalizePixelValue(block.embedHeight, "352")}px` : (block.embedHeight || "72vh");
+  const style = spotify || youtube ? "" : ` style="--embed-height: ${escapeHtml(height)}"`;
+  const allow = spotify
+    ? ' allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"'
+    : youtube
+      ? ' allow="accelerometer; encrypted-media; gyroscope; picture-in-picture; fullscreen"'
+      : ' allow="accelerometer; gyroscope; fullscreen"';
+  const fallback = !spotify && !youtube && !block.headerLinkHref
+    ? `\n        <p class="embed-fallback"><a ${renderLinkAttributes(block.embedSrc)}>Open ${escapeHtml(block.embedTitle || "this embed")} in a new tab</a></p>`
+    : "";
+
+  const title = escapeHtml(block.embedTitle || block.heading || "Embedded content");
+  const iframe = `<iframe src="${escapeHtml(block.embedSrc)}" title="${title}" loading="lazy"${allow} allowfullscreen></iframe>`;
+  if (!spotify && !youtube) {
+    // Interactive apps load on request so they don't reserve a large blank area while loading.
+    return `      <section class="${sectionClasses(block)}">
+${header}${intro}        <div class="${frameClass} embed-frame--deferred"${style} data-embed="${escapeHtml(iframe)}">
+          <button type="button" class="button embed-load">Load the interactive sketch</button>
+          <noscript>${iframe}</noscript>
+        </div>${fallback}
+      </section>`;
+  }
+
+  return `      <section class="${sectionClasses(block)}">
+${header}${intro}        <div class="${frameClass}"${style}>
+          ${iframe}
+        </div>${fallback}
       </section>`;
 }
 
 function renderPdfBlock(block) {
-  const classes = ["panel", "reveal"];
-  if (block.delay) {
-    classes.push(block.delay);
-  }
-  block.extraClasses.forEach((value) => classes.push(value));
-
   const header = renderPanelHeader(block.heading, block.headerLinkLabel, block.headerLinkHref);
+  return `      <section class="${sectionClasses(block)}">
+${header}        <div class="embed-frame embed-frame--pdf">
+          <iframe src="${escapeHtml(block.pdfSrc)}" title="${escapeHtml(block.pdfTitle || "PDF document")}" loading="lazy"></iframe>
+        </div>
+        <p class="embed-fallback"><a ${renderLinkAttributes(block.pdfSrc)}>Open the PDF${block.pdfTitle ? `: ${escapeHtml(block.pdfTitle)}` : ""}</a></p>
+      </section>`;
+}
 
-  return `      <section class="${classes.join(" ")}">
-${header}        <iframe
-          src="${escapeHtml(block.pdfSrc)}"
-          title="${escapeHtml(block.pdfTitle)}"
-          loading="lazy"
-          style="width: 100%; min-height: 80vh; border: 0; border-radius: 12px; background: #ffffff"
-        ></iframe>
+function renderImageGridBlock(block) {
+  const items = block.linkItems.map((item) => {
+    if (videoSourceFor(item.href)) {
+      return `          <figure class="grid-item">
+${renderMediaElement(item.href, item.label, { controls: true, indent: "            " })}
+          </figure>`;
+    }
+    return `          <figure class="grid-item">
+            <img src="${escapeHtml(item.href)}" alt="${escapeHtml(item.label)}" width="640" height="360" loading="lazy" decoding="async" />
+          </figure>`;
+  }).join("\n");
+
+  return `      <section class="${sectionClasses(block)}">
+${renderPanelHeader(block.heading, block.headerLinkLabel, block.headerLinkHref)}        <div class="image-grid">
+${items}
+        </div>
+${renderMarkup(block.textAfterImage)}
       </section>`;
 }
 
 function renderBlock(block) {
   switch (block.type) {
     case "image-grid":
-      return `      <section class="panel reveal">
-${renderPanelHeader(block.heading, block.headerLinkLabel, block.headerLinkHref)}        <div class="image-grid">
-${block.linkItems.map((item) => `          <button type="button" class="image-grid-trigger" aria-label="Enlarge: ${escapeHtml(item.label)}" aria-haspopup="dialog">
-            <img src="${escapeHtml(item.href)}" alt="${escapeHtml(item.label)}" width="640" height="360" loading="lazy" />
-          </button>`).join("\n")}
-        </div>
-${renderMarkup(block.textAfterImage)}
-      </section>`;
+      return renderImageGridBlock(block);
     case "image":
       return renderImageBlock(block);
     case "table":
@@ -630,213 +668,182 @@ ${renderMarkup(block.textAfterImage)}
   }
 }
 
-function renderPageIntro(item, bodyClass) {
-  const classes = ["panel", "reveal", "delay-1"];
-  return `      <section class="${classes.join(" ")}">
-        <div class="panel-header">
-          <h2>${escapeHtml(item.title)}</h2>
-        </div>
-${item.pageIntroText ? `${renderMarkup(item.pageIntroText)}\n` : ""}      </section>`;
+function categoryOf(item) {
+  return item.kind === "writing" ? { label: "Interest", key: "interest" } : { label: "Project", key: "project" };
 }
 
-function renderWritingCard(item, variant) {
-  const href = variant === "home" ? item.homeHref : item.archiveHref;
-  const subtitle = variant === "home" ? item.homeCardText : item.archiveCardText;
-  const classAttribute = variant === "archive" && item.archiveCardClass ? ` class="${escapeHtml(item.archiveCardClass)}"` : "";
-  return `        <article class="item">
-          <div class="item-title-row">
-            <h3><a ${renderLinkAttributes(href)}>${escapeHtml(item.title)}</a></h3>
-          </div>
-          <p${classAttribute}>${applyInlineMarkup(subtitle)}</p>
-        </article>`;
+function displayDomain(href) {
+  try {
+    return new URL(href).hostname.replace(/^www\./, "");
+  } catch {
+    return "";
+  }
 }
 
-function renderProjectCardBody(text) {
-  return renderMarkup(text, { listClass: "subtitle-list" })
-    .replace(/^        /gm, "          ");
+function renderTag(item) {
+  const category = categoryOf(item);
+  return `<span class="tag tag--${category.key}">${category.label}</span>`;
 }
 
-function renderProjectCard(item, variant) {
-  const href = variant === "home" ? item.homeHref : item.archiveHref;
-  return `        <article class="item">
-          <div class="item-title-row">
-            <h3><a ${renderLinkAttributes(href)}>${escapeHtml(item.title)}</a></h3>
-          </div>
-${renderProjectCardBody(variant === "home" ? item.homeCardText : item.archiveCardText)}
-        </article>`;
+function renderCard(item, { href, text, headingLevel = 2, featured = false }) {
+  const external = isExternalUrl(href);
+  const domain = external ? displayDomain(href) : "";
+  const category = categoryOf(item);
+  const updated = item.homeTag ? ` <span class="tag tag--updated">${escapeHtml(item.homeTag)}</span>` : "";
+  const cta = external
+    ? `<span class="card__cta card__cta--external">Visit ${escapeHtml(domain)}<span aria-hidden="true"> ↗</span></span>`
+    : `<span class="card__cta">Read more<span aria-hidden="true"> →</span></span>`;
+  const body = renderMarkup(text).replace(/^        /gm, "            ");
+
+  const thumb = item.cardImage
+    ? `\n            <div class="card__media"><img src="${escapeHtml(item.cardImage)}" alt="" width="960" height="540" loading="${featured ? "eager" : "lazy"}" decoding="async" /></div>`
+    : "";
+  return `        <li class="card card--${category.key}${external ? " card--external" : ""}${featured ? " card--featured" : ""}" data-kind="${category.key}">
+          <article class="card__inner">${thumb}
+            <div class="card__content">
+            <div class="card__meta">${renderTag(item)}${updated}</div>
+            <h${headingLevel} class="card__title"><a class="card__link" ${renderLinkAttributes(href)}>${escapeHtml(item.title)}${external ? '<span class="visually-hidden"> (external site, opens in a new tab)</span>' : ""}</a></h${headingLevel}>
+            <div class="card__body">
+${body}
+            </div>
+            ${cta}
+            </div>
+          </article>
+        </li>`;
+}
+
+function listedEntries(content) {
+  return sortByImportance([...content.projects, ...content.writing].filter((item) => !item.hiddenFromListings));
 }
 
 function renderHomePage(content) {
-  const entries = sortByImportance([...content.projects, ...content.writing]
-    .filter((item) => !item.hiddenFromListings));
-  const cards = entries.map((item) => {
-    const category = item.kind === "writing" ? "Interest" : "Project";
-    return `        <article class="preview-post">
-          <span class="post-tag ${category.toLowerCase()}">${category}</span>
-          <h2><a ${renderLinkAttributes(item.homeHref)}>${escapeHtml(item.title)}</a>${item.homeTag ? ` <span class="post-tag post-update">${escapeHtml(item.homeTag)}</span>` : ""}</h2>
-${renderMarkup(item.homeCardText)}
-        </article>`;
-  }).join("\n");
-  const banner = renderHero();
+  const entries = listedEntries(content);
+  const counts = {
+    all: entries.length,
+    project: entries.filter((item) => item.kind !== "writing").length,
+    interest: entries.filter((item) => item.kind === "writing").length,
+  };
+  const cards = entries.map((item, index) => renderCard(item, { href: item.homeHref, text: item.homeCardText, featured: index === 0 })).join("\n");
 
-  return `<!DOCTYPE html>
-<html lang="en">
-${renderHead("Entangled Particles | Rob Schoen", "Projects and interests by Rob Schoen.", "https://entangledparticles.xyz/").replace('  </head>', '    <link rel="stylesheet" href="./homepage.css?v=logo2" />\n  </head>')}
-  <body class="home-unified">
-    <div class="floating-squares" aria-hidden="true"></div>
-    <a class="preview-skip" href="#posts">Skip to posts</a>
-    <div class="preview-shell">
-${banner}
-      <main id="posts" class="preview-feed" tabindex="0" aria-label="All posts">
+  const main = `    <main id="main" class="site-main site-main--wide">
+      <h1 class="visually-hidden">Projects and interests by Rob Schoen</h1>
+      <div class="feed-controls" hidden>
+        <div class="filter" role="group" aria-label="Show">
+          <button type="button" class="filter__button" data-filter="all" aria-pressed="true">All <span class="filter__count">${counts.all}</span></button>
+          <button type="button" class="filter__button" data-filter="project" aria-pressed="false">Projects <span class="filter__count">${counts.project}</span></button>
+          <button type="button" class="filter__button" data-filter="interest" aria-pressed="false">Interests <span class="filter__count">${counts.interest}</span></button>
+        </div>
+        <p class="filter__status visually-hidden" role="status" aria-live="polite"></p>
+      </div>
+      <ul class="card-grid" id="posts" aria-label="Posts">
 ${cards}
-      </main>
-      <footer class="preview-license">
-        Content licensed under <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noreferrer">CC BY 4.0</a>, unless otherwise stated.
-      </footer>
-    </div>
-    <script>
-      window.floatingBackgroundConfig = {
-        density: 22, shape: "square", size: { min: 100, max: 260 }, speed: { min: 35, max: 75 },
-      };
-    </script>
-    <script src="./background.js"></script>
-    <script src="./image-lightbox.js" defer></script>
-  </body>
-</html>
-`;
+      </ul>
+    </main>`;
+
+  return renderPage({
+    title: `${SITE_NAME} | Rob Schoen`,
+    description: "Projects and interests by Rob Schoen.",
+    shareUrl: "https://entangledparticles.xyz/",
+    bodyClass: "page-home",
+    main,
+  });
 }
 
-function renderProjectsPage(content) {
-  const projects = sortByImportance(content.projects.filter((item) => !item.hiddenFromListings)).map((item) => renderProjectCard(item, "archive")).join("\n");
-
-  return `<!DOCTYPE html>
-<html lang="en">
-${renderHead("Projects | Entangled Particles", "Project index for Entangled Particles.")}
-  <body>
-    <div class="floating-squares" aria-hidden="true"></div>
-
-    <main class="page">
-${renderHero()}
-
-      <section class="panel reveal delay-1" id="work">
-        <div class="panel-header">
-          <h2>Projects</h2>
-        </div>
-${projects}
+function renderArchivePage(content, kind) {
+  const isProjects = kind === "projects";
+  const heading = isProjects ? "Projects" : "Interests";
+  const items = sortByImportance(content[kind].filter((item) => !item.hiddenFromListings));
+  // Archives use the same destination and summary as the homepage so the two never drift apart.
+  const cards = items.map((item) => renderCard(item, { href: item.homeHref, text: item.homeCardText })).join("\n");
+  const main = `    <main id="main" class="site-main site-main--wide">
+      <nav class="breadcrumb" aria-label="Breadcrumb"><a href="./index.html"><span aria-hidden="true">←</span> All posts</a></nav>
+      <section class="intro" aria-labelledby="intro-title">
+        <h1 id="intro-title" class="intro__title">${heading}</h1>
+        <p class="intro__lead">${isProjects ? "Things I've built." : "Things I've been thinking about."}</p>
       </section>
-    </main>
+      <ul class="card-grid" aria-label="${heading}">
+${cards}
+      </ul>
+    </main>`;
 
-${renderFooter()}
-
-    <script>
-      window.floatingBackgroundConfig = {
-        density: 40,
-        shape: "square",
-        size: { min: 100, max: 280 },
-        speed: { min: 30, max: 70 },
-      };
-    </script>
-    <script src="./background.js"></script>
-    <script src="./image-lightbox.js" defer></script>
-  </body>
-</html>
-`;
+  return renderPage({
+    title: `${heading} | ${SITE_NAME}`,
+    description: `${heading} by Rob Schoen on ${SITE_NAME}.`,
+    bodyClass: "page-archive",
+    current: isProjects ? "projects" : "interests",
+    main,
+  });
 }
 
-function renderWritingIndex(content) {
-  const writing = sortByImportance(content.writing.filter((item) => !item.hiddenFromListings)).map((item) => renderWritingCard(item, "archive")).join("\n");
+function renderPostNav(item, sequence) {
+  const index = sequence.findIndex((entry) => entry.slug === item.slug && entry.kind === item.kind);
+  if (index < 0 || sequence.length < 2) {
+    return "";
+  }
+  const previous = sequence[index - 1];
+  const next = sequence[index + 1];
+  const link = (entry, direction) => entry
+    ? `        <a class="post-nav__link post-nav__link--${direction}" href="${escapeHtml(entry.homeHref)}" rel="${direction === "previous" ? "prev" : "next"}">
+          <span class="post-nav__label">${direction === "previous" ? '<span aria-hidden="true">← </span>Previous' : 'Next<span aria-hidden="true"> →</span>'}</span>
+          <span class="post-nav__title">${escapeHtml(entry.title)}</span>
+        </a>`
+    : `        <span class="post-nav__spacer"></span>`;
 
-  return `<!DOCTYPE html>
-<html lang="en">
-${renderHead("Interests | Entangled Particles", "Interests index for Entangled Particles.")}
-  <body class="writing-page">
-    <div class="floating-squares" aria-hidden="true"></div>
-
-    <main class="page">
-${renderHero()}
-
-      <section class="panel reveal delay-1" id="writing">
-        <div class="panel-header">
-          <h2>Interests</h2>
-        </div>
-${writing}
-      </section>
-    </main>
-
-${renderFooter()}
-
-    <script>
-      window.floatingBackgroundConfig = {
-        density: 40,
-        shape: "square",
-        size: { min: 100, max: 280 },
-        speed: { min: 30, max: 70 },
-      };
-    </script>
-    <script src="./background.js"></script>
-    <script src="./image-lightbox.js" defer></script>
-  </body>
-</html>
-`;
+  return `      <nav class="post-nav" aria-label="More posts">
+${link(previous, "previous")}
+${link(next, "next")}
+      </nav>`;
 }
 
-function renderDetailPage(item) {
-  const isWriting = item.kind === "writing";
-  const titleSuffix = isWriting ? "Entangled Particles" : "Rob Schoen";
-  const bodyClass = isWriting ? ' class="writing-page"' : item.slug === "isocrateez" ? ' class="isocrateez-page"' : "";
-  const blocks = item.blocks.map((block) => renderBlock(block)).join("\n\n");
+function renderDetailPage(item, sequence) {
+  // With no separate intro, a leading plain-text block (no heading, no image) becomes the post's opening.
+  const [firstBlock] = item.blocks;
+  const absorbFirst = !item.pageIntroText && firstBlock && firstBlock.type === "text" && !firstBlock.heading
+    && firstBlock.text.trim() && !isCtaImageTextBlock(firstBlock)
+    && (!firstBlock.imageSrc || String(firstBlock.imagePosition).toLowerCase() === "after");
+  // When the absorbed block also carries an image, the image (and any text after it) stays as its own panel.
+  const remainder = absorbFirst && firstBlock.imageSrc ? [{ ...firstBlock, text: "", imagePosition: "before" }] : [];
+  const bodyBlocks = absorbFirst ? [...remainder, ...item.blocks.slice(1)] : item.blocks;
+  const blocks = bodyBlocks.map((block) => renderBlock(block)).join("\n\n");
+  const intro = item.pageIntroText
+    ? `\n${renderMarkup(item.pageIntroText).replace(/<p>/, '<p class="lead">')}`
+    : absorbFirst ? `\n${renderMarkup(firstBlock.text)}` : "";
+  const main = `    <main id="main" class="site-main site-main--post${item.slug === "isocrateez" ? " post--isocrateez" : ""}">
+      <nav class="breadcrumb" aria-label="Breadcrumb"><a href="./index.html"><span aria-hidden="true">←</span> All posts</a></nav>
+      <article class="post">
+      <header class="panel post-header">
+        ${renderTag(item)}
+        <h1>${escapeHtml(item.title)}</h1>${intro}
+      </header>
+${blocks}
+      </article>
+${renderPostNav(item, sequence)}
+    </main>`;
 
-  return `<!DOCTYPE html>
-<html lang="en">
-${renderHead(`${item.title} | ${titleSuffix}`, item.metaDescription, item.shareImage ? `https://entangledparticles.xyz/${item.slug}.html` : undefined, item.shareImage, "article")}
-  <body${bodyClass}>
-    <div class="floating-squares" aria-hidden="true"></div>
-
-    <main class="page">
-${renderHero()}
-
-${renderPageIntro(item)}
-${blocks ? `\n\n${blocks}` : ""}
-    </main>
-
-${renderFooter()}
-
-    <script>
-      window.floatingBackgroundConfig = {
-        density: 40,
-        shape: "square",
-        size: { min: 100, max: 280 },
-        speed: { min: 30, max: 70 },
-      };
-    </script>
-    <script src="./background.js"></script>
-    <script src="./image-lightbox.js" defer></script>
-  </body>
-</html>
-`;
+  return renderPage({
+    title: `${item.title} | ${SITE_NAME}`,
+    description: item.metaDescription,
+    shareUrl: item.shareImage ? `https://entangledparticles.xyz/${item.slug}.html` : undefined,
+    shareImage: item.shareImage,
+    shareType: "article",
+    bodyClass: `page-post page-post--${item.kind === "writing" ? "interest" : "project"}`,
+    noindex: isExternalUrl(item.homeHref),
+    main,
+  });
 }
 
 export async function generateSite(contentInput) {
   const content = contentInput ? validateSiteContent(contentInput) : await loadSiteContent();
+  const sequence = listedEntries(content).filter((item) => item.detailPageEnabled && !isExternalUrl(item.homeHref));
 
   await fs.writeFile(path.join(rootDir, "index.html"), renderHomePage(content), "utf8");
-  await fs.writeFile(path.join(rootDir, "projects.html"), renderProjectsPage(content), "utf8");
-  await fs.writeFile(path.join(rootDir, "writing.html"), renderWritingIndex(content), "utf8");
+  await fs.writeFile(path.join(rootDir, "projects.html"), renderArchivePage(content, "projects"), "utf8");
+  await fs.writeFile(path.join(rootDir, "writing.html"), renderArchivePage(content, "writing"), "utf8");
 
   await Promise.all(
-    content.writing
+    [...content.writing, ...content.projects]
       .filter((item) => item.detailPageEnabled)
-      .map((item) =>
-      fs.writeFile(path.join(rootDir, `${item.slug}.html`), renderDetailPage(item), "utf8"),
-      ),
-  );
-
-  await Promise.all(
-    content.projects
-      .filter((item) => item.detailPageEnabled)
-      .map((item) =>
-        fs.writeFile(path.join(rootDir, `${item.slug}.html`), renderDetailPage(item), "utf8"),
-      ),
+      .map((item) => fs.writeFile(path.join(rootDir, `${item.slug}.html`), renderDetailPage(item, sequence), "utf8")),
   );
 }
 

@@ -8,138 +8,116 @@
       name="description"
       content="Harvard Law Professor Richard M. Re argues that legal ideologies are not permanently tied to either judicial constraint or judicial discretion."
     />
+    <meta name="theme-color" content="#b30000" />
     <link rel="icon" type="image/png" href="./nano.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,400;0,6..12,600;0,6..12,700;1,6..12,400&family=Quicksand:wght@500;600;700&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="./styles.css" />
+    <link rel="stylesheet" href="./styles.css?v=5" />
   </head>
-  <body class="writing-page">
+  <body class="page-post page-post--interest">
+    <a class="skip-link" href="#main">Skip to content</a>
     <div class="floating-squares" aria-hidden="true"></div>
-
-    <main class="page">
-      <section class="hero top-hero candy-red">
-        <div class="top-hero-row">
-          <a href="./index.html" class="site-title">
-            <img src="./assets/entangledParticlesLogo_transparent_white.png" class="site-title-logo" alt="" />
-            <span class="visually-hidden">Entangled Particles</span>
+    <div class="site-shell">
+    <header class="site-header">
+      <div class="site-header__inner">
+        <a href="./index.html" class="site-title" aria-label="Entangled Particles: home">
+          <img src="./assets/entangledParticlesLogo_transparent_white.png" class="site-title-logo" alt="" width="2172" height="724" />
+        </a>
+        <nav class="site-links" aria-label="Site">
+          <a class="site-link site-link--section" href="./projects.html">
+            <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M1 1h6v6H1V1zm8 0h6v6H9V1zM1 9h6v6H1V9zm8 0h6v6H9V9z"/></svg>
+            <span>Projects</span>
           </a>
-          <div class="social-row header-social">
-            <a class="social-icon" href="https://github.com/millxing?tab=repositories" target="_blank" rel="noreferrer" aria-label="GitHub" title="GitHub">
-              <svg viewBox="0 0 16 16" aria-hidden="true">
-                <path d="M8 0C3.58 0 0 3.58 0 8a8 8 0 0 0 5.47 7.59c.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.5-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.5 7.5 0 0 1 4 0c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8"/>
-              </svg>
-            </a>
-            <a class="social-icon" href="https://www.linkedin.com/in/robschoen/" target="_blank" rel="noreferrer" aria-label="LinkedIn" title="LinkedIn">
-              <svg viewBox="0 0 16 16" aria-hidden="true">
-                <path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854V1.146zM4.943 13.5V6.169H2.542V13.5h2.4zM3.743 5.168c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248-.822 0-1.359.54-1.359 1.248 0 .694.521 1.248 1.327 1.248h.016zM13.458 13.5V9.359c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016a5.54 5.54 0 0 1 .016-.025V6.169h-2.4c.03.694 0 7.331 0 7.331h2.4v-4.094c0-.219.016-.438.08-.594.175-.438.574-.891 1.245-.891.878 0 1.23.672 1.23 1.656V13.5h2.4z"/>
-              </svg>
-            </a>
-            <a class="social-icon" href="mailto:robschoen.robschoen@gmail.com" aria-label="Email" title="Email">
-              <svg viewBox="0 0 16 16" aria-hidden="true">
-                <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4zm2-.5a.5.5 0 0 0-.5.5v.217l6.5 3.9 6.5-3.9V4a.5.5 0 0 0-.5-.5H2zm12.5 2.458-4.796 2.878 4.796 3.264V5.958zM14.204 12.5 8.68 8.74 8 9.147l-.681-.408L1.796 12.5h12.408zM1.5 12.1l4.796-3.264L1.5 5.958V12.1z"/>
-              </svg>
-            </a>
-            <a class="social-icon" href="https://www.dropbox.com/scl/fi/demzlgct5g7ve15c9kz8j/resume_Rob-Schoen.docx?rlkey=ylomjukk1df5zfzfx1qbh2jus&dl=0" target="_blank" rel="noreferrer" aria-label="Resume" title="Resume">
-              <svg viewBox="0 0 16 16" aria-hidden="true">
-                <path d="M4 0h5.5L14 4.5V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2zm5 1.5V5h3.5L9 1.5z"/>
-                <path d="M5 7.5h6v1H5v-1zm0 2h6v1H5v-1zm0 2h4v1H5v-1z"/>
-              </svg>
-            </a>
-          </div>
-        </div>
-      </section>
-
-      <section class="panel reveal delay-1">
-        <div class="panel-header">
-          <h2>Legal Realignment at the Supreme Court</h2>
-        </div>
-        <p>March, 2026</p>
-        <p>Harvard Law Professor Richard M. Re has a really interesting thesis about the Supreme Court. His claim is that legal ideologies are not permanently connected to the principles of &quot;constraint&quot; (formalism, textualism, strict rules) or &quot;discretion&quot; (flexibility, purposivism, judicial empowerment). The side in power favors judicial discretion because it gives them the flexibility to implement the partisan agenda they favor. The side out of power favors judicial constraint because it limits the power of the majority. His papers <a href="https://lawreview.uchicago.edu/print-archive/legal-realignment" target="_blank" rel="noreferrer">Legal Realignment</a> (2024) and <a href="https://harvardlawreview.org/print/vol-139/to-a-conservative-warren-court/" target="_blank" rel="noreferrer">Foreword: To A Conservative Warren Court</a> (2025) explore this idea in depth and analyze it in the context of today&#39;s Supreme Court.</p>
+          <a class="site-link site-link--section" href="./writing.html">
+            <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M8 0a5.5 5.5 0 0 0-3.2 9.97c.43.31.7.8.7 1.33V12h5v-.7c0-.53.27-1.02.7-1.33A5.5 5.5 0 0 0 8 0zM5.5 13h5v1a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-1z"/></svg>
+            <span>Interests</span>
+          </a>
+          <span class="site-links__divider" aria-hidden="true"></span>
+          <a class="site-link" href="https://github.com/millxing?tab=repositories" target="_blank" rel="noreferrer" aria-label="GitHub (opens in a new tab)">
+            <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M8 0C3.58 0 0 3.58 0 8a8 8 0 0 0 5.47 7.59c.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.5-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.5 7.5 0 0 1 4 0c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8"/></svg>
+            <span>GitHub</span>
+          </a>
+          <a class="site-link" href="https://www.linkedin.com/in/robschoen/" target="_blank" rel="noreferrer" aria-label="LinkedIn (opens in a new tab)">
+            <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854V1.146zM4.943 13.5V6.169H2.542V13.5h2.4zM3.743 5.168c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248-.822 0-1.359.54-1.359 1.248 0 .694.521 1.248 1.327 1.248h.016zM13.458 13.5V9.359c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016a5.54 5.54 0 0 1 .016-.025V6.169h-2.4c.03.694 0 7.331 0 7.331h2.4v-4.094c0-.219.016-.438.08-.594.175-.438.574-.891 1.245-.891.878 0 1.23.672 1.23 1.656V13.5h2.4z"/></svg>
+            <span>LinkedIn</span>
+          </a>
+          <a class="site-link" href="mailto:robschoen.robschoen@gmail.com">
+            <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4zm2-.5a.5.5 0 0 0-.5.5v.217l6.5 3.9 6.5-3.9V4a.5.5 0 0 0-.5-.5H2zm12.5 2.458-4.796 2.878 4.796 3.264V5.958zM14.204 12.5 8.68 8.74 8 9.147l-.681-.408L1.796 12.5h12.408zM1.5 12.1l4.796-3.264L1.5 5.958V12.1z"/></svg>
+            <span>Email</span>
+          </a>
+          <a class="site-link" href="https://www.dropbox.com/scl/fi/demzlgct5g7ve15c9kz8j/resume_Rob-Schoen.docx?rlkey=ylomjukk1df5zfzfx1qbh2jus&amp;dl=0" target="_blank" rel="noreferrer" aria-label="Resume (opens in a new tab)">
+            <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M4 0h5.5L14 4.5V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2zm5 1.5V5h3.5L9 1.5z"/><path d="M5 7.5h6v1H5v-1zm0 2h6v1H5v-1zm0 2h4v1H5v-1z"/></svg>
+            <span>Resume</span>
+          </a>
+        </nav>
+      </div>
+    </header>
+    <main id="main" class="site-main site-main--post">
+      <nav class="breadcrumb" aria-label="Breadcrumb"><a href="./index.html"><span aria-hidden="true">←</span> All posts</a></nav>
+      <article class="post">
+      <header class="panel post-header">
+        <span class="tag tag--interest">Interest</span>
+        <h1>Legal Realignment at the Supreme Court</h1>
+        <p class="lead">March, 2026</p>
+        <p>Harvard Law Professor Richard M. Re has a really interesting thesis about the Supreme Court. His claim is that legal ideologies are not permanently connected to the principles of &quot;constraint&quot; (formalism, textualism, strict rules) or &quot;discretion&quot; (flexibility, purposivism, judicial empowerment). The side in power favors judicial discretion because it gives them the flexibility to implement the partisan agenda they favor. The side out of power favors judicial constraint because it limits the power of the majority. His papers <a href="https://lawreview.uchicago.edu/print-archive/legal-realignment" target="_blank" rel="noreferrer">Legal Realignment<span class="visually-hidden"> (opens in a new tab)</span></a> (2024) and <a href="https://harvardlawreview.org/print/vol-139/to-a-conservative-warren-court/" target="_blank" rel="noreferrer">Foreword: To A Conservative Warren Court<span class="visually-hidden"> (opens in a new tab)</span></a> (2025) explore this idea in depth and analyze it in the context of today&#39;s Supreme Court.</p>
         <p>As an untrained, casual observer of the Supreme Court, I was always confused by the legal philosophies supposedly underlying Supreme Court decisions. It just seemed that principled adherence to those philosophies should result in more opinions that go against the partisan leanings of the justices.</p>
-      </section>
-
-
-      <section class="panel reveal delay-2">
-        <img
-          src="./assets/RE_X_2026-03-03.png"
-          alt="Update 2026-03-02: Mirabelli v. Bonta"
-          style="width: 100%; height: auto; border: 0; border-radius: 12px; background: #ffffff"
-        />
+      </header>
+      <section class="panel">
+        <figure class="media media--full-white">
+          <img src="./assets/RE_X_2026-03-03.png" alt="Update 2026-03-02: Mirabelli v. Bonta" loading="lazy" decoding="async" />
+        </figure>
         <p>Update 2026-03-02: The Supreme Court vacated a U.S. Appeals Court stay (9th Circuit) in Mirabelli v. Bonta. This ruling reinstates a federal district court ruling that prohibits California schools from concealing a child&#39;s gender presentation from their parents and requires the schools to follow parental instruction regarding the names and pronouns that their children use.</p>
         <p>This ruling is consistent with Re&#39;s thesis of legal realignment in that conservatives are basing the ruling in part on &quot;substantve due process&quot;, specifically in Barrett&#39;s concurrence (joined by Roberts and Kavanaugh). The conservatives usually argue that judges shouldn&#39;t find &quot;unexpressed rights&quot; in the Constitution (the basis for overturning Roe. v. Wade). In this case, they were OK with protecting the unexpressed rights of parents.</p>
       </section>
 
-      <section class="panel reveal delay-3">
+      <section class="panel">
         <div class="panel-header">
           <a href="./assets/legal_realignment.pdf">Open Legal Realignment (2024) PDF</a>
         </div>
-        <iframe
-          src="./assets/legal_realignment.pdf"
-          title="Legal Realignment PDF"
-          loading="lazy"
-          style="width: 100%; min-height: 80vh; border: 0; border-radius: 12px; background: #ffffff"
-        ></iframe>
+        <div class="embed-frame embed-frame--pdf">
+          <iframe src="./assets/legal_realignment.pdf" title="Legal Realignment PDF" loading="lazy"></iframe>
+        </div>
+        <p class="embed-fallback"><a href="./assets/legal_realignment.pdf">Open the PDF: Legal Realignment PDF</a></p>
       </section>
 
-      <section class="panel reveal delay-4">
+      <section class="panel">
         <p>This Advisory Opinions podcast features an interview with Richard Re about his Conservative Warren Court essay. Re&#39;s latest paper analogizes today&#39;s Supreme Court with the Warren Court, in that they both had a durable ideologically aligned majority acting as a &quot;corrective force&quot; to reshape American society and overturn long-standing precedents.</p>
-        <iframe
-          src="https://open.spotify.com/embed/episode/7Jlz55uj6BZ7khnFMf4UYX?utm_source=generator"
-          title="Advisory Opinions episode on Legal Realignment"
-          loading="lazy"
-          width="100%"
-          height="352"
-          frameborder="0"
-          allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-          allowfullscreen
-          style="width: 100%; border: 0; border-radius: 12px; background: #ffffff"
-        ></iframe>
+        <div class="embed-frame embed-frame--audio">
+          <iframe src="https://open.spotify.com/embed/episode/7Jlz55uj6BZ7khnFMf4UYX?utm_source=generator" title="Advisory Opinions episode on Legal Realignment" loading="lazy" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" allowfullscreen></iframe>
+        </div>
       </section>
 
-      <section class="panel reveal delay-5">
+      <section class="panel">
         <div class="panel-header">
           <a href="./assets/conserv_warren_court.pdf">Open Foreword: To A Conservative Warren Court (2025) PDF</a>
         </div>
-        <iframe
-          src="./assets/conserv_warren_court.pdf"
-          title="Foreword: To A Conservative Warren Court PDF"
-          loading="lazy"
-          style="width: 100%; min-height: 80vh; border: 0; border-radius: 12px; background: #ffffff"
-        ></iframe>
+        <div class="embed-frame embed-frame--pdf">
+          <iframe src="./assets/conserv_warren_court.pdf" title="Foreword: To A Conservative Warren Court PDF" loading="lazy"></iframe>
+        </div>
+        <p class="embed-fallback"><a href="./assets/conserv_warren_court.pdf">Open the PDF: Foreword: To A Conservative Warren Court PDF</a></p>
       </section>
+      </article>
+
     </main>
-
     <footer class="site-footer">
-      <p>
-        Content on this site is licensed under
-        <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noreferrer">CC BY 4.0</a>
-        unless otherwise stated.
-      </p>
-      <p>
-        <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noreferrer">
-          Creative Commons Attribution 4.0 International License
-        </a>
-      </p>
-      <p>
-        <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noreferrer">
-          https://creativecommons.org/licenses/by/4.0/
-        </a>
-      </p>
+      <p>Contact: <a href="mailto:robschoen.robschoen@gmail.com">robschoen.robschoen@gmail.com</a><br />Content licensed under <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noreferrer">CC BY 4.0<span class="visually-hidden"> (opens in a new tab)</span></a> unless otherwise stated.</p>
+      <nav class="footer-links" aria-label="Archives">
+        <a href="./index.html">All posts</a>
+        <a href="./projects.html">Project archive</a>
+        <a href="./writing.html">Interest archive</a>
+      </nav>
     </footer>
-
+    </div>
     <script>
       window.floatingBackgroundConfig = {
-        density: 40,
-        shape: "square",
-        size: { min: 100, max: 280 },
-        speed: { min: 30, max: 70 },
+        density: 18, shape: "square", size: { min: 100, max: 260 }, speed: { min: 30, max: 65 },
       };
     </script>
-    <script src="./background.js"></script>
-    <script src="./image-lightbox.js" defer></script>
+    <script src="./background.js?v=5"></script>
+    <script src="./site.js?v=5" defer></script>
   </body>
 </html>

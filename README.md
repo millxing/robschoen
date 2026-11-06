@@ -70,7 +70,8 @@ Current Writing order/index:
 ## File map
 
 - `index.html`: combined Projects and Interests homepage, generated from site content
-- `homepage.css`: unified homepage layout and styling
-- `index_old.html`: archived homepage layout (not regenerated)
-- `styles.css`: design system and layout styles
+- `index_old.html`: archived homepage layout (not regenerated; uses `styles-legacy.css`)
+- `styles.css`: design tokens, layout and component styles for every generated page
+- `styles-legacy.css`: frozen copy of the pre-redesign styles for archived pages
+- `site.js`: image enlargement, looping-video playback and homepage filters
 - `background.js`: param-driven floating background engine
