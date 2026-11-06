@@ -11,7 +11,7 @@
     shape: "square",
     size: { min: 110, max: 260 },
     speed: { min: 26, max: 62 }, // px/sec
-    opacity: { min: 0.22, max: 0.5 },
+    opacity: { min: 0.1, max: 0.26 },
     rotation: { min: -22, max: 22 },
     edgePadding: 220,
     respawnDelayMs: { min: 120, max: 1000 },
