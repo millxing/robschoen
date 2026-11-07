@@ -759,7 +759,6 @@ function renderArchivePage(content, kind) {
       <nav class="breadcrumb" aria-label="Breadcrumb"><a href="./index.html"><span aria-hidden="true">←</span> All posts</a></nav>
       <section class="intro" aria-labelledby="intro-title">
         <h1 id="intro-title" class="intro__title">${heading}</h1>
-        <p class="intro__lead">${isProjects ? "Things I've built." : "Things I've been thinking about."}</p>
       </section>
       <ul class="card-grid" aria-label="${heading}">
 ${cards}
