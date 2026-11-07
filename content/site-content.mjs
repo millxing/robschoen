@@ -1033,7 +1033,7 @@ const siteContent = {
       "kind": "projects",
       "title": "iSocrateez",
       "slug": "isocrateez",
-      "importance": 70,
+      "importance": 92,
       "hiddenFromListings": false,
       "metaDescription": "Personalized AI-generated ethical advice, tailored to your ethical outlook and philosophy background.",
       "homeTag": "Updated",
