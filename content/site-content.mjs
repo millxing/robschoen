@@ -1000,8 +1000,8 @@ const siteContent = {
       "archiveCardClass": "",
       "pageIntroText": "App for viewing Town Meeting votes and how Town Meeting Members voted",
       "detailPageEnabled": true,
-      "homeHref": "https://millxing.github.io/TM/TMMvotes.html",
-      "archiveHref": "https://millxing.github.io/TM/TMMvotes.html",
+      "homeHref": "https://brooklinetownmeeting.org",
+      "archiveHref": "https://brooklinetownmeeting.org",
       "blocks": [
         {
           "type": "text",
