@@ -136,6 +136,11 @@ function renderMarkup(text, options = {}) {
         return `        <ul class="${listClass}">\n${items}\n        </ul>`;
       }
 
+      const password = block.trim().match(/^\[password\]([\s\S]*?)\[\/password\]$/i);
+      if (password) {
+        return `        <details class="text-center cta"><summary>Show password</summary><p><code>${escapeHtml(password[1])}</code></p></details>`;
+      }
+
       const centered = block.trim().match(/^\[center\]([\s\S]*?)\[\/center\]$/i);
       if (centered) {
         const isCta = /^\s*\[link /i.test(centered[1]);

@@ -17,6 +17,7 @@
   - `[b]bold[/b]`
   - `[i]italic[/i]`
   - `[code]code[/code]`
+  - `[password]password[/password]` in its own paragraph for a click-to-reveal password
   - `[link https://example.com]link text[/link]`
   - `[center]centered text[/center]`
   - `[cta_image src="./assets/example.png" alt="Description" href="https://example.com"]PLAY THE GAME[/cta_image]`
