@@ -1,4 +1,4 @@
-(() => {
+function startFloatingSquares() {
   const layer = document.querySelector(".floating-squares");
   if (!layer) {
     return;
@@ -310,4 +310,64 @@
   if (running) {
     syncParticleCount();
   }
+}
+
+// Background mode switch: "3d" (default, tumbling L-triomino rep-tiles) or "squares".
+// Set with ?bg=3d or ?bg=squares (remembered in localStorage), or press Shift+B to toggle.
+(() => {
+  const STORAGE_KEY = "ep-bg-mode";
+  const scriptSrc = document.currentScript ? document.currentScript.src : "./background.js";
+  const THREE_SRC = "https://cdn.jsdelivr.net/npm/three@0.147.0/build/three.min.js";
+
+  function readMode() {
+    let mode = null;
+    try {
+      mode = new URLSearchParams(window.location.search).get("bg");
+      if (mode === "3d" || mode === "squares") {
+        localStorage.setItem(STORAGE_KEY, mode);
+        return mode;
+      }
+      mode = localStorage.getItem(STORAGE_KEY);
+    } catch (error) {
+      mode = null;
+    }
+    return mode === "squares" ? "squares" : "3d";
+  }
+
+  function loadScript(src) {
+    return new Promise((resolve, reject) => {
+      const el = document.createElement("script");
+      el.src = src;
+      el.onload = resolve;
+      el.onerror = reject;
+      document.head.appendChild(el);
+    });
+  }
+
+  document.addEventListener("keydown", event => {
+    if (!event.shiftKey || event.key !== "B" || event.metaKey || event.ctrlKey || event.altKey) return;
+    const t = event.target;
+    if (t && (t.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName))) return;
+    const next = readMode() === "3d" ? "squares" : "3d";
+    const url = new URL(window.location.href);
+    url.searchParams.set("bg", next);
+    window.location.href = url.toString();
+  });
+
+  if (readMode() !== "3d") {
+    startFloatingSquares();
+    return;
+  }
+
+  const layer = document.querySelector(".floating-squares");
+  if (!layer) return;
+  const local3d = new URL("background3d.js?v=4", scriptSrc).toString();
+  (window.THREE ? Promise.resolve() : loadScript(THREE_SRC))
+    .then(() => loadScript(local3d))
+    .then(() => {
+      if (!window.startTriominoBackground(layer, window.floatingBackgroundConfig || {})) {
+        startFloatingSquares();
+      }
+    })
+    .catch(() => startFloatingSquares());
 })();
