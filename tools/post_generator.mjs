@@ -148,7 +148,8 @@ function renderMarkup(text, options = {}) {
       }
 
       const paragraph = lines.map((line) => applyInlineMarkup(line.trim())).join("<br />");
-      return `        <p${lineListClass(block)}>${paragraph}</p>`;
+      const paragraphClass = lineListClass(block) || (options.introProse && !parseSingleLinkText(block) ? ' class="lead"' : "");
+      return `        <p${paragraphClass}>${paragraph}</p>`;
     })
     .join("\n");
 }
@@ -810,7 +811,9 @@ function renderDetailPage(item, sequence) {
   const bodyBlocks = absorbFirst ? [...remainder, ...item.blocks.slice(1)] : item.blocks;
   const blocks = bodyBlocks.map((block) => renderBlock(block)).join("\n\n");
   const intro = item.pageIntroText
-    ? `\n${renderMarkup(item.pageIntroText).replace(/<p>/, '<p class="lead">')}`
+    ? "\n" + (item.kind === "projects"
+      ? renderMarkup(item.pageIntroText, { introProse: true })
+      : renderMarkup(item.pageIntroText).replace(/<p>/, '<p class="lead">'))
     : absorbFirst ? `\n${renderMarkup(firstBlock.text)}` : "";
   const main = `    <main id="main" class="site-main site-main--post${item.slug === "isocrateez" ? " post--isocrateez" : ""}">
       <nav class="breadcrumb" aria-label="Breadcrumb"><a href="./index.html"><span aria-hidden="true">←</span> All posts</a></nav>
