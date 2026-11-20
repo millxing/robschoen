@@ -594,7 +594,7 @@ function renderEmbedBlock(block) {
     const playback = block.extraClasses.includes("play-on-demand")
       ? 'playsinline controls preload="metadata"'
       : 'muted loop playsinline controls preload="metadata" data-autoplay';
-    const video = `<videoclass="embed-video" src="${escapeHtml(block.embedSrc)}"${poster} aria-label="${escapeHtml(block.embedTitle)}" ${playback}></video>`;
+    const video = `<video class="embed-video" src="${escapeHtml(block.embedSrc)}"${poster} aria-label="${escapeHtml(block.embedTitle)}" ${playback}></video>`;
     const media = block.caption
       ? `<figure class="media media--full">${video}<figcaption>${applyInlineMarkup(block.caption)}</figcaption></figure>`
       : video;
