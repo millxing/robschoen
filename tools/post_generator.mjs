@@ -587,11 +587,15 @@ function renderEmbedBlock(block) {
   const intro = caption ? `${caption}\n` : "";
 
   if (/\.mp4(?:[?#]|$)/i.test(block.embedSrc)) {
+    const posterSrc = block.embedSrc.replace(/\.mp4$/i, "-poster.jpg");
+    const poster = posterSrc.startsWith("./") && posterSrc.endsWith("-poster.jpg") && existsSync(path.join(rootDir, posterSrc))
+      ? ` poster="${escapeHtml(posterSrc)}"`
+      : "";
     const playback = block.extraClasses.includes("play-on-demand")
       ? 'playsinline controls preload="metadata"'
       : 'muted loop playsinline controls preload="metadata" data-autoplay';
     return `      <section class="${sectionClasses(block)}">
-${header}${intro}        <video class="embed-video" src="${escapeHtml(block.embedSrc)}" aria-label="${escapeHtml(block.embedTitle)}" ${playback}></video>
+${header}${intro}        <video class="embed-video" src="${escapeHtml(block.embedSrc)}"${poster} aria-label="${escapeHtml(block.embedTitle)}" ${playback}></video>
       </section>`;
   }
 
