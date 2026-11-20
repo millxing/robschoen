@@ -587,8 +587,11 @@ function renderEmbedBlock(block) {
   const intro = caption ? `${caption}\n` : "";
 
   if (/\.mp4(?:[?#]|$)/i.test(block.embedSrc)) {
+    const playback = block.extraClasses.includes("play-on-demand")
+      ? 'playsinline controls preload="metadata"'
+      : 'muted loop playsinline controls preload="metadata" data-autoplay';
     return `      <section class="${sectionClasses(block)}">
-${header}${intro}        <video class="embed-video" src="${escapeHtml(block.embedSrc)}" aria-label="${escapeHtml(block.embedTitle)}" muted loop playsinline controls preload="metadata" data-autoplay></video>
+${header}${intro}        <video class="embed-video" src="${escapeHtml(block.embedSrc)}" aria-label="${escapeHtml(block.embedTitle)}" ${playback}></video>
       </section>`;
   }
 

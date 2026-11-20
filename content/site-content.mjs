@@ -334,6 +334,14 @@ const siteContent = {
           "linkItems": []
         },
         {
+          "type": "embed",
+          "embedSrc": "./assets/lewitt-tour-03.mp4",
+          "embedTitle": "Sol LeWitt wall drawing tour",
+          "extraClasses": [
+            "play-on-demand"
+          ]
+        },
+        {
           "type": "image",
           "delay": "delay-3",
           "heading": "",
