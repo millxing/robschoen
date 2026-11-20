@@ -741,6 +741,27 @@ const siteContent = {
   "projects": [
     {
       "kind": "projects",
+      "title": "Iran Evidence Monitor",
+      "slug": "iran_evidence_monitor",
+      "importance": 75,
+      "hiddenFromListings": false,
+      "metaDescription": "What evidence supports or challenges six claims drawn from Robert Pape’s work on Iran?",
+      "cardImage": "./assets/thumbs/iran_evidence_monitor.jpg",
+      "homeCardText": "What evidence supports or challenges six claims drawn from Robert Pape’s work on Iran?",
+      "archiveCardText": "What evidence supports or challenges six claims drawn from Robert Pape’s work on Iran?",
+      "pageIntroText": "I built the Iran Evidence Monitor to track six claims drawn from Robert Pape’s work on Iran. Two of them explain why I wanted to track each claim separately. Can Iran disrupt shipping through the Strait of Hormuz? And if it can, does that give it enough leverage to win lasting political concessions? A drop in ship traffic can help answer the first question. The second takes evidence of an actual concession that holds up over time.",
+      "detailPageEnabled": true,
+      "homeHref": "./iran_evidence_monitor.html",
+      "archiveHref": "./iran_evidence_monitor.html",
+      "blocks": [
+        {
+          "type": "text",
+          "text": "For each claim, you can read the sources, see what else might explain the observations, and check why the rating changed or stayed the same. The ratings are provisional. They run from −5 for evidence that strongly challenges a claim to +5 for evidence that strongly supports it.\n\n[link https://millxing.github.io/iran-evidence-monitor/]Explore the Iran Evidence Monitor[/link]\n\n[link https://www.youtube.com/watch?v=LYtNuRk8X3g]Watch Robert Pape’s lecture on ending the Iran war[/link]"
+        }
+      ]
+    },
+    {
+      "kind": "projects",
       "title": "NFL and NBA Futures Trackers",
       "slug": "futures_trackers",
       "importance": 95,
