@@ -235,6 +235,7 @@ ${serializeLinksLines(block)}
       src: block.embedSrc,
       title: block.embedTitle,
       height: block.embedHeight,
+      caption: block.caption,
     })}
 ${String(block.text || "").trim()}
 [/embed]`;
@@ -409,6 +410,7 @@ function directiveToBlock(name, attrs, content) {
       embedSrc: attrs.src || "",
       embedTitle: attrs.title || "",
       embedHeight: attrs.height || "",
+      caption: attrs.caption || "",
       imageSrc: "",
       imageAlt: "",
       imageStyle: "full",

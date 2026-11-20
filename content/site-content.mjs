@@ -336,6 +336,7 @@ const siteContent = {
         {
           "type": "embed",
           "embedSrc": "./assets/lewitt-tour-03.mp4",
+          "caption": "Here's a ~3min video I made with Claude about the MASS MoCA exhibit.",
           "embedTitle": "Sol LeWitt wall drawing tour",
           "extraClasses": [
             "play-on-demand"
