@@ -380,7 +380,7 @@ ${links}
 
 function renderFooter({ showArchive = true } = {}) {
   return `    <footer class="site-footer">
-      <p>Contact: <a href="mailto:robschoen.robschoen@gmail.com">robschoen.robschoen@gmail.com</a><br />Content licensed under <a ${renderLinkAttributes("https://creativecommons.org/licenses/by/4.0/")}>CC BY 4.0<span class="visually-hidden"> (opens in a new tab)</span></a> unless otherwise stated.</p>${showArchive ? `
+      <p>Content licensed under <a ${renderLinkAttributes("https://creativecommons.org/licenses/by/4.0/")}>CC BY 4.0<span class="visually-hidden"> (opens in a new tab)</span></a> unless otherwise stated.</p>${showArchive ? `
       <nav class="footer-links" aria-label="Archives">
         <a href="./index.html">All posts</a>
         <a href="./projects.html">Project archive</a>
