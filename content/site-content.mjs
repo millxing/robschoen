@@ -423,6 +423,10 @@ const siteContent = {
             {
               "label": "Conversation, Sol LeWitt Wall Drawings: Maintaining a Legacy",
               "href": "https://youtu.be/UNbOVR4kw4U"
+            },
+            {
+              "label": "Conceptual Artist Sol LeWitt Didn’t Paint. He Imagined.",
+              "href": "https://floydhome.com/blogs/stories/conceptual-artist-sol-lewitt-didn-t-paint-he-imagined"
             }
           ]
         },
