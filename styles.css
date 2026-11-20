@@ -538,6 +538,13 @@ strong {
   transition: transform 300ms ease;
 }
 
+.card__media img[src="./assets/thumbs/iran_evidence_monitor.jpg"] {
+  box-sizing: border-box;
+  padding: 4.5%;
+  object-fit: contain;
+  background: #041529;
+}
+
 .card__inner:hover .card__media img {
   transform: scale(1.03);
 }

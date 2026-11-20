@@ -756,7 +756,13 @@ const siteContent = {
       "blocks": [
         {
           "type": "text",
-          "text": "For each claim, you can read the sources, see what else might explain the observations, and check why the rating changed or stayed the same. The ratings are provisional. They run from −5 for evidence that strongly challenges a claim to +5 for evidence that strongly supports it.\n\n[link https://millxing.github.io/iran-evidence-monitor/]Explore the Iran Evidence Monitor[/link]\n\n[link https://www.youtube.com/watch?v=LYtNuRk8X3g]Watch Robert Pape’s lecture on ending the Iran war[/link]"
+          "text": "For each claim, you can read the sources, see what else might explain the observations, and check why the rating changed or stayed the same. The ratings are provisional. They run from −5 for evidence that strongly challenges a claim to +5 for evidence that strongly supports it.\n\n[link https://millxing.github.io/iran-evidence-monitor/]Explore the Iran Evidence Monitor[/link]"
+        },
+        {
+          "type": "embed",
+          "heading": "Robert Pape on ending the Iran war",
+          "embedSrc": "https://www.youtube-nocookie.com/embed/LYtNuRk8X3g",
+          "embedTitle": "Robert Pape’s lecture on ending the Iran war"
         }
       ]
     },
