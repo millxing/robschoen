@@ -754,6 +754,42 @@ const siteContent = {
   "projects": [
     {
       "kind": "projects",
+      "title": "Phona",
+      "slug": "phona",
+      "importance": 70,
+      "hiddenFromListings": false,
+      "metaDescription": "A singing voice for VCV Rack 2. Give it words and a melody, then patch in control over how it sings.",
+      "cardImage": "./assets/phona.png",
+      "homeCardText": "A singing voice for VCV Rack 2. Give it words and a melody, then patch in control over how it sings.",
+      "archiveCardText": "A singing voice for VCV Rack 2. Give it words and a melody, then patch in control over how it sings.",
+      "pageIntroText": "[link https://github.com/millxing/Phona]Phona[/link] is a singing voice I built for [link https://vcvrack.com/Rack]VCV Rack 2[/link] using [link https://www.chimera.audio/]Chimera[/link], Jameson Hodge’s [link https://github.com/jamesondh/chimera-vocal-synth]open-source vocal synthesis engine[/link]. Chimera models how the vocal folds vibrate and how the shape of the throat and mouth turns that vibration into a vowel. In Phona, you can hold a single note and turn a knob to hear the vowel change, then patch in a slow modulation to make the voice move between vowels on its own.\n\nTo make Phona sing words, type a line of lyrics and send it a melody from a sequencer. Each gate starts the next syllable. Hold the gate open and the singer stretches the vowel. Close it and Phona finishes the syllable. That gives you control over where the words land in a phrase.",
+      "detailPageEnabled": true,
+      "homeHref": "./phona.html",
+      "archiveHref": "./phona.html",
+      "blocks": [
+        {
+          "type": "text",
+          "heading": "Inside the voice",
+          "imageSrc": "./assets/phona.png",
+          "imageAlt": "Three VCV Rack modules side by side. Phona Scope plots the sound spectrum and vowel position, Phona has the voice controls, and Phona View shows the vocal tract in profile.",
+          "imageStyle": "full",
+          "textAfterImage": "Turn the Vowel knob on the center module and watch two things at once. Phona View on the right shows the tract changing shape. Phona Scope on the left shows which frequencies that shape brings out."
+        },
+        {
+          "type": "embed",
+          "heading": "Hear Phona",
+          "embedSrc": "./assets/phona-song.mp4",
+          "embedTitle": "Phona Song #1",
+          "headerLinkHref": "https://www.youtube.com/watch?v=kaAeIXDSNQI",
+          "headerLinkLabel": "Watch on YouTube",
+          "extraClasses": [
+            "play-on-demand"
+          ]
+        }
+      ]
+    },
+    {
+      "kind": "projects",
       "title": "Iran Evidence Monitor",
       "slug": "iran_evidence_monitor",
       "importance": 75,
