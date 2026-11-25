@@ -436,6 +436,10 @@ const siteContent = {
             {
               "label": "Conceptual Artist Sol LeWitt Didn’t Paint. He Imagined.",
               "href": "https://floydhome.com/blogs/stories/conceptual-artist-sol-lewitt-didn-t-paint-he-imagined"
+            },
+            {
+              "label": "Sol LeWitt Wall Drawing Resource (Yale University Art Gallery)",
+              "href": "https://artgallery.yale.edu/research-and-learning/resources/sol-lewitt-wall-drawing-resource"
             }
           ]
         },
